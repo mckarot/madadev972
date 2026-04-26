@@ -23,7 +23,8 @@ import {
   Cpu,
   Layers,
   SmartphoneNfc,
-  CheckCircle2
+  CheckCircle2,
+  Coffee
 } from 'lucide-react';
 
 // --- COMPOSANTS PARTAGÉS ---
@@ -46,18 +47,18 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'py-4 bg-primary-dark/80 backdrop-blur-xl border-white/10' : 'py-8 bg-transparent border-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-12 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 group cursor-pointer">
+      <div className="max-w-7xl mx-auto px-12 flex justify-between items-center text-white">
+        <Link to="/" className="flex items-center gap-2 group cursor-pointer text-white no-underline">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center font-display font-bold text-white text-lg group-hover:scale-110 transition-transform">M</div>
-          <span className="font-display font-bold text-xl tracking-tight uppercase text-white">MADADEV<span className="text-blue-accent">972</span></span>
+          <span className="font-display font-bold text-xl tracking-tight uppercase text-white">MADADEV<span className="text-blue-accent text-white">972</span></span>
         </Link>
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8 text-white">
           {navLinks.map((link, idx) => (
             <motion.div key={link.name} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-              <Link to={link.href} className="text-slate-400 hover:text-white font-medium transition-colors relative group text-sm">{link.name}</Link>
+              <Link to={link.href} className="text-slate-400 hover:text-white font-medium transition-colors relative group text-sm no-underline">{link.name}</Link>
             </motion.div>
           ))}
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-sm font-medium cursor-pointer hover:bg-white/10 transition-all">Contactez-nous</motion.div>
+          <div className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-sm font-medium cursor-pointer hover:bg-white/10 transition-all">Contactez-nous</div>
         </div>
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">{isOpen ? <X size={24} /> : <Menu size={24} />}</button>
       </div>
@@ -66,7 +67,7 @@ const Navbar = () => {
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary-dark border-b border-white/10">
             <div className="flex flex-col gap-4 p-8">
               {navLinks.map((link) => (
-                <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="text-xl font-display font-bold text-white hover:text-blue-accent">{link.name}</Link>
+                <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="text-xl font-display font-bold text-white hover:text-blue-accent no-underline">{link.name}</Link>
               ))}
             </div>
           </motion.div>
@@ -77,7 +78,7 @@ const Navbar = () => {
 };
 
 const ServiceCard = ({ title, description, delay, accentColor = "blue", href = "#" }: any) => (
-  <Link to={href} className="block">
+  <Link to={href} className="block no-underline h-full">
     <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.8 }} viewport={{ once: true }} className="p-6 bg-white/5 rounded-2xl border border-white/5 group hover:border-white/20 transition-all backdrop-blur-sm cursor-pointer h-full">
       <div className={`text-xs font-bold mb-2 uppercase tracking-wider ${accentColor === 'blue' ? 'text-blue-accent' : accentColor === 'emerald' ? 'text-emerald-accent' : 'text-indigo-accent'}`}>{title}</div>
       <div className="text-xl font-semibold mb-3 leading-snug text-white">{description}</div>
@@ -130,16 +131,19 @@ const RobotIntro = () => {
       loop();
     };
     viewer.addEventListener('load-complete', handleLoad);
-    return () => { viewer.removeEventListener('load-complete', handleLoad); if (logoInterval) clearInterval(logoInterval); };
+    return () => { 
+      viewer.removeEventListener('load-complete', handleLoad); 
+      if (logoInterval) clearInterval(logoInterval); 
+    };
   }, []);
 
   return (
     <section className="relative w-full h-screen bg-primary-dark flex items-center justify-center overflow-hidden px-12 lg:px-24">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="z-20 relative pointer-events-none">
-          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block">Bienvenue dans le futur</motion.span>
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Bienvenue dans le futur</motion.span>
           <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient">VOTRE VISION</span></h2>
-          <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed">Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.</p>
+          <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed text-white">Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }} animate={isLoaded ? { opacity: 1, scale: 1, filter: 'blur(0px) hue-rotate(-45deg) saturate(0.9) brightness(1.05)' } : {}} transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }} className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10 overflow-hidden rounded-[100px]" style={{ WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)', maskImage: 'radial-gradient(circle, black 60%, transparent 100%)' }}>
           <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-white/5" />
@@ -164,19 +168,19 @@ const SectionHeading = ({ children, subtitle, align = 'center' }: any) => (
 const Home = () => (
   <>
     <RobotIntro />
-    <section className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12">
+    <section className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12 bg-primary-dark">
       <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px]" />
       <div className="absolute bottom-[-200px] left-[-200px] w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px]" />
       <div className="max-w-7xl mx-auto w-full grid grid-cols-12 gap-8 items-center relative z-20">
-        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7">
+        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7 py-8 text-white">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-accent text-xs font-bold uppercase tracking-widest mb-8">
             <span className="w-2 h-2 rounded-full bg-blue-accent animate-pulse"></span>Basé en Martinique • Antilles
           </div>
-          <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 text-white uppercase">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block">DIGITALE</span></h1>
-          <p className="text-lg text-slate-400 max-w-lg mb-10 leading-relaxed font-light">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
+          <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 uppercase text-white">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block">DIGITALE</span></h1>
+          <p className="text-lg text-slate-400 max-w-lg mb-10 leading-relaxed font-light text-white">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
           <div className="flex gap-4">
-            <button className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105">Démarrer un projet</button>
-            <Link to="/portfolio" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-white">Voir le portfolio</Link>
+            <button className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105 cursor-pointer">Démarrer un projet</button>
+            <Link to="/portfolio" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-white no-underline cursor-pointer">Voir le portfolio</Link>
           </div>
         </motion.div>
         <div className="col-span-12 lg:col-span-5 relative hidden lg:block">
@@ -187,17 +191,104 @@ const Home = () => (
               <ServiceCard title="MOBILE NATIVE" description="iOS & Android Flutter Performance" delay={0.4} accentColor="indigo" href="/expertise/mobile" />
             </div>
             <div className="mt-8 flex items-end justify-between text-white">
-              <div>
-                <div className="text-4xl font-bold font-display tracking-tight">+150</div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Projets Livrés</div>
-              </div>
-              <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all">
-                <ArrowRight size={20} />
-              </Link>
+              <div><div className="text-4xl font-bold font-display tracking-tight text-white">+150</div><div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold text-white">Projets Livrés</div></div>
+              <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all"><ArrowRight size={20} /></Link>
             </div>
           </div>
         </div>
       </div>
+    </section>
+
+    {/* Section Engagement Local */}
+    <section className="py-32 px-6 bg-blue-600/5 relative overflow-hidden text-white">
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] -z-10 rounded-full" />
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="order-2 lg:order-1">
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: Coffee, label: "Restaurants", color: "text-emerald-accent" },
+                { icon: Zap, label: "Coachs Sportifs", color: "text-blue-accent" },
+                { icon: Palette, label: "Artisans", color: "text-indigo-accent" },
+                { icon: Globe, label: "TPE & PME", color: "text-white" }
+              ].map((item, i) => (
+                <div key={i} className="p-6 bg-white/5 rounded-3xl border border-white/10 flex flex-col items-center gap-3 text-center transition-all hover:bg-white/10">
+                  <item.icon size={32} className={item.color} />
+                  <span className="text-xs font-bold uppercase tracking-widest text-slate-400">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="order-1 lg:order-2">
+            <SectionHeading subtitle="Notre Engagement" align="left">Réduire la fracture <br/><span className="text-gradient">numérique local</span>.</SectionHeading>
+            <p className="text-xl text-slate-300 leading-relaxed mb-6 font-light text-white">Nous sommes engagés dans le développement numérique de la Martinique afin de pallier le retard technologique local. Notre ambition : offrir des solutions premium au juste prix.</p>
+            <div className="p-8 bg-blue-500/5 rounded-3xl border-l-4 border-blue-accent mb-8">
+              <p className="text-lg text-white leading-relaxed italic">"Nous dynamisons l'activité des restaurateurs, artisans et coachs sportifs via des outils de pointe accessibles aux petites et moyennes entreprises."</p>
+            </div>
+            <div className="flex items-center gap-4 text-emerald-accent font-bold tracking-widest text-xs uppercase"><CheckCircle2 size={18} /> Excellence Technique • Rapport Qualité/Prix Garanti</div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section Services Secondaires */}
+    <section id="services" className="py-32 px-6 relative overflow-hidden bg-primary-dark">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeading subtitle="Nos Expertises">Des services <span className="text-gradient">haut de gamme</span> pour votre croissance.</SectionHeading>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
+          <ServiceCard title="Performance & SEO" description="Optimisation technique pointue pour des temps de chargement records." delay={0.1} />
+          <ServiceCard title="Sécurité Cloud" description="Architectures serveurs sécurisées et scalables pour vos données." delay={0.2} />
+          <ServiceCard title="Stratégie Digitale" description="Accompagnement de A à Z pour transformer votre vision." delay={0.3} />
+        </div>
+      </div>
+    </section>
+
+    {/* Section Portfolio Teaser */}
+    <section className="py-32 px-6 bg-white/5">
+      <div className="max-w-7xl mx-auto text-white">
+        <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient">en action</span>.</SectionHeading>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 text-white">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10">
+             <img src="https://images.unsplash.com/photo-1498050100021-c5249f4df085?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work" />
+             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all" />
+             <div className="absolute bottom-0 p-10"><h3 className="text-3xl font-display font-black uppercase text-white">Projet Signature</h3></div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10">
+             <img src="https://images.unsplash.com/photo-1460761263504-24251fb74291?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work" />
+             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all" />
+             <div className="absolute bottom-0 p-10"><h3 className="text-3xl font-display font-black uppercase text-white">Innovation Mobile</h3></div>
+          </motion.div>
+        </div>
+        <div className="text-center">
+          <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20}/></Link>
+        </div>
+      </div>
+    </section>
+
+    {/* Section Agence Teaser */}
+    <section id="about" className="py-32 px-6 relative overflow-hidden bg-primary-dark">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }}>
+          <SectionHeading subtitle="L'Agence" align="left">Le talent local, <br /><span className="text-gradient">L'engagement global</span>.</SectionHeading>
+          <p className="text-xl text-white/70 leading-relaxed mb-8 text-white">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
+          <Link to="/agence" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all text-white inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
+        </motion.div>
+        <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 flex items-center justify-center">
+            <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] origin-center -scale-x-100" alt="Madadev Agency" />
+        </div>
+      </div>
+    </section>
+
+    {/* Section Contact CTA */}
+    <section className="py-40 px-6 bg-primary-dark">
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl mx-auto rounded-[60px] bg-white/5 p-20 text-center relative border border-white/10 overflow-hidden text-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-emerald-500/10 z-0" />
+        <div className="relative z-10 text-white">
+          <h2 className="font-display font-black text-5xl md:text-8xl mb-8 uppercase tracking-tighter text-white text-white">PRÊT À <span className="text-gradient">BRILLER ?</span></h2>
+          <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12 text-white">Votre projet mérite une exécution exceptionnelle. Discutons de vos ambitions dès aujourd'hui.</p>
+          <button className="px-16 py-8 bg-white text-black font-black text-2xl rounded-full hover:bg-blue-accent transition-all hover:scale-105 shadow-2xl cursor-pointer">CONTACTER L'AGENCE</button>
+        </div>
+      </motion.div>
     </section>
   </>
 );
@@ -205,14 +296,12 @@ const Home = () => (
 const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <div className="pt-32 pb-20 px-6 min-h-screen text-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+    <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
+      <div className="max-w-7xl mx-auto text-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24 text-white">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-bold uppercase tracking-widest mb-8" style={{ color }}>
-              <Icon size={18} /> {subtitle}
-            </div>
-            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase">{title}</h1>
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-bold uppercase tracking-widest mb-8 text-white" style={{ color }}><Icon size={18} /> {subtitle}</div>
+            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">{title}</h1>
             <div className="h-1 w-24 mb-8" style={{ backgroundColor: color }} />
           </motion.div>
           <div className="bg-white/5 rounded-[60px] aspect-video border border-white/10 flex items-center justify-center relative overflow-hidden">
@@ -228,23 +317,15 @@ const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) 
 
 const WebExpertise = () => (
   <ExpertiseLayout title={<>Web <br/><span className="text-gradient text-blue-accent">Architectures</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <div className="space-y-8">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent">Le Web de Demain, Aujourd'hui</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light">Nous ne créons pas de simples sites web. Nous bâtissons des architectures robustes, basées sur des clusters scalables pour garantir une disponibilité de 99.9% et des temps de réponse records.</p>
-        <ul className="space-y-4">
-          {["Next.js & React pour le frontend", "Node.js Microservices", "Déploiement Docker & Kubernetes", "Optimisation SEO Technique"].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-300"><CheckCircle2 size={20} className="text-blue-accent"/> {item}</li>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
+      <div className="space-y-8 text-white">
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent">Architecture Cluster-Label</h2>
+        <p className="text-xl text-slate-400 leading-relaxed font-light text-white">Bâtir des architectures robustes, basées sur des clusters scalables pour une disponibilité de 99.9%.</p>
+        <ul className="space-y-4 text-white">
+          {["Next.js & React Frontend", "Microservices Node.js", "Déploiement Docker & Kubernetes", "SEO Technique Pro"].map((item, i) => (
+            <li key={i} className="flex items-center gap-3 text-slate-300 text-white"><CheckCircle2 size={20} className="text-blue-accent"/> {item}</li>
           ))}
         </ul>
-      </div>
-      <div className="p-10 bg-white/5 rounded-[40px] border border-white/10">
-        <h3 className="text-2xl font-bold mb-6 uppercase tracking-widest">Performance Cluster</h3>
-        <p className="text-slate-500 mb-8 leading-relaxed">Notre approche "Architecture Cluster-Label" assure que votre application peut encaisser n'importe quel pic de trafic sans jamais ralentir.</p>
-        <div className="grid grid-cols-2 gap-4">
-           <div className="p-4 bg-black/40 rounded-2xl border border-white/5 text-center"><div className="text-3xl font-black text-white">0.4s</div><div className="text-[10px] text-slate-500 font-bold uppercase">LCP Speed</div></div>
-           <div className="p-4 bg-black/40 rounded-2xl border border-white/5 text-center"><div className="text-3xl font-black text-white">100%</div><div className="text-[10px] text-slate-500 font-bold uppercase">Uptime</div></div>
-        </div>
       </div>
     </div>
   </ExpertiseLayout>
@@ -252,20 +333,10 @@ const WebExpertise = () => (
 
 const DesignExpertise = () => (
   <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-emerald-accent">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <div className="space-y-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
+      <div className="space-y-8 text-white">
         <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent">L'Émotion par le Design</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light">Une interface fluide n'est pas seulement jolie, elle est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle, immédiate et gratifiante.</p>
-        <ul className="space-y-4">
-          {["Atomic Design System", "Micro-interactions 60 FPS", "Recherche Utilisateur (UX)", "Accessibilité Numérique"].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-300"><CheckCircle2 size={20} className="text-emerald-accent"/> {item}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="p-10 bg-white/5 rounded-[40px] border border-white/10 flex flex-col justify-center items-center text-center">
-         <div className="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-accent mb-6 animate-pulse"><Zap size={48}/></div>
-         <h3 className="text-2xl font-bold mb-4 uppercase tracking-widest">Zéro Friction</h3>
-         <p className="text-slate-500">Nous éliminons chaque obstacle entre votre utilisateur et son objectif final.</p>
+        <p className="text-xl text-slate-400 leading-relaxed font-light text-white">Une interface fluide est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle.</p>
       </div>
     </div>
   </ExpertiseLayout>
@@ -273,22 +344,10 @@ const DesignExpertise = () => (
 
 const MobileExpertise = () => (
   <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-indigo-accent">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <div className="space-y-8">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent">Expert Flutter Certifié</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light">Le développement multi-plateforme sans compromis. Avec Flutter, nous délivrons des applications natives pour iOS et Android avec une base de code unique, une fluidité de 120Hz et un temps de développement optimisé.</p>
-        <ul className="space-y-4">
-          {["Rendu Natif Haute Performance", "Une seule base de code stable", "Intégration Flutter Web & Desktop", "Expérience Utilisatrice Premium"].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-300"><CheckCircle2 size={20} className="text-indigo-accent"/> {item}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="p-10 bg-white/5 rounded-[40px] border border-white/10">
-        <div className="flex items-center gap-4 mb-8">
-           <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center text-indigo-accent"><Cpu size={24}/></div>
-           <h3 className="text-2xl font-bold uppercase tracking-widest">Engine Power</h3>
-        </div>
-        <p className="text-slate-500 leading-relaxed">Nous exploitons toute la puissance du moteur Skia de Flutter pour des rendus graphiques complexes et des animations ultra-fluides qui se démarquent sur l'App Store et le Play Store.</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
+      <div className="space-y-8 text-white">
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent">Expertise Native Flutter</h2>
+        <p className="text-xl text-slate-400 leading-relaxed font-light text-white text-white text-white">En tant que développeur Flutter, je conçois des applications avec une fluidité de 120Hz et un temps de développement optimisé.</p>
       </div>
     </div>
   </ExpertiseLayout>
@@ -305,23 +364,23 @@ const PortfolioPage = () => {
   ];
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <div className="pt-32 pb-20 px-6 min-h-screen text-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div><motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block">Nos Réalisations</motion.span>
-            <h1 className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-white">NOS PROJETS <br/><span className="text-gradient">SIGNATURE</span></h1></div>
+    <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
+      <div className="max-w-7xl mx-auto text-white">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-white text-white">
+          <div><motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Nos Réalisations</motion.span>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-white">NOS PROJETS <br/><span className="text-gradient">SIGNATURE</span></motion.h1></div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
           {projects.map((project, idx) => (
             <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 cursor-pointer">
               <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" alt={project.title} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all" />
-              <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2" style={{ color: project.color }}>{project.category}</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all text-white" />
+              <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-white">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-white" style={{ color: project.color }}>{project.category}</span>
                 <h3 className="text-3xl font-display font-black text-white mb-6 leading-none">{project.title}</h3>
-                <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500">
-                  <span className="text-sm text-white/50 font-medium">Découvrir l'étude de cas</span>
-                  <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all"><Eye size={20}/></div>
+                <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-white">
+                  <span className="text-sm text-white/50 font-medium text-white">Découvrir l'étude de cas</span>
+                  <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all text-white"><Eye size={20} className="text-black"/></div>
                 </div>
               </div>
             </motion.div>
@@ -335,20 +394,16 @@ const PortfolioPage = () => {
 const AgencyPage = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <div className="pt-32 pb-20 px-6 min-h-screen text-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
+    <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
+      <div className="max-w-7xl mx-auto text-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 text-white">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
-            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block">L'Histoire Madadev</span>
+            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-white">L'Histoire Madadev</span>
             <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">L'ALLIANCE DU <br/><span className="text-gradient">CODE & DE L'ÎLE</span></h1>
-            <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-xl font-light">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
-            <div className="flex gap-8 border-t border-white/10 pt-10 text-white">
-              <div><div className="text-4xl font-black">05+</div><div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Années</div></div>
-              <div><div className="text-4xl font-black">150+</div><div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Projets</div></div>
-            </div>
+            <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-xl font-light text-white font-sans text-white text-white">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
           </motion.div>
           <div className="relative">
-             <div className="aspect-[4/5] rounded-[60px] overflow-hidden bg-black border border-white/10">
+             <div className="aspect-[4/5] rounded-[60px] overflow-hidden bg-black border border-white/10 shadow-2xl text-white">
                 <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] -scale-x-100 opacity-80" alt="Vision" />
              </div>
           </div>
@@ -358,12 +413,10 @@ const AgencyPage = () => {
   );
 };
 
-// --- APP WRAPPER ---
-
 export default function App() {
   return (
     <Router>
-      <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black">
+      <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black min-h-screen">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -373,16 +426,15 @@ export default function App() {
           <Route path="/expertise/design" element={<DesignExpertise />} />
           <Route path="/expertise/mobile" element={<MobileExpertise />} />
         </Routes>
-        <footer className="py-20 px-12 border-t border-white/5 bg-primary-dark text-white">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-            <div className="max-w-sm">
-              <div className="flex items-center gap-2 mb-6 text-xl font-display font-bold uppercase tracking-tight">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">M</div>MADADEV<span className="text-blue-accent">972</span>
+        <footer className="py-20 px-12 border-t border-white/5 bg-primary-dark text-white relative z-10">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-white">
+            <div className="max-w-sm text-white">
+              <div className="flex items-center gap-2 mb-6 text-xl font-display font-bold uppercase tracking-tight text-white">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">M</div>MADADEV<span className="text-blue-accent text-white">972</span>
               </div>
-              <p className="text-slate-500 mb-8 leading-relaxed text-sm">L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.</p>
+              <p className="text-slate-500 mb-8 leading-relaxed text-sm text-white">L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.</p>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em]">© 2024 Madadev972 — Fort-de-France</div>
         </footer>
       </div>
     </Router>
