@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef, Suspense, lazy } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'motion/react';
-const Spline = lazy(() => import('@splinetool/react-spline'));
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import {
   Code2,
   Smartphone,
@@ -9,15 +8,10 @@ import {
   ArrowRight,
   Menu,
   X,
-  Github,
-  Linkedin,
-  Instagram,
   ChevronDown,
   ExternalLink,
-  Globe,
   Zap,
-  Shield,
-  Layers
+  Shield
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -54,7 +48,6 @@ const Navbar = () => {
           <span className="font-display font-bold text-xl tracking-tight uppercase">MADADEV<span className="text-blue-accent">972</span></span>
         </motion.a>
 
-        {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link, idx) => (
             <motion.a
@@ -77,13 +70,11 @@ const Navbar = () => {
           </motion.div>
         </div>
 
-        {/* Mobile Toggle */}
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -114,7 +105,7 @@ const Navbar = () => {
   );
 };
 
-const ServiceCard = ({ icon: Icon, title, description, delay, accentColor = "blue" }) => (
+const ServiceCard = ({ title, description, delay, accentColor = "blue" }: any) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -132,17 +123,12 @@ const ServiceCard = ({ icon: Icon, title, description, delay, accentColor = "blu
   </motion.div>
 );
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'spline-viewer': any;
-    }
-  }
-}
-
 const RobotIntro = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const viewerRef = useRef<any>(null);
+  
+  // Utilisation d'une balise dynamique pour éviter les erreurs de types JSX
+  const SplineElement = 'spline-viewer' as any;
 
   useEffect(() => {
     const viewer = viewerRef.current;
@@ -211,8 +197,6 @@ const RobotIntro = () => {
   return (
     <section className="relative w-full h-screen bg-primary-dark flex items-center justify-center overflow-hidden px-12 lg:px-24">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-
-        {/* Texte à gauche */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -235,23 +219,22 @@ const RobotIntro = () => {
           </p>
         </motion.div>
 
-        {/* Robot à droite avec bords arrondis et filtrage total du violet */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
           animate={isLoaded ? {
             opacity: 1,
             scale: 1,
-            filter: 'blur(0px) hue-rotate(-100deg) saturate(0.9) brightness(1.05)' // Transformation vers un bleu doux et élégant
+            filter: 'blur(0px) hue-rotate(-45deg) saturate(0.9) brightness(1.05)'
           } : {}}
           transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-          className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10 overflow-hidden rounded-[60px]"
+          className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10 overflow-hidden rounded-[100px]"
           style={{
             WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
             maskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
           }}
         >
-          <div className="absolute inset-0 bg-blue-500/5 rounded-[60px] border border-white/5" />
-          <spline-viewer
+          <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-white/5" />
+          <SplineElement
             ref={viewerRef}
             url="/robot_landing.splinecode"
             style={{ width: '100%', height: '100%' }}
@@ -280,12 +263,10 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
     <section ref={targetRef} className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12">
-      {/* Decorative Blur Backgrounds */}
       <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px]" />
       <div className="absolute bottom-[-200px] left-[-200px] w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px]" />
 
@@ -367,7 +348,7 @@ const Hero = () => {
   );
 };
 
-const SectionHeading = ({ children, subtitle, align = 'center' }) => (
+const SectionHeading = ({ children, subtitle, align = 'center' }: any) => (
   <div className={`max-w-4xl mb-20 ${align === 'center' ? 'mx-auto text-center' : ''}`}>
     <motion.span
       initial={{ opacity: 0 }}
@@ -387,17 +368,12 @@ const SectionHeading = ({ children, subtitle, align = 'center' }) => (
 );
 
 export default function App() {
-  const smoothOptions = { damping: 20, stiffness: 100 };
-
   return (
     <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black">
       <Navbar />
-
       <RobotIntro />
-
       <Hero />
 
-      {/* Services Section */}
       <section id="services" className="py-32 px-6 relative overflow-hidden">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[50vh] h-[50vh] bg-accent-teal/5 rounded-full blur-[100px] pointer-events-none" />
         <div className="max-w-7xl mx-auto">
@@ -446,7 +422,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Featured Work */}
       <section id="work" className="py-32 px-6 bg-white/5">
         <div className="max-w-7xl mx-auto">
           <SectionHeading subtitle="Réalisations" align="left">
@@ -488,7 +463,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* Local Section (Martinique vibe) */}
       <section id="about" className="py-32 px-6 relative flex flex-col items-center">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <motion.div
@@ -546,7 +520,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* CTA / Contact */}
       <section id="contact" className="py-40 px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
