@@ -12,17 +12,6 @@
   --color-slate-muted: #94a3b8;
 }
 
-@layer base {
-  /* On force le curseur sur absolument tout */
-  *, *::before, *::after {
-    cursor: url('/custom-cursor.png') 0 0, auto !important;
-  }
-  
-  /* On cible spécifiquement les éléments qui forcent habituellement la 'main' */
-  a, button, [role="button"], input, select, textarea, .cursor-pointer {
-    cursor: url('/custom-cursor.png') 0 0, pointer !important;
-  }
-}
 
 body {
   @apply bg-primary-dark text-slate-100 selection:bg-blue-accent/30 selection:text-white;

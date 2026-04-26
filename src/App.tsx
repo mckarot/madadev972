@@ -374,39 +374,6 @@ const Home = () => {
       </section>
 
       {/* Section Engagement Local */}
-      <section className="py-32 px-6 bg-blue-600/5 relative overflow-hidden text-white bg-primary-dark">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] -z-10 rounded-full text-white" />
-        <div className="max-w-7xl mx-auto text-white">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center text-white">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="order-2 lg:order-1 text-white">
-              <div className="grid grid-cols-2 gap-4 text-white">
-                {[
-                  { icon: Coffee, label: "Restaurants", color: "text-emerald-accent" },
-                  { icon: Zap, label: "Coachs Sportifs", color: "text-blue-accent" },
-                  { icon: Palette, label: "Artisans", color: "text-indigo-accent" },
-                  { icon: Globe, label: "TPE & PME", color: "text-white" }
-                ].map((item, i) => (
-                  <div key={i} className="p-6 bg-white/5 rounded-3xl border border-white/10 flex flex-col items-center gap-3 text-center transition-all hover:bg-white/10 text-white">
-                    <item.icon size={32} className={item.color} />
-                    <span className="text-xs font-bold uppercase tracking-widest text-slate-400 text-white">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="order-1 lg:order-2 text-white">
-              <SectionHeading subtitle="Notre Engagement" align="left">Réduire la fracture <br/><span className="text-gradient text-white">numérique local</span>.</SectionHeading>
-              <p className="text-xl text-slate-300 leading-relaxed mb-6 font-light text-white">Nous sommes engagés dans le développement numérique de la Martinique afin de pallier le retard technologique local. Notre ambition : offrir des solutions premium au juste prix.</p>
-              <div className="p-8 bg-blue-500/5 rounded-3xl border-l-4 border-blue-accent mb-8 text-white">
-                <p className="text-lg text-white leading-relaxed italic">"Nous dynamisons l'activité des restaurateurs, artisans et coachs sportifs via des outils de pointe accessibles aux petites et moyennes entreprises."</p>
-              </div>
-              <div className="flex items-center gap-4 text-emerald-accent font-bold tracking-widest text-xs uppercase text-white"><CheckCircle2 size={18} /> Excellence Technique • Rapport Qualité/Prix Garanti</div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <TechStackScroll />
-
       {/* Section Expertises Secondaires */}
       <section id="services" className="py-32 px-6 relative overflow-hidden bg-primary-dark text-white">
         <div className="max-w-7xl mx-auto text-white">
@@ -418,6 +385,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
 
       {/* Section Portfolio Teaser */}
       <section className="py-32 px-6 bg-white/5 text-white">
@@ -440,6 +408,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Section Tech Stack Scroll */}
+      <TechStackScroll />
 
       {/* Section Agence Teaser */}
       <section id="about" className="py-32 px-6 relative overflow-hidden bg-primary-dark text-white">
@@ -584,12 +555,13 @@ const AgencyPage = () => {
             <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-xl font-light text-white font-sans">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
           </motion.div>
           <div className="relative text-white">
-             <div className="aspect-[4/5] rounded-[60px] overflow-hidden bg-black border border-white/10 shadow-2xl text-white">
+             <div className="aspect-[4/5] rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 shadow-2xl text-white">
                 <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] -scale-x-100 opacity-80 text-white" alt="Vision" />
              </div>
           </div>
         </div>
       </div>
+      <TechStackScroll />
     </div>
   );
 };
