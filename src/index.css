@@ -13,10 +13,20 @@
 }
 
 @layer base {
-  body {
-    @apply bg-primary-dark text-slate-100 selection:bg-blue-accent/30 selection:text-white;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  /* On force le curseur sur absolument tout */
+  *, *::before, *::after {
+    cursor: url('/custom-cursor.png') 12 12, auto !important;
   }
+  
+  /* On cible spécifiquement les éléments qui forcent habituellement la 'main' */
+  a, button, [role="button"], input, select, textarea, .cursor-pointer {
+    cursor: url('/custom-cursor.png') 12 12, pointer !important;
+  }
+}
+
+body {
+  @apply bg-primary-dark text-slate-100 selection:bg-blue-accent/30 selection:text-white;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
 }
 
 .glass-morphism {
