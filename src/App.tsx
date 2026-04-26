@@ -86,8 +86,10 @@ const ServiceCard = ({ title, description, delay, accentColor = "blue", href = "
   </Link>
 );
 
-const RobotIntro = () => {
+const PersistentRobot = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isFloating, setIsFloating] = useState(true);
+  const [heroRect, setHeroRect] = useState<DOMRect | null>(null);
   const viewerRef = useRef<any>(null);
   const SplineElement = 'spline-viewer' as any;
 
@@ -136,6 +138,80 @@ const RobotIntro = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const updatePosition = () => {
+      const isHome = window.location.pathname === '/';
+      const scrollY = window.scrollY;
+      const placeholder = document.getElementById('robot-hero-placeholder');
+      
+      if (isHome && scrollY < 200 && placeholder) {
+        const rect = placeholder.getBoundingClientRect();
+        if (rect.width > 0) {
+          setHeroRect(rect);
+          setIsFloating(false);
+          return;
+        }
+      }
+      setIsFloating(true);
+    };
+
+    window.addEventListener('scroll', updatePosition);
+    window.addEventListener('resize', updatePosition);
+    const interval = setInterval(updatePosition, 100);
+
+    return () => {
+      window.removeEventListener('scroll', updatePosition);
+      window.removeEventListener('resize', updatePosition);
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      initial={false}
+      animate={isFloating ? {
+        top: '100px',
+        right: '40px',
+        left: 'auto',
+        width: '160px',
+        height: '160px',
+        borderRadius: '30px',
+        boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+        background: 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        zIndex: 100,
+        opacity: 1,
+        scale: 1,
+      } : {
+        top: `${heroRect?.top ?? 0}px`,
+        left: `${heroRect?.left ?? 0}px`,
+        width: `${heroRect?.width ?? 0}px`,
+        height: `${heroRect?.height ?? 0}px`,
+        borderRadius: '100px',
+        boxShadow: '0 0px 0px rgba(0,0,0,0)',
+        background: 'rgba(255,255,255,0)',
+        backdropFilter: 'blur(0px)',
+        border: '1px solid rgba(255,255,255,0)',
+        zIndex: 10,
+        opacity: 1,
+        scale: 1,
+      }}
+      transition={{ type: 'spring', damping: 25, stiffness: 120 }}
+      className="fixed pointer-events-auto overflow-hidden group"
+      style={{
+        WebkitMaskImage: isFloating ? 'none' : 'radial-gradient(circle, black 60%, transparent 100%)',
+        maskImage: isFloating ? 'none' : 'radial-gradient(circle, black 60%, transparent 100%)',
+      }}
+    >
+      <SplineElement ref={viewerRef} url="/robot_landing.splinecode" style={{ width: '100%', height: '100%' }} />
+      {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-primary-dark/20"><div className="w-8 h-8 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" /></div>}
+      {isFloating && <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 transition-colors pointer-events-none" />}
+    </motion.div>
+  );
+};
+
+const RobotIntro = () => {
   return (
     <section className="relative w-full h-screen bg-primary-dark flex items-center justify-center overflow-hidden px-12 lg:px-24">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -144,12 +220,10 @@ const RobotIntro = () => {
           <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient text-white">VOTRE VISION</span></h2>
           <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed text-white">Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }} animate={isLoaded ? { opacity: 1, scale: 1, filter: 'blur(0px) hue-rotate(-45deg) saturate(0.9) brightness(1.05)' } : {}} transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }} className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10 overflow-hidden rounded-[100px]" style={{ WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)', maskImage: 'radial-gradient(circle, black 60%, transparent 100%)' }}>
+        <div id="robot-hero-placeholder" className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-none z-10 overflow-hidden rounded-[100px]">
           <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-white/5 text-white" />
-          <SplineElement ref={viewerRef} url="/robot_landing.splinecode" style={{ width: '100%', height: '100%' }} />
-        </motion.div>
+        </div>
       </div>
-      {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-primary-dark z-30 text-white"><div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin text-white" /></div>}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 animate-bounce z-20 pointer-events-none text-white"><ChevronDown size={32} /></div>
     </section>
   );
@@ -523,6 +597,7 @@ export default function App() {
     <Router>
       <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black min-h-screen text-white">
         <Navbar />
+        <PersistentRobot />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
