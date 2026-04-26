@@ -439,7 +439,7 @@ const Home = () => {
                 className="w-[300px] md:w-[600px] h-[400px] md:h-[600px] rounded-[40px] overflow-hidden border border-white/10 group relative flex-shrink-0"
               >
                 <Link to={`/portfolio/${project.id}`} className="block h-full no-underline">
-                  <img src={project.image} className="w-full h-full object-cover grayscale-0 group-hover:grayscale transition-all duration-700" alt={project.title} />
+                  <img src={project.image} className="w-full h-full object-cover transition-all duration-700" alt={project.title} />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
                   <div className="absolute bottom-0 p-10">
                     <span className="text-xs font-bold uppercase tracking-widest mb-2 block" style={{ color: project.color }}>{project.category}</span>
