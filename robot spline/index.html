@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau Robot - Test</title>
+    <style>
+        body { margin: 0; background: #000; height: 100vh; overflow: hidden; font-family: sans-serif; }
+        spline-viewer { width: 100%; height: 100%; }
+        #status { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #444; font-size: 12px; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@splinetool/viewer@1.12.1/build/spline-viewer.js"></script>
+    
+    <spline-viewer id="robot" url="./robot_landing.splinecode"></spline-viewer>
+    
+    <div id="status">Chargement de l'animation...</div>
+
+    <script>
+        const viewer = document.getElementById('robot');
+        
+        viewer.addEventListener('load-complete', () => {
+            document.getElementById('status').innerText = "Robot prêt.";
+            
+            // On applique la stabilisation si nécessaire
+            const spline = viewer.spline;
+            if (spline) {
+                const allObjects = spline.getAllObjects();
+                
+                // Mémoriser la structure initiale
+                const targets = allObjects.map(obj => ({
+                    obj: obj,
+                    initialY: obj.position.y,
+                    name: obj.name.toLowerCase()
+                }));
+
+                function loop() {
+                    targets.forEach(item => {
+                        // On identifie les parties "corps/base" à figer
+                        // Sauf tête, yeux, cou
+                        const isHeadPart = item.name.includes('head') || 
+                                           item.name.includes('eye') || 
+                                           item.name.includes('neck');
+
+                        if (!isHeadPart) {
+                            // On bloque la rotation X et Z pour éviter qu'il ne se couche
+                            item.obj.rotation.x = 0;
+                            item.obj.rotation.z = 0;
+                            // On bloque la hauteur
+                            item.obj.position.y = item.initialY;
+                        }
+                    });
+                    requestAnimationFrame(loop);
+                }
+                loop();
+            }
+        });
+    </script>
+</body>
+</html>

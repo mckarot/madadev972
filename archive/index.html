@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R4X Bot - Stabilisation Hiérarchique</title>
+    <style>
+        body { margin: 0; background: #111; height: 100vh; overflow: hidden; }
+        spline-viewer { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@splinetool/viewer@1.12.1/build/spline-viewer.js"></script>
+    <spline-viewer id="bot" url="./scene.splinecode"></spline-viewer>
+
+    <script>
+        const viewer = document.getElementById('bot');
+        
+        function stabilizeHierarchy(spline) {
+            const allObjects = spline.getAllObjects();
+            
+            // On cherche le "Main" ou le groupe racine qui contient tout
+            // Souvent c'est l'objet qui a le plus d'enfants ou un nom comme 'Group', 'Scene'
+            const rootObjects = allObjects.filter(o => !o.parent); 
+
+            function loop() {
+                allObjects.forEach(obj => {
+                    const name = obj.name.toLowerCase();
+                    
+                    // On identifie ce qui NE DOIT PAS pencher
+                    // Si c'est une sphère, un corps, ou un groupe principal
+                    const isBasePart = name.includes('sphere') || 
+                                       name.includes('body') || 
+                                       name.includes('base') || 
+                                       name.includes('group') ||
+                                       name === 'object'; // Nom générique souvent utilisé
+
+                    const isHeadPart = name.includes('head') || 
+                                       name.includes('eye') || 
+                                       name.includes('neck');
+
+                    if (isBasePart && !isHeadPart) {
+                        // Verrouillage strict de la rotation pour empêcher de se coucher
+                        obj.rotation.x = 0;
+                        obj.rotation.z = 0;
+                        
+                        // On peut aussi essayer de limiter l'amplitude Y si nécessaire
+                    }
+                    
+                    // On force aussi la position Y de la base pour qu'elle ne s'enfonce pas
+                    if (name.includes('sphere') || name.includes('base')) {
+                        // On pourrait fixer obj.position.y ici si on avait sa valeur initiale
+                    }
+                });
+                requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        const check = setInterval(() => {
+            if (viewer.spline) {
+                clearInterval(check);
+                stabilizeHierarchy(viewer.spline);
+            }
+        }, 100);
+    </script>
+</body>
+</html>
