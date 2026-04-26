@@ -292,7 +292,7 @@ const TechStackScroll = () => {
   };
 
   return (
-    <section ref={targetRef} className="relative h-[300vh] bg-black text-white">
+    <section ref={targetRef} className="relative h-[300vh] bg-primary-dark text-white">
       <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden text-white">
         <div className="absolute inset-0 z-0 text-white">
           <AnimatePresence mode="wait">
@@ -310,7 +310,7 @@ const TechStackScroll = () => {
               }} 
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent text-white" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/20 to-transparent text-white" />
         </div>
         <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative z-10 text-white">
           <div className="lg:col-span-4 text-white">
@@ -373,8 +373,6 @@ const Home = () => {
     <>
       <RobotIntro />
       <section ref={targetRef} className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12 bg-primary-dark text-white">
-        <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] text-white" />
-        <div className="absolute bottom-[-200px] left-[-200px] w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px] text-white" />
         <div className="max-w-7xl mx-auto w-full grid grid-cols-12 gap-8 items-center relative z-20 text-white">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7 py-8 text-white">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-accent text-xs font-bold uppercase tracking-widest mb-8 text-white">
@@ -418,7 +416,9 @@ const Home = () => {
 
 
       {/* Section Portfolio Teaser */}
-      <section className="py-32 bg-white/5 text-white overflow-hidden">
+      <section className="py-32 bg-primary-dark text-white overflow-hidden relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[160px] pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-6 text-white mb-16">
           <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient text-white">en action</span>.</SectionHeading>
         </div>
@@ -467,7 +467,7 @@ const Home = () => {
             <p className="text-xl text-white/70 leading-relaxed mb-8 text-white">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
             <Link to="/agence" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all text-white inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
           </motion.div>
-          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 flex items-center justify-center text-white">
+          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-primary-dark border border-white/10 flex items-center justify-center text-white">
               <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] origin-center -scale-x-100 opacity-80 text-white" alt="Madadev Agency" />
           </div>
         </div>
@@ -915,7 +915,7 @@ export default function App() {
           <Route path="/expertise/mobile" element={<MobileExpertise />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
-        <footer className="py-20 px-12 border-t border-white/5 bg-primary-dark text-white relative z-10">
+        <footer className="py-20 px-12 bg-primary-dark text-white relative z-10">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-white">
             <div className="max-w-sm text-white">
               <div className="flex items-center gap-2 mb-6 text-xl font-display font-bold uppercase tracking-tight text-white">
