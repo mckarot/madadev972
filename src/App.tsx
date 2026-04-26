@@ -33,8 +33,9 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'py-4 glass-morphism' : 'py-8 bg-transparent'
-      }`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${
+      isScrolled ? 'py-4 bg-primary-dark/80 backdrop-blur-xl border-white/10' : 'py-8 bg-transparent border-transparent'
+    }`}>
       <div className="max-w-7xl mx-auto px-12 flex justify-between items-center">
         <motion.a
           href="/"
