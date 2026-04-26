@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import {
   Code2,
   Smartphone,
@@ -23,7 +23,14 @@ import {
   Cpu,
   Layers,
   CheckCircle2,
-  Coffee
+  Coffee,
+  Mail,
+  MessageSquare,
+  Send,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Github
 } from 'lucide-react';
 
 // --- COMPOSANTS PARTAGÉS ---
@@ -57,7 +64,7 @@ const Navbar = () => {
               <Link to={link.href} className="text-slate-400 hover:text-white font-medium transition-colors relative group text-sm no-underline text-white">{link.name}</Link>
             </motion.div>
           ))}
-          <div className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-sm font-medium cursor-pointer hover:bg-white/10 transition-all">Contactez-nous</div>
+          <Link to="/contact" className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-sm font-medium cursor-pointer hover:bg-white/10 transition-all no-underline">Contactez-nous</Link>
         </div>
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">{isOpen ? <X size={24} /> : <Menu size={24} />}</button>
       </div>
@@ -392,16 +399,20 @@ const Home = () => {
         <div className="max-w-7xl mx-auto text-white">
           <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient text-white">en action</span>.</SectionHeading>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 text-white">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
-               <img src="https://images.unsplash.com/photo-1498050100021-c5249f4df085?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 text-white" alt="Work" />
-               <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
-               <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Projet Signature</h3></div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
-               <img src="https://images.unsplash.com/photo-1460761263504-24251fb74291?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 text-white" alt="Work" />
-               <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
-               <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Innovation Mobile</h3></div>
-            </motion.div>
+            <Link to="/portfolio/1" className="block no-underline text-white">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
+                 <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2000" className="w-full h-full object-cover grayscale-0 group-hover:grayscale transition-all duration-700 text-white" alt="Work" />
+                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
+                 <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Eco-Tropical Resort</h3></div>
+              </motion.div>
+            </Link>
+            <Link to="/portfolio/2" className="block no-underline text-white">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
+                 <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000" className="w-full h-full object-cover grayscale-0 group-hover:grayscale transition-all duration-700 text-white" alt="Work" />
+                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
+                 <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Fintech Antilles</h3></div>
+              </motion.div>
+            </Link>
           </div>
           <div className="text-center text-white">
             <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20} className="text-white"/></Link>
@@ -433,7 +444,7 @@ const Home = () => {
           <div className="relative z-10 text-white">
             <h2 className="font-display font-black text-5xl md:text-8xl mb-8 uppercase tracking-tighter text-white">PRÊT À <span className="text-gradient text-white">BRILLER ?</span></h2>
             <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12 text-white">Votre projet mérite une exécution exceptionnelle. Discutons de vos ambitions dès aujourd'hui.</p>
-            <button className="px-16 py-8 bg-white text-black font-black text-2xl rounded-full hover:bg-blue-accent transition-all hover:scale-105 shadow-2xl cursor-pointer">CONTACTER L'AGENCE</button>
+            <Link to="/contact" className="px-16 py-8 bg-white text-black font-black text-2xl rounded-full hover:bg-blue-accent transition-all hover:scale-105 shadow-2xl cursor-pointer no-underline inline-block">CONTACTER L'AGENCE</Link>
           </div>
         </motion.div>
       </section>
@@ -503,17 +514,98 @@ const MobileExpertise = () => (
   </ExpertiseLayout>
 );
 
+// --- DONNÉES PROJETS ---
+
+const PROJECTS = [
+  { 
+    id: 1, 
+    title: "Eco-Tropical Resort", 
+    category: "Web Design", 
+    image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2000", 
+    color: "#34d399",
+    challenge: "Créer une expérience de réservation immersive pour un complexe éco-responsable de luxe en Martinique.",
+    solution: "Une interface fluide utilisant le WebGL pour des transitions fluides et un système de réservation temps réel optimisé.",
+    techs: ["React", "Three.js", "Node.js", "Stripe API"],
+    detailImages: [
+      "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1000",
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1000"
+    ]
+  },
+  { 
+    id: 2, 
+    title: "Fintech Antilles", 
+    category: "App Mobile", 
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000", 
+    color: "#60a5fa",
+    challenge: "Démocratiser l'accès aux services bancaires numériques pour les entrepreneurs de la zone caraïbe.",
+    solution: "Une application mobile sécurisée avec authentification biométrique et gestion de multi-devises simplifiée.",
+    techs: ["Flutter", "Firebase", "Google Cloud", "Rust"],
+    detailImages: [
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000"
+    ]
+  },
+  { 
+    id: 3, 
+    title: "Madinina Market", 
+    category: "E-Commerce", 
+    image: "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000", 
+    color: "#818cf8",
+    challenge: "Connecter les artisans locaux directement aux consommateurs via une plateforme logistique intégrée.",
+    solution: "Un marketplace robuste supportant des milliers de SKUs avec un tableau de bord vendeur intuitif.",
+    techs: ["Next.js", "Shopify Engine", "PostgreSQL", "Tailwind"],
+    detailImages: [
+      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000",
+      "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1000"
+    ]
+  },
+  { 
+    id: 4, 
+    title: "Luxury Travel App", 
+    category: "UX Research", 
+    image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000", 
+    color: "#f472b6",
+    challenge: "Redéfinir le parcours voyageur pour une clientèle haut de gamme exigeante.",
+    solution: "Une phase de recherche intensive aboutissant à un design minimaliste et prédictif.",
+    techs: ["Figma", "User Testing", "Prototyping", "Design System"],
+    detailImages: [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
+      "https://images.unsplash.com/photo-1436491865332-7a61a109c0f2?q=80&w=1000"
+    ]
+  },
+  { 
+    id: 5, 
+    title: "Smart City FDF", 
+    category: "Big Data", 
+    image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=1000", 
+    color: "#fbbf24",
+    challenge: "Analyser les flux de transport urbain pour optimiser le trafic à Fort-de-France.",
+    solution: "Visualisation de données massives en temps réel issue de capteurs IoT disséminés dans la ville.",
+    techs: ["Python", "TensorFlow", "React Dashboards", "AWS"],
+    detailImages: [
+      "https://images.unsplash.com/photo-1558441719-ff34b0ad4b98?q=80&w=1000",
+      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1000"
+    ]
+  },
+  { 
+    id: 6, 
+    title: "Crypto Ocean", 
+    category: "Blockchain", 
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000", 
+    color: "#60a5fa",
+    challenge: "Permettre l'investissement fractionné dans des projets de préservation des récifs coralliens.",
+    solution: "Une plateforme d'échange de tokens d'impact basée sur la transparence de la blockchain.",
+    techs: ["Solidity", "Web3.js", "Ethereum", "Ethers.js"],
+    detailImages: [
+      "https://images.unsplash.com/photo-1518544801976-3e159e50e5bb?q=80&w=1000",
+      "https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?q=80&w=1000"
+    ]
+  }
+];
+
 // --- PAGES AUTRES ---
 
 const PortfolioPage = () => {
-  const projects = [
-    { id: 1, title: "Eco-Tropical Resort", category: "Web Design", image: "https://images.unsplash.com/photo-1542011016-76ef30cf1c01?q=80&w=1000", color: "#34d399" },
-    { id: 2, title: "Fintech Antilles", category: "App Mobile", image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000", color: "#60a5fa" },
-    { id: 3, title: "Madinina Market", category: "E-Commerce", image: "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000", color: "#818cf8" },
-    { id: 4, title: "Luxury Travel App", category: "UX Research", image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000", color: "#f472b6" },
-    { id: 5, title: "Smart City FDF", category: "Big Data", image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=1000", color: "#fbbf24" },
-    { id: 6, title: "Crypto Ocean", category: "Blockchain", image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000", color: "#60a5fa" }
-  ];
   useEffect(() => window.scrollTo(0, 0), []);
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
@@ -523,19 +615,21 @@ const PortfolioPage = () => {
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-white">NOS PROJETS <br/><span className="text-gradient text-white">SIGNATURE</span></motion.h1></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
-          {projects.map((project, idx) => (
-            <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 cursor-pointer text-white">
-              <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 text-white" alt={project.title} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all text-white" />
-              <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-white">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-white" style={{ color: project.color }}>{project.category}</span>
-                <h3 className="text-3xl font-display font-black text-white mb-6 leading-none uppercase">{project.title}</h3>
-                <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-white">
-                  <span className="text-sm text-white/50 font-medium text-white">Découvrir l'étude de cas</span>
-                  <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all text-white"><Eye size={20} className="text-black text-white"/></div>
+          {PROJECTS.map((project, idx) => (
+            <Link key={project.id} to={`/portfolio/${project.id}`} className="no-underline text-white block h-full">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 cursor-pointer text-white h-full">
+                <img src={project.image} className="w-full h-full object-cover grayscale-0 group-hover:grayscale group-hover:scale-110 transition-all duration-700 text-white" alt={project.title} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all text-white" />
+                <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-white">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-white" style={{ color: project.color }}>{project.category}</span>
+                  <h3 className="text-3xl font-display font-black text-white mb-6 leading-none uppercase">{project.title}</h3>
+                  <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-white">
+                    <span className="text-sm text-white/50 font-medium text-white">Découvrir l'étude de cas</span>
+                    <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all text-white"><Eye size={20} className="text-black text-white"/></div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </div>
@@ -566,6 +660,194 @@ const AgencyPage = () => {
   );
 };
 
+const ProjectDetailPage = () => {
+  const { id } = useParams();
+  const project = PROJECTS.find(p => p.id === Number(id));
+  useEffect(() => window.scrollTo(0, 0), []);
+
+  if (!project) return <div className="pt-40 text-center text-white">Projet non trouvé.</div>;
+
+  return (
+    <div className="pt-40 pb-20 px-6 min-h-screen text-white bg-primary-dark">
+      <div className="max-w-7xl mx-auto">
+        <Link to="/portfolio" className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors mb-12 group no-underline uppercase text-xs font-bold tracking-widest">
+          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white transition-colors">
+            <X size={14} className="rotate-45" />
+          </div>
+          Retour au Portfolio
+        </Link>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-24">
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
+            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm font-bold uppercase tracking-[0.3em] mb-4 block" style={{ color: project.color }}>{project.category}</motion.span>
+            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase">{project.title}</h1>
+            
+            <div className="space-y-12 mt-16">
+              <section>
+                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Le Challenge</h2>
+                <p className="text-2xl text-white/80 leading-relaxed font-light">{project.challenge}</p>
+              </section>
+              <section>
+                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">La Solution</h2>
+                <p className="text-xl text-slate-400 leading-relaxed font-light">{project.solution}</p>
+              </section>
+              <section>
+                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Technologies</h2>
+                <div className="flex flex-wrap gap-3">
+                  {project.techs.map((tech, i) => (
+                    <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm font-medium">{tech}</span>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="sticky top-40">
+            <div className="relative aspect-[4/5] rounded-[60px] overflow-hidden border border-white/10 group shadow-2xl">
+              <img src={project.image} className="w-full h-full object-cover" alt={project.title} />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
+            </div>
+          </motion.div>
+        </div>
+
+        <section className="py-24 border-t border-white/5">
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {project.detailImages?.map((img, i) => (
+                <div key={i} className="aspect-video rounded-[40px] bg-white/5 overflow-hidden border border-white/10">
+                   <img src={img} className="w-full h-full object-cover opacity-50 hover:opacity-100 transition-opacity duration-700" alt={`Detail ${i + 1}`} />
+                </div>
+              ))}
+           </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+const ContactPage = () => {
+  useEffect(() => window.scrollTo(0, 0), []);
+  const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.location.href = `mailto:contact@madadev972.com?subject=${formState.subject}&body=De: ${formState.name} (${formState.email})%0D%0A%0D%0A${formState.message}`;
+  };
+
+  return (
+    <div className="pt-40 pb-20 px-6 min-h-screen text-white bg-primary-dark overflow-hidden relative">
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
+            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block">Contact</span>
+            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase">
+              PARLONS DE VOTRE <br/><span className="text-gradient">PROCHAIN PROJET</span>
+            </h1>
+            <p className="text-xl text-slate-400 leading-relaxed mb-12 max-w-lg font-light">
+              Que vous ayez une idée précise ou simplement une vision, nous sommes là pour transformer vos ambitions en réalité digitale.
+            </p>
+
+            <div className="space-y-8 mb-12">
+              <div className="flex items-center gap-6 group">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-blue-accent transition-colors">
+                  <Mail className="text-blue-accent" size={24} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Email Professionnel</div>
+                  <div className="text-xl font-medium">contact@madadev972.com</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 group">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-emerald-accent transition-colors">
+                  <Globe className="text-emerald-accent" size={24} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Localisation</div>
+                  <div className="text-xl font-medium">Martinique, Antilles Françaises</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              {[
+                { icon: Linkedin, href: "#", color: "hover:text-blue-400" },
+                { icon: Instagram, href: "#", color: "hover:text-pink-400" },
+                { icon: Twitter, href: "#", color: "hover:text-sky-400" },
+                { icon: Github, href: "#", color: "hover:text-slate-400" }
+              ].map((social, i) => (
+                <a key={i} href={social.href} className={`w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-all hover:bg-white/10 ${social.color}`}>
+                  <social.icon size={20} />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-white/5 border border-white/10 rounded-[40px] p-8 md:p-12 backdrop-blur-xl"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Nom Complet</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="John Doe"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-white"
+                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Email</label>
+                  <input 
+                    type="email" 
+                    required
+                    placeholder="john@example.com"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-white"
+                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Sujet</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Projet de Développement Web"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-white"
+                  onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Votre Message</label>
+                <textarea 
+                  rows={5}
+                  required
+                  placeholder="Dites-nous en plus sur vos besoins..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors resize-none text-white"
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                />
+              </div>
+              <button 
+                type="submit" 
+                className="w-full py-6 bg-white text-black font-black text-xl rounded-2xl hover:bg-blue-accent transition-all flex items-center justify-center gap-3 group cursor-pointer"
+              >
+                ENVOYER LE MESSAGE
+                <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- APP WRAPPER ---
 
 declare global {
@@ -585,10 +867,12 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/portfolio/:id" element={<ProjectDetailPage />} />
           <Route path="/agence" element={<AgencyPage />} />
           <Route path="/expertise/web" element={<WebExpertise />} />
           <Route path="/expertise/design" element={<DesignExpertise />} />
           <Route path="/expertise/mobile" element={<MobileExpertise />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
         <footer className="py-20 px-12 border-t border-white/5 bg-primary-dark text-white relative z-10">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-white">
