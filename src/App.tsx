@@ -183,26 +183,63 @@ const TechStackScroll = () => {
     });
   }, [scrollYProgress, activeIndex, techs.length]);
 
+  const scrollToIndex = (index: number) => {
+    if (!targetRef.current) return;
+    const sectionTop = targetRef.current.offsetTop;
+    const sectionHeight = targetRef.current.offsetHeight;
+    const windowHeight = window.innerHeight;
+    
+    const targetProgress = (index + 0.5) / techs.length;
+    const targetScroll = sectionTop + targetProgress * (sectionHeight - windowHeight);
+    
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  };
+
   return (
-    <section ref={targetRef} className="relative h-[250vh] bg-black text-white">
+    <section ref={targetRef} className="relative h-[300vh] bg-black text-white">
       <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden text-white">
         <div className="absolute inset-0 z-0 text-white">
           <AnimatePresence mode="wait">
-            <motion.div key={activeIndex} initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 0.4, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.5 }} className="absolute inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${techs[activeIndex].img})` }} />
+            <motion.div 
+              key={activeIndex} 
+              initial={{ opacity: 0, scale: 1.1 }} 
+              animate={{ opacity: 0.8, scale: 1 }} 
+              exit={{ opacity: 0, scale: 0.95 }} 
+              transition={{ duration: 0.8 }} 
+              className="absolute inset-0 w-full h-full bg-cover bg-center" 
+              style={{ 
+                backgroundImage: `url(${techs[activeIndex].img})`,
+                WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)',
+                maskImage: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)'
+              }} 
+            />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent text-white" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent text-white" />
         </div>
-        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-2 gap-20 relative z-10 text-white">
-          <div className="text-white">
+        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative z-10 text-white">
+          <div className="lg:col-span-4 text-white">
             <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-white">Notre Stack Tech</span>
-            <h2 className="text-5xl md:text-8xl font-display font-black leading-none text-white uppercase">LA PUISSANCE <br/><span className="text-gradient text-white">SANS LIMITES.</span></h2>
-            <p className="text-xl text-slate-400 mt-8 max-w-md font-light leading-relaxed text-white">Nous utilisons les outils les plus performants du marché pour transformer vos idées en produits d'exception.</p>
+            <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-white uppercase">LA PUISSANCE <br/><span className="text-gradient text-white">SANS LIMITES.</span></h2>
+            <p className="text-lg text-slate-400 mt-6 max-w-sm font-light leading-relaxed text-white">Nous utilisons les outils les plus performants du marché pour transformer vos idées en produits d'exception.</p>
           </div>
-          <div className="flex flex-col gap-12 justify-center text-white">
+          <div className="lg:col-span-8 flex flex-col gap-16 justify-center text-white">
             {techs.map((tech, i) => (
-              <motion.div key={tech.name} animate={{ opacity: activeIndex === i ? 1 : 0.2, x: activeIndex === i ? 0 : -20, scale: activeIndex === i ? 1.1 : 0.9 }} transition={{ duration: 0.3 }} className="text-white">
-                <h3 className="text-4xl md:text-6xl font-display font-black text-white uppercase mb-2">{tech.name}</h3>
-                <p className={`text-blue-accent font-bold transition-all duration-500 ${activeIndex === i ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>{tech.desc}</p>
+              <motion.div 
+                key={tech.name} 
+                animate={{ 
+                  opacity: activeIndex === i ? 1 : 0.2, 
+                  x: activeIndex === i ? 0 : -20, 
+                  scale: activeIndex === i ? 1.1 : 0.9 
+                }} 
+                transition={{ duration: 0.4 }} 
+                className="text-white cursor-pointer group/item"
+                onClick={() => scrollToIndex(i)}
+              >
+                <h3 className={`text-5xl md:text-7xl font-display font-black text-white uppercase mb-2 transition-colors ${activeIndex === i ? 'text-white' : 'group-hover/item:text-white/60'}`}>{tech.name}</h3>
+                <p className={`text-blue-accent text-xl font-bold transition-all duration-500 ${activeIndex === i ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>{tech.desc}</p>
               </motion.div>
             ))}
           </div>
