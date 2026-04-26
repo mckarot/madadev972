@@ -170,12 +170,11 @@ const PersistentRobot = () => {
     <motion.div
       initial={false}
       animate={isFloating ? {
-        top: '100px',
-        right: '40px',
-        left: 'auto',
-        width: '200px',
-        height: '200px',
-        borderRadius: '40px',
+        top: 100,
+        left: window.innerWidth - 200 - 40,
+        width: 200,
+        height: 200,
+        borderRadius: 40,
         boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
         background: 'rgba(255,255,255,0.05)',
         backdropFilter: 'blur(10px)',
@@ -184,11 +183,11 @@ const PersistentRobot = () => {
         opacity: 1,
         scale: 1,
       } : {
-        top: `${heroRect?.top ?? 0}px`,
-        left: `${heroRect?.left ?? 0}px`,
-        width: `${heroRect?.width ?? 0}px`,
-        height: `${heroRect?.height ?? 0}px`,
-        borderRadius: '100px',
+        top: heroRect?.top ?? 0,
+        left: heroRect?.left ?? 0,
+        width: heroRect?.width ?? 0,
+        height: heroRect?.height ?? 0,
+        borderRadius: 100,
         boxShadow: '0 0px 0px rgba(0,0,0,0)',
         background: 'rgba(255,255,255,0)',
         backdropFilter: 'blur(0px)',
@@ -197,7 +196,7 @@ const PersistentRobot = () => {
         opacity: 1,
         scale: 1,
       }}
-      transition={{ type: 'spring', damping: 25, stiffness: 120 }}
+      transition={{ type: 'spring', damping: 20, stiffness: 80, mass: 1 }}
       className="fixed pointer-events-auto overflow-hidden group"
       style={{
         WebkitMaskImage: isFloating ? 'none' : 'radial-gradient(circle, black 60%, transparent 100%)',
