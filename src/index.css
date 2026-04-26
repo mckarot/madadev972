@@ -15,12 +15,12 @@
 @layer base {
   /* On force le curseur sur absolument tout */
   *, *::before, *::after {
-    cursor: url('/custom-cursor.png') 12 12, auto !important;
+    cursor: url('/custom-cursor.png') 0 0, auto !important;
   }
   
   /* On cible spécifiquement les éléments qui forcent habituellement la 'main' */
   a, button, [role="button"], input, select, textarea, .cursor-pointer {
-    cursor: url('/custom-cursor.png') 12 12, pointer !important;
+    cursor: url('/custom-cursor.png') 0 0, pointer !important;
   }
 }
 
