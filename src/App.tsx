@@ -151,6 +151,19 @@ const RobotIntro = () => {
     const handleLoad = () => {
       setIsLoaded(true);
       const spline = viewer.spline;
+      
+      // Tentative de masquer le logo "Built with Spline"
+      try {
+        const logo = viewer.shadowRoot?.querySelector('#logo');
+        if (logo) logo.style.display = 'none';
+        
+        // Autre sélecteur possible pour les versions récentes
+        const watermark = viewer.shadowRoot?.querySelector('a[href*="spline.design"]');
+        if (watermark) watermark.style.display = 'none';
+      } catch (e) {
+        console.warn("Impossible de masquer le logo Spline");
+      }
+
       if (!spline) return;
 
       const allObjects = spline.getAllObjects();
@@ -202,21 +215,26 @@ const RobotIntro = () => {
             Bienvenue dans le futur
           </motion.span>
           <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">
-            L'IA AU SERVICE DE <span className="text-gradient">VOTRE VISION</span>
+            NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient">VOTRE VISION</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed">
             Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.
           </p>
         </motion.div>
 
-        {/* Robot à droite */}
-        <div className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10">
+        {/* Robot à droite avec animation d'entrée */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+          animate={isLoaded ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}}
+          transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+          className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10"
+        >
           <spline-viewer 
             ref={viewerRef}
             url="/robot_landing.splinecode" 
             style={{ width: '100%', height: '100%' }}
           />
-        </div>
+        </motion.div>
       </div>
 
       {!isLoaded && (
