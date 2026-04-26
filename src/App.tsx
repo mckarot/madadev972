@@ -43,16 +43,17 @@ const Navbar = () => {
       isScrolled ? 'py-4 glass-morphism' : 'py-8 bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-12 flex justify-between items-center">
-        <motion.div 
+        <motion.a 
+          href="/"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 group cursor-pointer"
         >
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center font-display font-bold text-white text-lg">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center font-display font-bold text-white text-lg group-hover:scale-110 transition-transform">
             M
           </div>
           <span className="font-display font-bold text-xl tracking-tight uppercase">MADADEV<span className="text-blue-accent">972</span></span>
-        </motion.div>
+        </motion.a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -148,26 +149,32 @@ const RobotIntro = () => {
     const viewer = viewerRef.current;
     if (!viewer) return;
 
+    let logoInterval: any;
+
     const handleLoad = () => {
       setIsLoaded(true);
-      const spline = viewer.spline;
       
-      // Tentative de masquer le logo "Built with Spline"
-      try {
-        const logo = viewer.shadowRoot?.querySelector('#logo');
-        if (logo) logo.style.display = 'none';
-        
-        // Autre sélecteur possible pour les versions récentes
-        const watermark = viewer.shadowRoot?.querySelector('a[href*="spline.design"]');
-        if (watermark) watermark.style.display = 'none';
-      } catch (e) {
-        console.warn("Impossible de masquer le logo Spline");
-      }
+      const hideLogo = () => {
+        const shadow = viewer.shadowRoot;
+        if (shadow) {
+          const logo = shadow.querySelector('#logo') || 
+                       shadow.querySelector('a[href*="spline.design"]') ||
+                       shadow.querySelector('.spline-watermark');
+          if (logo) {
+            (logo as HTMLElement).style.display = 'none';
+            (logo as HTMLElement).style.opacity = '0';
+            (logo as HTMLElement).style.pointerEvents = 'none';
+          }
+        }
+      };
 
+      hideLogo();
+      logoInterval = setInterval(hideLogo, 500);
+
+      const spline = viewer.spline;
       if (!spline) return;
 
       const allObjects = spline.getAllObjects();
-      
       const targets = allObjects.map((obj: any) => ({
         obj: obj,
         initialY: obj.position.y,
@@ -192,7 +199,10 @@ const RobotIntro = () => {
     };
 
     viewer.addEventListener('load-complete', handleLoad);
-    return () => viewer.removeEventListener('load-complete', handleLoad);
+    return () => {
+      viewer.removeEventListener('load-complete', handleLoad);
+      if (logoInterval) clearInterval(logoInterval);
+    };
   }, []);
 
   return (
@@ -222,13 +232,19 @@ const RobotIntro = () => {
           </p>
         </motion.div>
 
-        {/* Robot à droite avec animation d'entrée */}
+        {/* Robot à droite avec bords arrondis et fondu doux */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
           animate={isLoaded ? { opacity: 1, scale: 1, filter: 'blur(0px)' } : {}}
           transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-          className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10"
+          className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10 overflow-hidden rounded-[60px]"
+          style={{
+            // Cet effet de masque crée un fondu doux sur les bords
+            WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
+            maskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
+          }}
         >
+          <div className="absolute inset-0 bg-blue-500/5 rounded-[60px] border border-white/5" />
           <spline-viewer 
             ref={viewerRef}
             url="/robot_landing.splinecode" 
