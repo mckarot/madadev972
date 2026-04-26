@@ -22,7 +22,6 @@ import {
   Layout,
   Cpu,
   Layers,
-  SmartphoneNfc,
   CheckCircle2,
   Coffee
 } from 'lucide-react';
@@ -55,7 +54,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-8 text-white">
           {navLinks.map((link, idx) => (
             <motion.div key={link.name} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-              <Link to={link.href} className="text-slate-400 hover:text-white font-medium transition-colors relative group text-sm no-underline">{link.name}</Link>
+              <Link to={link.href} className="text-slate-400 hover:text-white font-medium transition-colors relative group text-sm no-underline text-white">{link.name}</Link>
             </motion.div>
           ))}
           <div className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-sm font-medium cursor-pointer hover:bg-white/10 transition-all">Contactez-nous</div>
@@ -65,7 +64,7 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary-dark border-b border-white/10">
-            <div className="flex flex-col gap-4 p-8">
+            <div className="flex flex-col gap-4 p-8 text-white">
               {navLinks.map((link) => (
                 <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="text-xl font-display font-bold text-white hover:text-blue-accent no-underline">{link.name}</Link>
               ))}
@@ -78,11 +77,11 @@ const Navbar = () => {
 };
 
 const ServiceCard = ({ title, description, delay, accentColor = "blue", href = "#" }: any) => (
-  <Link to={href} className="block no-underline h-full">
-    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.8 }} viewport={{ once: true }} className="p-6 bg-white/5 rounded-2xl border border-white/5 group hover:border-white/20 transition-all backdrop-blur-sm cursor-pointer h-full">
+  <Link to={href} className="block no-underline h-full text-white">
+    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.8 }} viewport={{ once: true }} className="p-6 bg-white/5 rounded-2xl border border-white/5 group hover:border-white/20 transition-all backdrop-blur-sm cursor-pointer h-full text-white">
       <div className={`text-xs font-bold mb-2 uppercase tracking-wider ${accentColor === 'blue' ? 'text-blue-accent' : accentColor === 'emerald' ? 'text-emerald-accent' : 'text-indigo-accent'}`}>{title}</div>
       <div className="text-xl font-semibold mb-3 leading-snug text-white">{description}</div>
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all text-xs font-bold tracking-widest text-slate-500 uppercase">En savoir plus <ArrowRight size={14} /></div>
+      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all text-xs font-bold tracking-widest text-slate-500 uppercase text-white">En savoir plus <ArrowRight size={14} /></div>
     </motion.div>
   </Link>
 );
@@ -140,158 +139,215 @@ const RobotIntro = () => {
   return (
     <section className="relative w-full h-screen bg-primary-dark flex items-center justify-center overflow-hidden px-12 lg:px-24">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="z-20 relative pointer-events-none">
+        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="z-20 relative pointer-events-none text-white">
           <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Bienvenue dans le futur</motion.span>
-          <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient">VOTRE VISION</span></h2>
+          <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient text-white">VOTRE VISION</span></h2>
           <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed text-white">Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }} animate={isLoaded ? { opacity: 1, scale: 1, filter: 'blur(0px) hue-rotate(-45deg) saturate(0.9) brightness(1.05)' } : {}} transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }} className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10 overflow-hidden rounded-[100px]" style={{ WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)', maskImage: 'radial-gradient(circle, black 60%, transparent 100%)' }}>
-          <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-white/5" />
+          <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-white/5 text-white" />
           <SplineElement ref={viewerRef} url="/robot_landing.splinecode" style={{ width: '100%', height: '100%' }} />
         </motion.div>
       </div>
-      {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-primary-dark z-30"><div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" /></div>}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 animate-bounce z-20 pointer-events-none"><ChevronDown size={32} /></div>
+      {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-primary-dark z-30 text-white"><div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin text-white" /></div>}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 animate-bounce z-20 pointer-events-none text-white"><ChevronDown size={32} /></div>
     </section>
   );
 };
 
 const SectionHeading = ({ children, subtitle, align = 'center' }: any) => (
   <div className={`max-w-4xl mb-20 ${align === 'center' ? 'mx-auto text-center' : ''}`}>
-    <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-accent-teal font-display font-bold tracking-widest uppercase mb-4 block">{subtitle}</motion.span>
-    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="font-display font-black text-4xl md:text-6xl text-white">{children}</motion.h2>
+    <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-accent-teal font-display font-bold tracking-widest uppercase mb-4 block text-white">{subtitle}</motion.span>
+    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="font-display font-black text-4xl md:text-6xl text-white uppercase">{children}</motion.h2>
   </div>
 );
 
+// --- SECTION TECH STACK SCROLL (Inspiré de Weave) ---
+
+const TechStackScroll = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start start", "end end"] });
+  const techs = [
+    { name: "Flutter", desc: "Performance native multi-plateforme iOS & Android.", img: "https://images.unsplash.com/photo-1628277613967-6abca504d0ac?q=80&w=2000" },
+    { name: "React & Next.js", desc: "Architectures Web modernes et SEO-friendly.", img: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2000" },
+    { name: "Node.js", desc: "Backends scalables et temps réel ultra-rapides.", img: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2000" },
+    { name: "Kubernetes", desc: "Orchestration cloud et haute disponibilité.", img: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=2000" },
+    { name: "Spline 3D", desc: "Expériences immersives et animations interactives.", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2000" },
+  ];
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  useEffect(() => {
+    return scrollYProgress.onChange(v => {
+      const index = Math.min(Math.floor(v * techs.length), techs.length - 1);
+      if (index !== activeIndex) setActiveIndex(index);
+    });
+  }, [scrollYProgress, activeIndex, techs.length]);
+
+  return (
+    <section ref={targetRef} className="relative h-[250vh] bg-black text-white">
+      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden text-white">
+        <div className="absolute inset-0 z-0 text-white">
+          <AnimatePresence mode="wait">
+            <motion.div key={activeIndex} initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 0.4, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.5 }} className="absolute inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${techs[activeIndex].img})` }} />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent text-white" />
+        </div>
+        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-2 gap-20 relative z-10 text-white">
+          <div className="text-white">
+            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-white">Notre Stack Tech</span>
+            <h2 className="text-5xl md:text-8xl font-display font-black leading-none text-white uppercase">LA PUISSANCE <br/><span className="text-gradient text-white">SANS LIMITES.</span></h2>
+            <p className="text-xl text-slate-400 mt-8 max-w-md font-light leading-relaxed text-white">Nous utilisons les outils les plus performants du marché pour transformer vos idées en produits d'exception.</p>
+          </div>
+          <div className="flex flex-col gap-12 justify-center text-white">
+            {techs.map((tech, i) => (
+              <motion.div key={tech.name} animate={{ opacity: activeIndex === i ? 1 : 0.2, x: activeIndex === i ? 0 : -20, scale: activeIndex === i ? 1.1 : 0.9 }} transition={{ duration: 0.3 }} className="text-white">
+                <h3 className="text-4xl md:text-6xl font-display font-black text-white uppercase mb-2">{tech.name}</h3>
+                <p className={`text-blue-accent font-bold transition-all duration-500 ${activeIndex === i ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>{tech.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // --- PAGES PRINCIPALES ---
 
-const Home = () => (
-  <>
-    <RobotIntro />
-    <section className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12 bg-primary-dark">
-      <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px]" />
-      <div className="absolute bottom-[-200px] left-[-200px] w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px]" />
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-12 gap-8 items-center relative z-20">
-        <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7 py-8 text-white">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-accent text-xs font-bold uppercase tracking-widest mb-8">
-            <span className="w-2 h-2 rounded-full bg-blue-accent animate-pulse"></span>Basé en Martinique • Antilles
+const Home = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
+  return (
+    <>
+      <RobotIntro />
+      <section ref={targetRef} className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12 bg-primary-dark text-white">
+        <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] text-white" />
+        <div className="absolute bottom-[-200px] left-[-200px] w-[600px] h-[600px] bg-emerald-600/10 rounded-full blur-[120px] text-white" />
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-12 gap-8 items-center relative z-20 text-white">
+          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7 py-8 text-white">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-accent text-xs font-bold uppercase tracking-widest mb-8 text-white">
+              <span className="w-2 h-2 rounded-full bg-blue-accent animate-pulse text-white"></span>Basé en Martinique • Antilles
+            </div>
+            <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 uppercase text-white">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block text-white">DIGITALE</span></h1>
+            <p className="text-lg text-slate-400 max-w-lg mb-10 leading-relaxed font-light text-white">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
+            <div className="flex gap-4 text-white">
+              <button className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105 cursor-pointer">Démarrer un projet</button>
+              <Link to="/portfolio" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-white no-underline cursor-pointer">Voir le portfolio</Link>
+            </div>
+          </motion.div>
+          <div className="col-span-12 lg:col-span-5 relative hidden lg:block text-white">
+            <div className="bg-gradient-to-tr from-blue-500/10 to-transparent border border-white/10 rounded-3xl backdrop-blur-sm p-8 flex flex-col justify-between min-h-[550px] h-full text-white">
+              <div className="space-y-4 text-white">
+                <ServiceCard title="DÉVELOPPEMENT WEB" description="Architectures Cloud Scalables" delay={0.2} accentColor="blue" href="/expertise/web" />
+                <ServiceCard title="UX / UI DESIGN" description="Interfaces Ultra-Fluides" delay={0.3} accentColor="emerald" href="/expertise/design" />
+                <ServiceCard title="MOBILE NATIVE" description="iOS & Android Flutter Performance" delay={0.4} accentColor="indigo" href="/expertise/mobile" />
+              </div>
+              <div className="mt-8 flex items-end justify-between text-white">
+                <div className="text-white"><div className="text-4xl font-bold font-display tracking-tight text-white">150+</div><div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold text-white">Projets Livrés</div></div>
+                <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all text-white"><ArrowRight size={20} className="text-white"/></Link>
+              </div>
+            </div>
           </div>
-          <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 uppercase text-white">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block">DIGITALE</span></h1>
-          <p className="text-lg text-slate-400 max-w-lg mb-10 leading-relaxed font-light text-white">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
-          <div className="flex gap-4">
-            <button className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105 cursor-pointer">Démarrer un projet</button>
-            <Link to="/portfolio" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-white no-underline cursor-pointer">Voir le portfolio</Link>
+        </div>
+      </section>
+
+      {/* Section Engagement Local */}
+      <section className="py-32 px-6 bg-blue-600/5 relative overflow-hidden text-white bg-primary-dark">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] -z-10 rounded-full text-white" />
+        <div className="max-w-7xl mx-auto text-white">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center text-white">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="order-2 lg:order-1 text-white">
+              <div className="grid grid-cols-2 gap-4 text-white">
+                {[
+                  { icon: Coffee, label: "Restaurants", color: "text-emerald-accent" },
+                  { icon: Zap, label: "Coachs Sportifs", color: "text-blue-accent" },
+                  { icon: Palette, label: "Artisans", color: "text-indigo-accent" },
+                  { icon: Globe, label: "TPE & PME", color: "text-white" }
+                ].map((item, i) => (
+                  <div key={i} className="p-6 bg-white/5 rounded-3xl border border-white/10 flex flex-col items-center gap-3 text-center transition-all hover:bg-white/10 text-white">
+                    <item.icon size={32} className={item.color} />
+                    <span className="text-xs font-bold uppercase tracking-widest text-slate-400 text-white">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="order-1 lg:order-2 text-white">
+              <SectionHeading subtitle="Notre Engagement" align="left">Réduire la fracture <br/><span className="text-gradient text-white">numérique local</span>.</SectionHeading>
+              <p className="text-xl text-slate-300 leading-relaxed mb-6 font-light text-white">Nous sommes engagés dans le développement numérique de la Martinique afin de pallier le retard technologique local. Notre ambition : offrir des solutions premium au juste prix.</p>
+              <div className="p-8 bg-blue-500/5 rounded-3xl border-l-4 border-blue-accent mb-8 text-white">
+                <p className="text-lg text-white leading-relaxed italic">"Nous dynamisons l'activité des restaurateurs, artisans et coachs sportifs via des outils de pointe accessibles aux petites et moyennes entreprises."</p>
+              </div>
+              <div className="flex items-center gap-4 text-emerald-accent font-bold tracking-widest text-xs uppercase text-white"><CheckCircle2 size={18} /> Excellence Technique • Rapport Qualité/Prix Garanti</div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <TechStackScroll />
+
+      {/* Section Expertises Secondaires */}
+      <section id="services" className="py-32 px-6 relative overflow-hidden bg-primary-dark text-white">
+        <div className="max-w-7xl mx-auto text-white">
+          <SectionHeading subtitle="Nos Expertises">Des services <span className="text-gradient text-white">haut de gamme</span> pour votre croissance.</SectionHeading>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
+            <ServiceCard title="Performance & SEO" description="Optimisation technique pointue pour des temps de chargement records." delay={0.1} />
+            <ServiceCard title="Sécurité Cloud" description="Architectures serveurs sécurisées et scalables pour vos données." delay={0.2} />
+            <ServiceCard title="Stratégie Digitale" description="Accompagnement de A à Z pour transformer votre vision." delay={0.3} />
+          </div>
+        </div>
+      </section>
+
+      {/* Section Portfolio Teaser */}
+      <section className="py-32 px-6 bg-white/5 text-white">
+        <div className="max-w-7xl mx-auto text-white">
+          <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient text-white">en action</span>.</SectionHeading>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 text-white">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
+               <img src="https://images.unsplash.com/photo-1498050100021-c5249f4df085?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 text-white" alt="Work" />
+               <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
+               <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Projet Signature</h3></div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
+               <img src="https://images.unsplash.com/photo-1460761263504-24251fb74291?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 text-white" alt="Work" />
+               <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
+               <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Innovation Mobile</h3></div>
+            </motion.div>
+          </div>
+          <div className="text-center text-white">
+            <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20} className="text-white"/></Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Section Agence Teaser */}
+      <section id="about" className="py-32 px-6 relative overflow-hidden bg-primary-dark text-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center text-white">
+          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} className="text-white">
+            <SectionHeading subtitle="L'Agence" align="left">Le talent local, <br /><span className="text-gradient text-white">L'engagement global</span>.</SectionHeading>
+            <p className="text-xl text-white/70 leading-relaxed mb-8 text-white">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
+            <Link to="/agence" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all text-white inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
+          </motion.div>
+          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 flex items-center justify-center text-white">
+              <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] origin-center -scale-x-100 opacity-80 text-white" alt="Madadev Agency" />
+          </div>
+        </div>
+      </section>
+
+      {/* Section Contact CTA */}
+      <section className="py-40 px-6 bg-primary-dark text-white">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl mx-auto rounded-[60px] bg-white/5 p-20 text-center relative border border-white/10 overflow-hidden text-white">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-emerald-500/10 z-0 text-white" />
+          <div className="relative z-10 text-white">
+            <h2 className="font-display font-black text-5xl md:text-8xl mb-8 uppercase tracking-tighter text-white">PRÊT À <span className="text-gradient text-white">BRILLER ?</span></h2>
+            <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12 text-white">Votre projet mérite une exécution exceptionnelle. Discutons de vos ambitions dès aujourd'hui.</p>
+            <button className="px-16 py-8 bg-white text-black font-black text-2xl rounded-full hover:bg-blue-accent transition-all hover:scale-105 shadow-2xl cursor-pointer">CONTACTER L'AGENCE</button>
           </div>
         </motion.div>
-        <div className="col-span-12 lg:col-span-5 relative hidden lg:block">
-          <div className="bg-gradient-to-tr from-blue-500/10 to-transparent border border-white/10 rounded-3xl backdrop-blur-sm p-8 flex flex-col justify-between min-h-[550px] h-full">
-            <div className="space-y-4">
-              <ServiceCard title="DÉVELOPPEMENT WEB" description="Architectures Cloud Scalables" delay={0.2} accentColor="blue" href="/expertise/web" />
-              <ServiceCard title="UX / UI DESIGN" description="Interfaces Ultra-Fluides" delay={0.3} accentColor="emerald" href="/expertise/design" />
-              <ServiceCard title="MOBILE NATIVE" description="iOS & Android Flutter Performance" delay={0.4} accentColor="indigo" href="/expertise/mobile" />
-            </div>
-            <div className="mt-8 flex items-end justify-between text-white">
-              <div><div className="text-4xl font-bold font-display tracking-tight text-white">+150</div><div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold text-white">Projets Livrés</div></div>
-              <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all"><ArrowRight size={20} /></Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
+  );
+};
 
-    {/* Section Engagement Local */}
-    <section className="py-32 px-6 bg-blue-600/5 relative overflow-hidden text-white">
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/10 blur-[120px] -z-10 rounded-full" />
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="order-2 lg:order-1">
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { icon: Coffee, label: "Restaurants", color: "text-emerald-accent" },
-                { icon: Zap, label: "Coachs Sportifs", color: "text-blue-accent" },
-                { icon: Palette, label: "Artisans", color: "text-indigo-accent" },
-                { icon: Globe, label: "TPE & PME", color: "text-white" }
-              ].map((item, i) => (
-                <div key={i} className="p-6 bg-white/5 rounded-3xl border border-white/10 flex flex-col items-center gap-3 text-center transition-all hover:bg-white/10">
-                  <item.icon size={32} className={item.color} />
-                  <span className="text-xs font-bold uppercase tracking-widest text-slate-400">{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="order-1 lg:order-2">
-            <SectionHeading subtitle="Notre Engagement" align="left">Réduire la fracture <br/><span className="text-gradient">numérique local</span>.</SectionHeading>
-            <p className="text-xl text-slate-300 leading-relaxed mb-6 font-light text-white">Nous sommes engagés dans le développement numérique de la Martinique afin de pallier le retard technologique local. Notre ambition : offrir des solutions premium au juste prix.</p>
-            <div className="p-8 bg-blue-500/5 rounded-3xl border-l-4 border-blue-accent mb-8">
-              <p className="text-lg text-white leading-relaxed italic">"Nous dynamisons l'activité des restaurateurs, artisans et coachs sportifs via des outils de pointe accessibles aux petites et moyennes entreprises."</p>
-            </div>
-            <div className="flex items-center gap-4 text-emerald-accent font-bold tracking-widest text-xs uppercase"><CheckCircle2 size={18} /> Excellence Technique • Rapport Qualité/Prix Garanti</div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-
-    {/* Section Services Secondaires */}
-    <section id="services" className="py-32 px-6 relative overflow-hidden bg-primary-dark">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeading subtitle="Nos Expertises">Des services <span className="text-gradient">haut de gamme</span> pour votre croissance.</SectionHeading>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
-          <ServiceCard title="Performance & SEO" description="Optimisation technique pointue pour des temps de chargement records." delay={0.1} />
-          <ServiceCard title="Sécurité Cloud" description="Architectures serveurs sécurisées et scalables pour vos données." delay={0.2} />
-          <ServiceCard title="Stratégie Digitale" description="Accompagnement de A à Z pour transformer votre vision." delay={0.3} />
-        </div>
-      </div>
-    </section>
-
-    {/* Section Portfolio Teaser */}
-    <section className="py-32 px-6 bg-white/5">
-      <div className="max-w-7xl mx-auto text-white">
-        <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient">en action</span>.</SectionHeading>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 text-white">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10">
-             <img src="https://images.unsplash.com/photo-1498050100021-c5249f4df085?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work" />
-             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all" />
-             <div className="absolute bottom-0 p-10"><h3 className="text-3xl font-display font-black uppercase text-white">Projet Signature</h3></div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10">
-             <img src="https://images.unsplash.com/photo-1460761263504-24251fb74291?q=80&w=2070" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Work" />
-             <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all" />
-             <div className="absolute bottom-0 p-10"><h3 className="text-3xl font-display font-black uppercase text-white">Innovation Mobile</h3></div>
-          </motion.div>
-        </div>
-        <div className="text-center">
-          <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20}/></Link>
-        </div>
-      </div>
-    </section>
-
-    {/* Section Agence Teaser */}
-    <section id="about" className="py-32 px-6 relative overflow-hidden bg-primary-dark">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }}>
-          <SectionHeading subtitle="L'Agence" align="left">Le talent local, <br /><span className="text-gradient">L'engagement global</span>.</SectionHeading>
-          <p className="text-xl text-white/70 leading-relaxed mb-8 text-white">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
-          <Link to="/agence" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all text-white inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
-        </motion.div>
-        <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 flex items-center justify-center">
-            <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] origin-center -scale-x-100" alt="Madadev Agency" />
-        </div>
-      </div>
-    </section>
-
-    {/* Section Contact CTA */}
-    <section className="py-40 px-6 bg-primary-dark">
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl mx-auto rounded-[60px] bg-white/5 p-20 text-center relative border border-white/10 overflow-hidden text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-emerald-500/10 z-0" />
-        <div className="relative z-10 text-white">
-          <h2 className="font-display font-black text-5xl md:text-8xl mb-8 uppercase tracking-tighter text-white text-white">PRÊT À <span className="text-gradient">BRILLER ?</span></h2>
-          <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12 text-white">Votre projet mérite une exécution exceptionnelle. Discutons de vos ambitions dès aujourd'hui.</p>
-          <button className="px-16 py-8 bg-white text-black font-black text-2xl rounded-full hover:bg-blue-accent transition-all hover:scale-105 shadow-2xl cursor-pointer">CONTACTER L'AGENCE</button>
-        </div>
-      </motion.div>
-    </section>
-  </>
-);
+// --- PAGES EXPERTISES ---
 
 const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) => {
   useEffect(() => window.scrollTo(0, 0), []);
@@ -299,14 +355,14 @@ const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) 
     <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
       <div className="max-w-7xl mx-auto text-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24 text-white">
-          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-white">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-bold uppercase tracking-widest mb-8 text-white" style={{ color }}><Icon size={18} /> {subtitle}</div>
             <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">{title}</h1>
-            <div className="h-1 w-24 mb-8" style={{ backgroundColor: color }} />
+            <div className="h-1 w-24 mb-8 text-white" style={{ backgroundColor: color }} />
           </motion.div>
-          <div className="bg-white/5 rounded-[60px] aspect-video border border-white/10 flex items-center justify-center relative overflow-hidden">
-             <div className="absolute inset-0 opacity-20 blur-[100px]" style={{ backgroundColor: color }} />
-             <Icon size={120} className="relative z-10 opacity-50" style={{ color }} />
+          <div className="bg-white/5 rounded-[60px] aspect-video border border-white/10 flex items-center justify-center relative overflow-hidden text-white">
+             <div className="absolute inset-0 opacity-20 blur-[100px] text-white" style={{ backgroundColor: color }} />
+             <Icon size={120} className="relative z-10 opacity-50 text-white" style={{ color }} />
           </div>
         </div>
         {children}
@@ -316,14 +372,14 @@ const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) 
 };
 
 const WebExpertise = () => (
-  <ExpertiseLayout title={<>Web <br/><span className="text-gradient text-blue-accent">Architectures</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
+  <ExpertiseLayout title={<>Web <br/><span className="text-gradient text-white">Architectures</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
       <div className="space-y-8 text-white">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent">Architecture Cluster-Label</h2>
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent text-white">Architecture Cluster-Label</h2>
         <p className="text-xl text-slate-400 leading-relaxed font-light text-white">Bâtir des architectures robustes, basées sur des clusters scalables pour une disponibilité de 99.9%.</p>
         <ul className="space-y-4 text-white">
           {["Next.js & React Frontend", "Microservices Node.js", "Déploiement Docker & Kubernetes", "SEO Technique Pro"].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-300 text-white"><CheckCircle2 size={20} className="text-blue-accent"/> {item}</li>
+            <li key={i} className="flex items-center gap-3 text-slate-300 text-white"><CheckCircle2 size={20} className="text-blue-accent text-white"/> {item}</li>
           ))}
         </ul>
       </div>
@@ -332,10 +388,10 @@ const WebExpertise = () => (
 );
 
 const DesignExpertise = () => (
-  <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-emerald-accent">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
+  <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-white">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
       <div className="space-y-8 text-white">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent">L'Émotion par le Design</h2>
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent text-white">L'Émotion par le Design</h2>
         <p className="text-xl text-slate-400 leading-relaxed font-light text-white">Une interface fluide est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle.</p>
       </div>
     </div>
@@ -343,15 +399,17 @@ const DesignExpertise = () => (
 );
 
 const MobileExpertise = () => (
-  <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-indigo-accent">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
+  <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-white">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
       <div className="space-y-8 text-white">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent">Expertise Native Flutter</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light text-white text-white text-white">En tant que développeur Flutter, je conçois des applications avec une fluidité de 120Hz et un temps de développement optimisé.</p>
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent text-white">Expertise Native Flutter</h2>
+        <p className="text-xl text-slate-400 leading-relaxed font-light text-white">En tant que développeur Flutter, je conçois des applications avec une fluidité de 120Hz et un temps de développement optimisé.</p>
       </div>
     </div>
   </ExpertiseLayout>
 );
+
+// --- PAGES AUTRES ---
 
 const PortfolioPage = () => {
   const projects = [
@@ -366,21 +424,21 @@ const PortfolioPage = () => {
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
       <div className="max-w-7xl mx-auto text-white">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-white text-white">
-          <div><motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Nos Réalisations</motion.span>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-white">NOS PROJETS <br/><span className="text-gradient">SIGNATURE</span></motion.h1></div>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-white">
+          <div className="text-white"><motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Nos Réalisations</motion.span>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-white">NOS PROJETS <br/><span className="text-gradient text-white">SIGNATURE</span></motion.h1></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
           {projects.map((project, idx) => (
-            <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 cursor-pointer">
-              <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" alt={project.title} />
+            <motion.div key={project.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 cursor-pointer text-white">
+              <img src={project.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 text-white" alt={project.title} />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all text-white" />
               <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-white">
                 <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-white" style={{ color: project.color }}>{project.category}</span>
-                <h3 className="text-3xl font-display font-black text-white mb-6 leading-none">{project.title}</h3>
+                <h3 className="text-3xl font-display font-black text-white mb-6 leading-none uppercase">{project.title}</h3>
                 <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-white">
                   <span className="text-sm text-white/50 font-medium text-white">Découvrir l'étude de cas</span>
-                  <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all text-white"><Eye size={20} className="text-black"/></div>
+                  <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all text-white"><Eye size={20} className="text-black text-white"/></div>
                 </div>
               </div>
             </motion.div>
@@ -397,14 +455,14 @@ const AgencyPage = () => {
     <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
       <div className="max-w-7xl mx-auto text-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 text-white">
-          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-white">
             <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-white">L'Histoire Madadev</span>
-            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">L'ALLIANCE DU <br/><span className="text-gradient">CODE & DE L'ÎLE</span></h1>
-            <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-xl font-light text-white font-sans text-white text-white">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
+            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">L'ALLIANCE DU <br/><span className="text-gradient text-white">CODE & DE L'ÎLE</span></h1>
+            <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-xl font-light text-white font-sans">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
           </motion.div>
-          <div className="relative">
+          <div className="relative text-white">
              <div className="aspect-[4/5] rounded-[60px] overflow-hidden bg-black border border-white/10 shadow-2xl text-white">
-                <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] -scale-x-100 opacity-80" alt="Vision" />
+                <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] -scale-x-100 opacity-80 text-white" alt="Vision" />
              </div>
           </div>
         </div>
@@ -413,10 +471,20 @@ const AgencyPage = () => {
   );
 };
 
+// --- APP WRAPPER ---
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'spline-viewer': any;
+    }
+  }
+}
+
 export default function App() {
   return (
     <Router>
-      <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black min-h-screen">
+      <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black min-h-screen text-white">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -430,7 +498,7 @@ export default function App() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-white">
             <div className="max-w-sm text-white">
               <div className="flex items-center gap-2 mb-6 text-xl font-display font-bold uppercase tracking-tight text-white">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center">M</div>MADADEV<span className="text-blue-accent text-white">972</span>
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center text-white">M</div>MADADEV<span className="text-blue-accent text-white">972</span>
               </div>
               <p className="text-slate-500 mb-8 leading-relaxed text-sm text-white">L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.</p>
             </div>
