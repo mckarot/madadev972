@@ -346,6 +346,29 @@ const TechStackScroll = () => {
 
 const Home = () => {
   const targetRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [mouseX, setMouseX] = useState(0.5);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (carouselRef.current) {
+        setWidth(carouselRef.current.scrollWidth - window.innerWidth);
+      }
+    };
+    
+    const timer = setTimeout(handleResize, 1000);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const percent = e.clientX / window.innerWidth;
+    setMouseX(percent);
+  };
   return (
     <>
       <RobotIntro />
@@ -395,28 +418,41 @@ const Home = () => {
 
 
       {/* Section Portfolio Teaser */}
-      <section className="py-32 px-6 bg-white/5 text-white">
-        <div className="max-w-7xl mx-auto text-white">
+      <section className="py-32 bg-white/5 text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 text-white mb-16">
           <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient text-white">en action</span>.</SectionHeading>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 text-white">
-            <Link to="/portfolio/1" className="block no-underline text-white">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
-                 <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2000" className="w-full h-full object-cover grayscale-0 group-hover:grayscale transition-all duration-700 text-white" alt="Work" />
-                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
-                 <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Eco-Tropical Resort</h3></div>
+        </div>
+
+        <div 
+          onMouseMove={handleMouseMove}
+          className="mx-4 md:mx-10 rounded-[40px] md:rounded-[80px] overflow-hidden relative bg-white/5 border border-white/5"
+        >
+          <motion.div 
+            ref={carouselRef}
+            animate={{ x: -mouseX * width }}
+            transition={{ type: "spring", stiffness: 40, damping: 20, mass: 0.5 }}
+            className="flex gap-8 w-max px-12 py-10"
+          >
+            {PROJECTS.map((project) => (
+              <motion.div 
+                key={project.id} 
+                className="w-[300px] md:w-[600px] h-[400px] md:h-[600px] rounded-[40px] overflow-hidden border border-white/10 group relative flex-shrink-0"
+              >
+                <Link to={`/portfolio/${project.id}`} className="block h-full no-underline">
+                  <img src={project.image} className="w-full h-full object-cover grayscale-0 group-hover:grayscale transition-all duration-700" alt={project.title} />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
+                  <div className="absolute bottom-0 p-10">
+                    <span className="text-xs font-bold uppercase tracking-widest mb-2 block" style={{ color: project.color }}>{project.category}</span>
+                    <h3 className="text-3xl md:text-4xl font-display font-black uppercase text-white leading-none">{project.title}</h3>
+                  </div>
+                </Link>
               </motion.div>
-            </Link>
-            <Link to="/portfolio/2" className="block no-underline text-white">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="group relative h-[400px] rounded-[40px] overflow-hidden cursor-pointer border border-white/10 text-white">
-                 <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000" className="w-full h-full object-cover grayscale-0 group-hover:grayscale transition-all duration-700 text-white" alt="Work" />
-                 <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-all text-white" />
-                 <div className="absolute bottom-0 p-10 text-white"><h3 className="text-3xl font-display font-black uppercase text-white">Fintech Antilles</h3></div>
-              </motion.div>
-            </Link>
-          </div>
-          <div className="text-center text-white">
-            <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20} className="text-white"/></Link>
-          </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 mt-16 text-center text-white">
+          <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20} className="text-white"/></Link>
         </div>
       </section>
 
@@ -759,15 +795,20 @@ const ContactPage = () => {
                   <div className="text-xl font-medium">contact@madadev972.com</div>
                 </div>
               </div>
-              <div className="flex items-center gap-6 group">
+              <a 
+                href="https://www.google.com/maps/place/Martinique/@14.6415,-61.0242,11z" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-6 group no-underline text-white cursor-pointer"
+              >
                 <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-emerald-accent transition-colors">
                   <Globe className="text-emerald-accent" size={24} />
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Localisation</div>
-                  <div className="text-xl font-medium">Martinique, Antilles Françaises</div>
+                  <div className="text-xl font-medium group-hover:text-emerald-accent transition-colors">Martinique, Antilles Françaises</div>
                 </div>
-              </div>
+              </a>
             </div>
 
             <div className="flex gap-4">
