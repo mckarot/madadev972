@@ -183,23 +183,49 @@ const RobotIntro = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-screen bg-[#000000] flex items-center justify-center overflow-hidden">
-      {/* Conteneur réduit et centré */}
-      <div className="relative w-full max-w-5xl aspect-video md:aspect-square lg:h-[80vh] pointer-events-auto">
-        <spline-viewer 
-          ref={viewerRef}
-          url="/robot_landing.splinecode" 
-          style={{ width: '100%', height: '100%' }}
-        />
+    <section className="relative w-full h-screen bg-primary-dark flex items-center justify-center overflow-hidden px-12 lg:px-24">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        {/* Texte à gauche */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="z-20 relative pointer-events-none"
+        >
+          <motion.span 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block"
+          >
+            Bienvenue dans le futur
+          </motion.span>
+          <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">
+            L'IA AU SERVICE DE <span className="text-gradient">VOTRE VISION</span>
+          </h2>
+          <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed">
+            Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.
+          </p>
+        </motion.div>
+
+        {/* Robot à droite */}
+        <div className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-auto z-10">
+          <spline-viewer 
+            ref={viewerRef}
+            url="/robot_landing.splinecode" 
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
       </div>
 
       {!isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#000000] z-20">
-           <div className="text-white text-xl animate-pulse font-display tracking-widest">CHARGEMENT...</div>
+        <div className="absolute inset-0 flex items-center justify-center bg-primary-dark z-30">
+           <div className="w-12 h-12 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
         </div>
       )}
       
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 animate-bounce z-20 pointer-events-none">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 animate-bounce z-20 pointer-events-none">
         <ChevronDown size={32} />
       </div>
     </section>
