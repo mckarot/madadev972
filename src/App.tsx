@@ -173,9 +173,9 @@ const PersistentRobot = () => {
         top: '100px',
         right: '40px',
         left: 'auto',
-        width: '160px',
-        height: '160px',
-        borderRadius: '30px',
+        width: '200px',
+        height: '200px',
+        borderRadius: '40px',
         boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
         background: 'rgba(255,255,255,0.05)',
         backdropFilter: 'blur(10px)',
@@ -204,7 +204,20 @@ const PersistentRobot = () => {
         maskImage: isFloating ? 'none' : 'radial-gradient(circle, black 60%, transparent 100%)',
       }}
     >
-      <SplineElement ref={viewerRef} url="/robot_landing.splinecode" style={{ width: '100%', height: '100%' }} />
+      <SplineElement 
+        ref={viewerRef} 
+        url="/robot_landing.splinecode" 
+        style={{ 
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: isFloating ? '800px' : '100%', 
+          height: isFloating ? '800px' : '100%',
+          transform: isFloating ? 'translate(-50%, -50%) scale(0.25)' : 'translate(-50%, -50%) scale(1)',
+          transition: 'all 0.5s ease-in-out',
+          transformOrigin: 'center center'
+        }} 
+      />
       {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-primary-dark/20"><div className="w-8 h-8 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" /></div>}
       {isFloating && <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 transition-colors pointer-events-none" />}
     </motion.div>
