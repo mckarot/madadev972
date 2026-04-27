@@ -54,9 +54,9 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'py-4 bg-primary-dark/80 backdrop-blur-xl border-white/10' : 'py-8 bg-transparent border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-12 flex justify-between items-center text-white">
-        <Link to="/" className="flex items-center gap-2 group cursor-pointer text-white no-underline">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center font-display font-bold text-white text-lg group-hover:scale-110 transition-transform">M</div>
-          <span className="font-display font-bold text-xl tracking-tight uppercase text-white">MADADEV<span className="text-blue-accent text-white">972</span></span>
+        <Link to="/" className="flex items-center gap-3 group cursor-pointer text-white no-underline">
+          <img src="/logo.png" alt="MADADEV Logo" className="h-10 w-auto group-hover:scale-105 transition-transform" />
+          <span className="font-display font-bold text-2xl tracking-tighter uppercase text-white">MADADEV</span>
         </Link>
         <div className="hidden md:flex items-center gap-8 text-white">
           {navLinks.map((link, idx) => (
@@ -467,8 +467,8 @@ const Home = () => {
             <p className="text-xl text-white/70 leading-relaxed mb-8 text-white">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
             <Link to="/agence" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all text-white inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
           </motion.div>
-          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-primary-dark border border-white/10 flex items-center justify-center text-white">
-              <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] origin-center -scale-x-100 opacity-80 text-white" alt="Madadev Agency" />
+          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-primary-dark border border-white/10 flex items-center justify-center text-white shadow-2xl">
+              <img src="/martinique.png" className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-110" alt="Madadev Martinique" />
           </div>
         </div>
       </section>
@@ -686,7 +686,7 @@ const AgencyPage = () => {
           </motion.div>
           <div className="relative text-white">
              <div className="aspect-[4/5] rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 shadow-2xl text-white">
-                <img src="/2_45PM.png" className="w-full h-full object-cover scale-[2.2] -scale-x-100 opacity-80 text-white" alt="Vision" />
+                <img src="/martinique.png" className="w-full h-full object-cover opacity-90" alt="Vision" />
              </div>
           </div>
         </div>
@@ -766,7 +766,7 @@ const ContactPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = `mailto:contact@madadev972.com?subject=${formState.subject}&body=De: ${formState.name} (${formState.email})%0D%0A%0D%0A${formState.message}`;
+    window.location.href = `mailto:contact@madadev.com?subject=${formState.subject}&body=De: ${formState.name} (${formState.email})%0D%0A%0D%0A${formState.message}`;
   };
 
   return (
@@ -792,7 +792,7 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Email Professionnel</div>
-                  <div className="text-xl font-medium">contact@madadev972.com</div>
+                  <div className="text-xl font-medium">contact@madadev.com</div>
                 </div>
               </div>
               <a 
@@ -918,8 +918,8 @@ export default function App() {
         <footer className="py-20 px-12 bg-primary-dark text-white relative z-10">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-white">
             <div className="max-w-sm text-white">
-              <div className="flex items-center gap-2 mb-6 text-xl font-display font-bold uppercase tracking-tight text-white">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center text-white">M</div>MADADEV<span className="text-blue-accent text-white">972</span>
+              <div className="flex items-center gap-3 mb-6 text-2xl font-display font-bold uppercase tracking-tighter text-white">
+                <img src="/logo.png" alt="MADADEV Logo" className="h-8 w-auto" />MADADEV
               </div>
               <p className="text-slate-500 mb-8 leading-relaxed text-sm text-white">L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.</p>
             </div>
