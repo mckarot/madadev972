@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValue } from 'motion/react';
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import {
   Code2,
@@ -727,6 +727,194 @@ const AgencyPage = () => {
   );
 };
 
+const NodeCard = ({ 
+  x, y, 
+  orientation = 'landscape', 
+  label, 
+  type = 'image', 
+  content, 
+  color = 'blue',
+  hasInput = true,
+  hasOutput = true,
+  constraints
+}: any) => {
+  const isPortrait = orientation === 'portrait';
+  const width = isPortrait ? 'w-[220px] md:w-[300px]' : 'w-[280px] md:w-[400px]';
+  const aspect = isPortrait ? 'aspect-[3/4]' : 'aspect-video';
+  
+  return (
+    <motion.div
+      drag
+      dragMomentum={false}
+      dragConstraints={constraints}
+      style={{ x, y }}
+      whileDrag={{ scale: 1.05, zIndex: 50, cursor: 'grabbing' }}
+      className={`absolute ${width} bg-white/5 p-2 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl`}
+    >
+      <div className={`relative ${aspect} rounded-2xl overflow-hidden bg-black`}>
+        {type === 'video' ? (
+          <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80">
+            <source src={content} type="video/mp4" />
+          </video>
+        ) : (
+          <img src={content} className="w-full h-full object-cover pointer-events-none" alt="" />
+        )}
+        <div className={`absolute top-3 left-3 px-2 py-1 bg-${color}-500/80 backdrop-blur-md rounded-lg text-[8px] font-bold uppercase tracking-widest text-white`}>
+          {label}
+        </div>
+      </div>
+      {hasInput && (
+        <div className={`absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-${color}-500 rounded-full z-10`} />
+      )}
+      {hasOutput && (
+        <div className={`absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-${color}-500 rounded-full z-10`} />
+      )}
+    </motion.div>
+  );
+}
+
+const DraggableCanvas = ({ images }: { images: string[] }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Create motion values for up to 2 images (as per current project data)
+  const x1 = useMotionValue(50);
+  const y1 = useMotionValue(100);
+  const x2 = useMotionValue(window.innerWidth < 768 ? 50 : 500);
+  const y2 = useMotionValue(window.innerWidth < 768 ? 350 : 350);
+  const x3 = useMotionValue(window.innerWidth < 768 ? 50 : 950);
+  const y3 = useMotionValue(window.innerWidth < 768 ? 650 : 150);
+
+  // Node configuration (easily changeable)
+  const nodeConfig = {
+    n1: { orientation: 'landscape' as const },
+    n2: { orientation: 'portrait' as const },
+    n3: { orientation: 'landscape' as const }
+  };
+
+  // Dimensions helper
+  const isMobile = window.innerWidth < 768;
+  const getDims = (orientation: 'portrait' | 'landscape') => {
+    const isPortrait = orientation === 'portrait';
+    const w = isMobile ? (isPortrait ? 220 : 280) : (isPortrait ? 300 : 400);
+    const h = isPortrait ? w * (4/3) : w / 1.77;
+    return { w, h };
+  };
+
+  const d1 = getDims(nodeConfig.n1.orientation);
+  const d2 = getDims(nodeConfig.n2.orientation);
+  const d3 = getDims(nodeConfig.n3.orientation);
+
+  // Ports calculations (Now fully dynamic based on config)
+  const p1_out_x = useTransform(x1, v => v + d1.w);
+  const p1_out_y = useTransform(y1, v => v + d1.h / 2 + 8);
+  const p2_in_x = useTransform(x2, v => v);
+  const p2_in_y = useTransform(y2, v => v + d2.h / 2 + 8);
+
+  const p2_out_x = useTransform(x2, v => v + d2.w);
+  const p2_out_y = useTransform(y2, v => v + d2.h / 2 + 8);
+  const p3_in_x = useTransform(x3, v => v);
+  const p3_in_y = useTransform(y3, v => v + d3.h / 2 + 8);
+
+  // Path 1 (Node 1 -> Node 2)
+  const path1D = useTransform([p1_out_x, p1_out_y, p2_in_x, p2_in_y], ([x1, y1, x2, y2]) => {
+    const cx = (x1 + x2) / 2;
+    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+  });
+
+  // Path 2 (Node 2 -> Node 3)
+  const path2D = useTransform([p2_out_x, p2_out_y, p3_in_x, p3_in_y], ([x1, y1, x2, y2]) => {
+    const cx = (x1 + x2) / 2;
+    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+  });
+
+  const [constraints, setConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+
+  useEffect(() => {
+    const updateConstraints = () => {
+      if (containerRef.current) {
+        const { offsetWidth, offsetHeight } = containerRef.current;
+        const isMobile = window.innerWidth < 768;
+        const d = getDims(nodeConfig.n1.orientation);
+        
+        setConstraints({
+          left: -(d.w / 2),
+          right: offsetWidth - (d.w / 2),
+          top: -(d.h / 2),
+          bottom: offsetHeight - (d.h / 2)
+        });
+      }
+    };
+
+    updateConstraints();
+    window.addEventListener('resize', updateConstraints);
+    return () => window.removeEventListener('resize', updateConstraints);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative w-full h-[800px] md:h-[700px] bg-black/40 rounded-[40px] md:rounded-[80px] overflow-hidden border border-white/5 cursor-grab active:cursor-grabbing group/canvas shadow-inner">
+
+      
+      {/* Background Grid */}
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      
+      {/* Dynamic Bezier Connections */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+        <motion.path
+          d={path1D}
+          fill="transparent"
+          stroke="rgba(255, 255, 255, 0.2)"
+          strokeWidth="2"
+        />
+        <motion.path
+          d={path2D}
+          fill="transparent"
+          stroke="rgba(255, 255, 255, 0.2)"
+          strokeWidth="2"
+        />
+      </svg>
+
+      {/* Nodes using the generic component and config */}
+      {images[0] && (
+        <NodeCard 
+          x={x1} y={y1} 
+          orientation={nodeConfig.n1.orientation} 
+          label="Input Image" 
+          content={images[0]} 
+          color="blue" 
+          hasInput={false} 
+          constraints={constraints}
+        />
+      )}
+
+      <NodeCard 
+        x={x2} y={y2} 
+        orientation={nodeConfig.n2.orientation} 
+        label="Video Engine" 
+        type="video" 
+        content="/background.mp4" 
+        color="purple" 
+        constraints={constraints}
+      />
+
+      {images[1] && (
+        <NodeCard 
+          x={x3} y={y3} 
+          orientation={nodeConfig.n3.orientation} 
+          label="Output Result" 
+          content={images[1]} 
+          color="emerald" 
+          hasOutput={false} 
+          constraints={constraints}
+        />
+      )}
+      
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-black/40 border border-white/10 rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400 pointer-events-none">
+        <Zap size={14} className="animate-pulse" /> Playground Interactif
+      </div>
+    </div>
+  );
+};
+
 const ProjectDetailPage = () => {
   const { id } = useParams();
   const project = PROJECTS.find(p => p.id === Number(id));
@@ -778,13 +966,7 @@ const ProjectDetailPage = () => {
         </div>
 
         <section className="py-24 border-t border-white/5">
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {project.detailImages?.map((img, i) => (
-                <div key={i} className="aspect-video rounded-[40px] bg-white/5 overflow-hidden border border-white/10">
-                   <img src={img} className="w-full h-full object-cover opacity-50 hover:opacity-100 transition-opacity duration-700" alt={`Detail ${i + 1}`} />
-                </div>
-              ))}
-           </div>
+           <DraggableCanvas images={project.detailImages || []} />
         </section>
       </div>
     </div>
