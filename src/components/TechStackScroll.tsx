@@ -5,11 +5,11 @@ export const TechStackScroll = () => {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start start", "end end"] });
   const techs = [
-    { name: "Flutter", desc: "Performance native multi-plateforme iOS & Android.", img: "https://images.unsplash.com/photo-1628277613967-6abca504d0ac?q=80&w=2000" },
-    { name: "React & Next.js", desc: "Architectures Web modernes et SEO-friendly.", img: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2000" },
-    { name: "Node.js", desc: "Backends scalables et temps réel ultra-rapides.", img: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2000" },
-    { name: "Kubernetes", desc: "Orchestration cloud et haute disponibilité.", img: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=2000" },
-    { name: "Spline 3D", desc: "Expériences immersives et animations interactives.", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2000" },
+    { name: "Apps iOS & Android", desc: "Une seule application native pour tous les téléphones, fluide et performante.", img: "https://images.unsplash.com/photo-1628277613967-6abca504d0ac?q=80&w=2000" },
+    { name: "Web Performance", desc: "Des sites ultra-rapides optimisés pour Google (SEO) et la conversion.", img: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2000" },
+    { name: "Systèmes Sécurisés", desc: "Une infrastructure robuste et évolutive pour gérer vos données en toute confiance.", img: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2000" },
+    { name: "Hébergement Cloud", desc: "Une mise en ligne stable sur des serveurs haute disponibilité (VPS).", img: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=2000" },
+    { name: "Design Immersif", desc: "Des expériences interactives en 3D pour marquer les esprits de vos clients.", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2000" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   
@@ -56,13 +56,13 @@ export const TechStackScroll = () => {
           </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/20 to-transparent text-text-main" />
         </div>
-        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative z-10 text-text-main">
-          <div className="lg:col-span-4 text-text-main">
+        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-32 relative z-10 text-text-main">
+          <div className="lg:col-span-5 text-text-main">
             <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-text-main">Notre Stack Tech</span>
-            <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-text-main uppercase">LA PUISSANCE <br/><span className="text-gradient text-text-main">SANS LIMITES.</span></h2>
-            <p className="text-lg text-text-muted mt-6 max-w-sm font-light leading-relaxed text-text-main">Nous utilisons les outils les plus performants du marché pour transformer vos idées en produits d'exception.</p>
+            <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-text-main uppercase">L'EXCELLENCE TECHNIQUE <br/><span className="text-gradient text-text-main">AU SERVICE DE VOTRE RÉUSSITE.</span></h2>
+            <p className="text-lg text-text-muted mt-8 max-w-sm font-light leading-relaxed text-text-main">Je sélectionne les technologies les plus performantes pour bâtir des outils sur-mesure qui font grandir votre entreprise.</p>
           </div>
-          <div className="lg:col-span-8 flex flex-col gap-16 justify-center text-text-main">
+          <div className="lg:col-span-7 flex flex-col gap-12 justify-center text-text-main lg:pl-12">
             {techs.map((tech, i) => (
               <motion.div 
                 key={tech.name} 
@@ -75,7 +75,7 @@ export const TechStackScroll = () => {
                 className="text-text-main cursor-pointer group/item"
                 onClick={() => scrollToIndex(i)}
               >
-                <h3 className={`text-5xl md:text-7xl font-display font-black text-text-main uppercase mb-2 transition-colors ${activeIndex === i ? 'text-text-main' : 'group-hover/item:text-text-main/60'}`}>{tech.name}</h3>
+                <h3 className={`text-4xl md:text-5xl font-display font-black text-text-main uppercase mb-2 transition-colors ${activeIndex === i ? 'text-text-main' : 'group-hover/item:text-text-main/60'}`}>{tech.name}</h3>
                 <p className={`text-blue-accent text-xl font-bold transition-all duration-500 ${activeIndex === i ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>{tech.desc}</p>
               </motion.div>
             ))}
