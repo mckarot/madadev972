@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue } from 'motion/react';
 import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import {
@@ -817,13 +817,13 @@ const DraggableCanvas = ({ images }: { images: string[] }) => {
 
   // Path 1 (Node 1 -> Node 2)
   const path1D = useTransform([p1_out_x, p1_out_y, p2_in_x, p2_in_y], ([x1, y1, x2, y2]) => {
-    const cx = (x1 + x2) / 2;
+    const cx = ((x1 as number) + (x2 as number)) / 2;
     return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
   });
 
   // Path 2 (Node 2 -> Node 3)
   const path2D = useTransform([p2_out_x, p2_out_y, p3_in_x, p3_in_y], ([x1, y1, x2, y2]) => {
-    const cx = (x1 + x2) / 2;
+    const cx = ((x1 as number) + (x2 as number)) / 2;
     return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
   });
 
@@ -1104,10 +1104,13 @@ const ContactPage = () => {
 
 // --- APP WRAPPER ---
 
+// Fin du fichier
+
+// Déclarations globales pour TypeScript
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'spline-viewer': any;
+      [elemName: string]: any;
     }
   }
 }
