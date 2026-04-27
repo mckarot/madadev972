@@ -29,7 +29,7 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'py-4 bg-bg-base/80 backdrop-blur-xl border-border-subtle' : 'py-8 bg-transparent border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-12 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-3 group cursor-pointer text-text-main no-underline">
+        <Link to="/#top" className="flex items-center gap-3 group cursor-pointer text-text-main no-underline">
           <img src="/logo_sans_lettres.png" alt="MADADEV Logo" className="h-10 w-auto group-hover:scale-105 transition-transform" />
           <span className="font-display font-bold text-2xl tracking-tighter uppercase">MADADEV</span>
         </Link>

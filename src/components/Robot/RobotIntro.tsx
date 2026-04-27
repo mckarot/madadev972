@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-react';
 
 export const RobotIntro = () => {
   return (
-    <section className="relative w-full h-screen bg-bg-base flex items-center justify-center overflow-hidden px-12 lg:px-24">
+    <section id="top" className="relative w-full h-screen bg-bg-base flex items-center justify-center overflow-hidden px-12 lg:px-24">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="z-20 relative pointer-events-none text-text-main">
           <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-text-main">Bienvenue dans le futur</motion.span>
