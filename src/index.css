@@ -5,21 +5,61 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
   
-  --color-primary-dark: #020617;
-  --color-blue-accent: #60a5fa;
+  /* Semantic Theme Colors */
+  --color-bg-base: var(--bg-base);
+  --color-bg-card: var(--bg-card);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  
+  /* Playground Specific */
+  --color-pg-bg: var(--pg-bg);
+  --color-pg-dot: var(--pg-dot);
+  --color-pg-line: var(--pg-line);
+  
+  /* Brand Accents */
+  --color-blue-accent: var(--blue-accent-dynamic);
   --color-emerald-accent: #34d399;
   --color-indigo-accent: #818cf8;
-  --color-slate-muted: #94a3b8;
+}
+
+:root {
+  /* Default Dark Theme */
+  --bg-base: #020617;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  --blue-accent-dynamic: #60a5fa;
+  --pg-bg: rgba(255, 255, 255, 0.05);
+  --pg-dot: #ffffff;
+  --pg-line: rgba(255, 255, 255, 0.2);
+}
+
+.light-theme {
+  /* Premium Light Theme - Deeper Cool Blue */
+  --bg-base: #e6edf3;
+  --bg-card: rgba(255, 255, 255, 0.4);
+  --text-main: #0f172a;
+  --text-muted: #334155;
+  --border-subtle: rgba(15, 23, 42, 0.12);
+
+  --blue-accent-dynamic: #2563eb;
+  --pg-bg: rgba(15, 23, 42, 0.03);
+  --pg-dot: #0f172a;
+  --pg-line: rgba(15, 23, 42, 0.1);
 }
 
 
 body {
-  @apply bg-primary-dark text-slate-100 selection:bg-blue-accent/30 selection:text-white;
+  @apply bg-bg-base text-text-main selection:bg-blue-accent/30 selection:text-text-main;
   font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .glass-morphism {
-  @apply backdrop-blur-xl bg-white/5 border border-white/10;
+  @apply backdrop-blur-xl bg-bg-card border border-border-subtle;
 }
 
 .text-gradient {

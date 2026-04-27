@@ -30,12 +30,14 @@ import {
   Linkedin,
   Twitter,
   Instagram,
-  Github
+  Github,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 // --- COMPOSANTS PARTAGÉS ---
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -52,28 +54,48 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'py-4 bg-primary-dark/80 backdrop-blur-xl border-white/10' : 'py-8 bg-transparent border-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-12 flex justify-between items-center text-white">
-        <Link to="/" className="flex items-center gap-3 group cursor-pointer text-white no-underline">
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'py-4 bg-bg-base/80 backdrop-blur-xl border-border-subtle' : 'py-8 bg-transparent border-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-12 flex justify-between items-center">
+        <Link to="/" className="flex items-center gap-3 group cursor-pointer text-text-main no-underline">
           <img src="/logo.png" alt="MADADEV Logo" className="h-10 w-auto group-hover:scale-105 transition-transform" />
-          <span className="font-display font-bold text-2xl tracking-tighter uppercase text-white">MADADEV</span>
+          <span className="font-display font-bold text-2xl tracking-tighter uppercase">MADADEV</span>
         </Link>
-        <div className="hidden md:flex items-center gap-8 text-white">
+        
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link, idx) => (
             <motion.div key={link.name} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-              <Link to={link.href} className="text-slate-400 hover:text-white font-medium transition-colors relative group text-sm no-underline text-white">{link.name}</Link>
+              <Link to={link.href} className="text-text-muted hover:text-text-main font-medium transition-colors relative group text-sm no-underline">{link.name}</Link>
             </motion.div>
           ))}
-          <Link to="/contact" className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-white text-sm font-medium cursor-pointer hover:bg-white/10 transition-all no-underline">Contactez-nous</Link>
+          
+          {/* Theme Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="w-10 h-10 rounded-full glass-morphism flex items-center justify-center text-text-main transition-all"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </motion.button>
+
+          <Link to="/contact" className="px-5 py-2.5 bg-bg-card border border-border-subtle rounded-full text-text-main text-sm font-medium cursor-pointer hover:bg-white/10 transition-all no-underline">Contactez-nous</Link>
         </div>
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">{isOpen ? <X size={24} /> : <Menu size={24} />}</button>
+
+        <div className="flex items-center gap-4 md:hidden">
+          <button onClick={toggleTheme} className="text-text-main">
+            {theme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
+          </button>
+          <button onClick={() => setIsOpen(!isOpen)} className="text-text-main">
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
       <AnimatePresence>
         {isOpen && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-primary-dark border-b border-white/10">
-            <div className="flex flex-col gap-4 p-8 text-white">
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden bg-bg-base border-b border-border-subtle">
+            <div className="flex flex-col gap-4 p-8">
               {navLinks.map((link) => (
-                <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="text-xl font-display font-bold text-white hover:text-blue-accent no-underline">{link.name}</Link>
+                <Link key={link.name} to={link.href} onClick={() => setIsOpen(false)} className="text-xl font-display font-bold text-text-main hover:text-blue-accent no-underline">{link.name}</Link>
               ))}
             </div>
           </motion.div>
@@ -84,11 +106,11 @@ const Navbar = () => {
 };
 
 const ServiceCard = ({ title, description, delay, accentColor = "blue", href = "#" }: any) => (
-  <Link to={href} className="block no-underline h-full text-white">
-    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.8 }} viewport={{ once: true }} className="p-6 bg-white/5 rounded-2xl border border-white/5 group hover:border-white/20 transition-all backdrop-blur-sm cursor-pointer h-full text-white">
+  <Link to={href} className="block no-underline h-full text-text-main">
+    <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.8 }} viewport={{ once: true }} className="p-6 bg-bg-card rounded-2xl border border-border-subtle group hover:border-white/20 transition-all backdrop-blur-sm cursor-pointer h-full text-text-main">
       <div className={`text-xs font-bold mb-2 uppercase tracking-wider ${accentColor === 'blue' ? 'text-blue-accent' : accentColor === 'emerald' ? 'text-emerald-accent' : 'text-indigo-accent'}`}>{title}</div>
-      <div className="text-xl font-semibold mb-3 leading-snug text-white">{description}</div>
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all text-xs font-bold tracking-widest text-slate-500 uppercase text-white">En savoir plus <ArrowRight size={14} /></div>
+      <div className="text-xl font-semibold mb-3 leading-snug text-text-main">{description}</div>
+      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all text-xs font-bold tracking-widest text-text-muted uppercase text-text-main">En savoir plus <ArrowRight size={14} /></div>
     </motion.div>
   </Link>
 );
@@ -224,7 +246,7 @@ const PersistentRobot = () => {
           transformOrigin: 'center center'
         }} 
       />
-      {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-primary-dark/20"><div className="w-8 h-8 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" /></div>}
+      {!isLoaded && <div className="absolute inset-0 flex items-center justify-center bg-bg-base/20"><div className="w-8 h-8 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" /></div>}
       {isFloating && <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 transition-colors pointer-events-none" />}
     </motion.div>
   );
@@ -232,26 +254,26 @@ const PersistentRobot = () => {
 
 const RobotIntro = () => {
   return (
-    <section className="relative w-full h-screen bg-primary-dark flex items-center justify-center overflow-hidden px-12 lg:px-24">
+    <section className="relative w-full h-screen bg-bg-base flex items-center justify-center overflow-hidden px-12 lg:px-24">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="z-20 relative pointer-events-none text-white">
-          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Bienvenue dans le futur</motion.span>
-          <h2 className="text-white font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient text-white">VOTRE VISION</span></h2>
-          <p className="text-slate-400 text-lg max-w-md mb-8 leading-relaxed text-white">Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.</p>
+        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="z-20 relative pointer-events-none text-text-main">
+          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-text-main">Bienvenue dans le futur</motion.span>
+          <h2 className="text-text-main font-display font-black text-5xl md:text-7xl leading-tight uppercase mb-6">NOTRE EXPERTISE AU SERVICE DE <span className="text-gradient text-text-main">VOTRE VISION</span></h2>
+          <p className="text-text-muted text-lg max-w-md mb-8 leading-relaxed text-text-main">Nous créons des expériences numériques immersives où la technologie rencontre l'art. Laissez notre assistant vous guider.</p>
         </motion.div>
         <div id="robot-hero-placeholder" className="relative w-full h-[50vh] lg:h-[80vh] pointer-events-none z-10 overflow-hidden rounded-[100px]">
-          <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-white/5 text-white" />
+          <div className="absolute inset-0 bg-blue-500/5 rounded-[100px] border border-border-subtle text-text-main" />
         </div>
       </div>
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 animate-bounce z-20 pointer-events-none text-white"><ChevronDown size={32} /></div>
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-text-main/30 animate-bounce z-20 pointer-events-none text-text-main"><ChevronDown size={32} /></div>
     </section>
   );
 };
 
 const SectionHeading = ({ children, subtitle, align = 'center' }: any) => (
   <div className={`max-w-4xl mb-20 ${align === 'center' ? 'mx-auto text-center' : ''}`}>
-    <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-accent-teal font-display font-bold tracking-widest uppercase mb-4 block text-white">{subtitle}</motion.span>
-    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="font-display font-black text-4xl md:text-6xl text-white uppercase">{children}</motion.h2>
+    <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="text-accent-teal font-display font-bold tracking-widest uppercase mb-4 block text-text-main">{subtitle}</motion.span>
+    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="font-display font-black text-4xl md:text-6xl text-text-main uppercase">{children}</motion.h2>
   </div>
 );
 
@@ -292,9 +314,9 @@ const TechStackScroll = () => {
   };
 
   return (
-    <section ref={targetRef} className="relative h-[300vh] bg-primary-dark text-white">
-      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden text-white">
-        <div className="absolute inset-0 z-0 text-white">
+    <section ref={targetRef} className="relative h-[300vh] bg-bg-base text-text-main">
+      <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden text-text-main">
+        <div className="absolute inset-0 z-0 text-text-main">
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeIndex} 
@@ -310,15 +332,15 @@ const TechStackScroll = () => {
               }} 
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/20 to-transparent text-white" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/20 to-transparent text-text-main" />
         </div>
-        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative z-10 text-white">
-          <div className="lg:col-span-4 text-white">
-            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-white">Notre Stack Tech</span>
-            <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-white uppercase">LA PUISSANCE <br/><span className="text-gradient text-white">SANS LIMITES.</span></h2>
-            <p className="text-lg text-slate-400 mt-6 max-w-sm font-light leading-relaxed text-white">Nous utilisons les outils les plus performants du marché pour transformer vos idées en produits d'exception.</p>
+        <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative z-10 text-text-main">
+          <div className="lg:col-span-4 text-text-main">
+            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-text-main">Notre Stack Tech</span>
+            <h2 className="text-4xl md:text-6xl font-display font-black leading-tight text-text-main uppercase">LA PUISSANCE <br/><span className="text-gradient text-text-main">SANS LIMITES.</span></h2>
+            <p className="text-lg text-text-muted mt-6 max-w-sm font-light leading-relaxed text-text-main">Nous utilisons les outils les plus performants du marché pour transformer vos idées en produits d'exception.</p>
           </div>
-          <div className="lg:col-span-8 flex flex-col gap-16 justify-center text-white">
+          <div className="lg:col-span-8 flex flex-col gap-16 justify-center text-text-main">
             {techs.map((tech, i) => (
               <motion.div 
                 key={tech.name} 
@@ -328,10 +350,10 @@ const TechStackScroll = () => {
                   scale: activeIndex === i ? 1.1 : 0.9 
                 }} 
                 transition={{ duration: 0.4 }} 
-                className="text-white cursor-pointer group/item"
+                className="text-text-main cursor-pointer group/item"
                 onClick={() => scrollToIndex(i)}
               >
-                <h3 className={`text-5xl md:text-7xl font-display font-black text-white uppercase mb-2 transition-colors ${activeIndex === i ? 'text-white' : 'group-hover/item:text-white/60'}`}>{tech.name}</h3>
+                <h3 className={`text-5xl md:text-7xl font-display font-black text-text-main uppercase mb-2 transition-colors ${activeIndex === i ? 'text-text-main' : 'group-hover/item:text-text-main/60'}`}>{tech.name}</h3>
                 <p className={`text-blue-accent text-xl font-bold transition-all duration-500 ${activeIndex === i ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}>{tech.desc}</p>
               </motion.div>
             ))}
@@ -375,29 +397,29 @@ const Home = () => {
   return (
     <>
       <RobotIntro />
-      <section ref={targetRef} className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12 bg-primary-dark text-white">
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-12 gap-8 items-center relative z-20 text-white">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7 py-8 text-white">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-accent text-xs font-bold uppercase tracking-widest mb-8 text-white">
-              <span className="w-2 h-2 rounded-full bg-blue-accent animate-pulse text-white"></span>Basé en Martinique • Antilles
+      <section ref={targetRef} className="relative min-h-[768px] lg:h-screen flex items-center overflow-hidden px-12 bg-bg-base text-text-main">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-12 gap-8 items-center relative z-20 text-text-main">
+          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="col-span-12 lg:col-span-7 py-8 text-text-main">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-accent text-xs font-bold uppercase tracking-widest mb-8 text-text-main">
+              <span className="w-2 h-2 rounded-full bg-blue-accent animate-pulse text-text-main"></span>Basé en Martinique • Antilles
             </div>
-            <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 uppercase text-white">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block text-white">DIGITALE</span></h1>
-            <p className="text-lg text-slate-400 max-w-lg mb-10 leading-relaxed font-light text-white">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
-            <div className="flex gap-4 text-white">
+            <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 uppercase text-text-main">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block text-text-main">DIGITALE</span></h1>
+            <p className="text-lg text-text-muted max-w-lg mb-10 leading-relaxed font-light text-text-main">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
+            <div className="flex gap-4 text-text-main">
               <button className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105 cursor-pointer">Démarrer un projet</button>
-              <Link to="/portfolio" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-white no-underline cursor-pointer">Voir le portfolio</Link>
+              <Link to="/portfolio" className="px-8 py-4 bg-bg-card border border-border-subtle rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-text-main no-underline cursor-pointer">Voir le portfolio</Link>
             </div>
           </motion.div>
-          <div className="col-span-12 lg:col-span-5 relative hidden lg:block text-white">
-            <div className="bg-gradient-to-tr from-blue-500/10 to-transparent border border-white/10 rounded-3xl backdrop-blur-sm p-8 flex flex-col justify-between min-h-[550px] h-full text-white">
-              <div className="space-y-4 text-white">
+          <div className="col-span-12 lg:col-span-5 relative hidden lg:block text-text-main">
+            <div className="bg-gradient-to-tr from-blue-500/10 to-transparent border border-border-subtle rounded-3xl backdrop-blur-sm p-8 flex flex-col justify-between min-h-[550px] h-full text-text-main">
+              <div className="space-y-4 text-text-main">
                 <ServiceCard title="DÉVELOPPEMENT WEB" description="Architectures Cloud Scalables" delay={0.2} accentColor="blue" href="/expertise/web" />
                 <ServiceCard title="UX / UI DESIGN" description="Interfaces Ultra-Fluides" delay={0.3} accentColor="emerald" href="/expertise/design" />
                 <ServiceCard title="MOBILE NATIVE" description="iOS & Android Flutter Performance" delay={0.4} accentColor="indigo" href="/expertise/mobile" />
               </div>
-              <div className="mt-8 flex items-end justify-between text-white">
-                <div className="text-white"><div className="text-4xl font-bold font-display tracking-tight text-white">150+</div><div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold text-white">Projets Livrés</div></div>
-                <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all">
+              <div className="mt-8 flex items-end justify-between text-text-main">
+                <div className="text-text-main"><div className="text-4xl font-bold font-display tracking-tight text-text-main">150+</div><div className="text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold text-text-main">Projets Livrés</div></div>
+                <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-text-main/50 hover:text-text-main hover:border-white transition-all">
                   <ArrowRight size={20} />
                 </Link>
               </div>
@@ -408,10 +430,10 @@ const Home = () => {
 
       {/* Section Engagement Local */}
       {/* Section Expertises Secondaires */}
-      <section id="services" className="py-32 px-6 relative overflow-hidden bg-primary-dark text-white">
-        <div className="max-w-7xl mx-auto text-white">
-          <SectionHeading subtitle="Nos Expertises">Des services <span className="text-gradient text-white">haut de gamme</span> pour votre croissance.</SectionHeading>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
+      <section id="services" className="py-32 px-6 relative overflow-hidden bg-bg-base text-text-main">
+        <div className="max-w-7xl mx-auto text-text-main">
+          <SectionHeading subtitle="Nos Expertises">Des services <span className="text-gradient text-text-main">haut de gamme</span> pour votre croissance.</SectionHeading>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-text-main">
             <ServiceCard title="Performance & SEO" description="Optimisation technique pointue pour des temps de chargement records." delay={0.1} />
             <ServiceCard title="Sécurité Cloud" description="Architectures serveurs sécurisées et scalables pour vos données." delay={0.2} />
             <ServiceCard title="Stratégie Digitale" description="Accompagnement de A à Z pour transformer votre vision." delay={0.3} />
@@ -421,18 +443,18 @@ const Home = () => {
 
 
       {/* Section Portfolio Teaser */}
-      <section className="py-32 bg-primary-dark text-white overflow-hidden relative">
+      <section className="py-32 bg-bg-base text-text-main overflow-hidden relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[160px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6 text-white mb-16">
-          <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient text-white">en action</span>.</SectionHeading>
+        <div className="max-w-7xl mx-auto px-6 text-text-main mb-16">
+          <SectionHeading subtitle="Réalisations" align="left">Le futur <span className="text-gradient text-text-main">en action</span>.</SectionHeading>
         </div>
 
         <div 
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHoveringCarousel(true)}
           onMouseLeave={() => setIsHoveringCarousel(false)}
-          className="mx-4 md:mx-10 rounded-[40px] md:rounded-[80px] overflow-hidden relative bg-white/5 border border-white/5 cursor-none [&_*]:cursor-none group/carousel"
+          className="mx-4 md:mx-10 rounded-[40px] md:rounded-[80px] overflow-hidden relative bg-bg-card border border-border-subtle cursor-none [&_*]:cursor-none group/carousel"
         >
           <AnimatePresence>
             {isHoveringCarousel && (
@@ -465,14 +487,14 @@ const Home = () => {
             {PROJECTS.map((project) => (
               <motion.div 
                 key={project.id} 
-                className="w-[300px] md:w-[600px] h-[400px] md:h-[600px] rounded-[40px] overflow-hidden border border-white/10 group relative flex-shrink-0"
+                className="w-[300px] md:w-[600px] h-[400px] md:h-[600px] rounded-[40px] overflow-hidden border border-border-subtle group relative flex-shrink-0"
               >
                 <Link to={`/portfolio/${project.id}`} className="block h-full no-underline">
                   <img src={project.image} className="w-full h-full object-cover transition-all duration-700" alt={project.title} />
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
                   <div className="absolute bottom-0 p-10">
                     <span className="text-xs font-bold uppercase tracking-widest mb-2 block" style={{ color: project.color }}>{project.category}</span>
-                    <h3 className="text-3xl md:text-4xl font-display font-black uppercase text-white leading-none">{project.title}</h3>
+                    <h3 className="text-3xl md:text-4xl font-display font-black uppercase text-text-main leading-none">{project.title}</h3>
                   </div>
                 </Link>
               </motion.div>
@@ -480,8 +502,8 @@ const Home = () => {
           </motion.div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 mt-16 text-center text-white">
-          <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-white">Découvrir tous nos projets <ArrowRight size={20} className="text-white"/></Link>
+        <div className="max-w-7xl mx-auto px-6 mt-16 text-center text-text-main">
+          <Link to="/portfolio" className="inline-flex items-center gap-3 text-blue-accent font-bold uppercase tracking-widest hover:gap-6 transition-all no-underline text-text-main">Découvrir tous nos projets <ArrowRight size={20} className="text-text-main"/></Link>
         </div>
       </section>
 
@@ -489,26 +511,26 @@ const Home = () => {
       <TechStackScroll />
 
       {/* Section Agence Teaser */}
-      <section id="about" className="py-32 px-6 relative overflow-hidden bg-primary-dark text-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center text-white">
-          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} className="text-white">
-            <SectionHeading subtitle="L'Agence" align="left">Le talent local, <br /><span className="text-gradient text-white">L'engagement global</span>.</SectionHeading>
-            <p className="text-xl text-white/70 leading-relaxed mb-8 text-white">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
-            <Link to="/agence" className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all text-white inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
+      <section id="about" className="py-32 px-6 relative overflow-hidden bg-bg-base text-text-main">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center text-text-main">
+          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} className="text-text-main">
+            <SectionHeading subtitle="L'Agence" align="left">Le talent local, <br /><span className="text-gradient text-text-main">L'engagement global</span>.</SectionHeading>
+            <p className="text-xl text-text-main/70 leading-relaxed mb-8 text-text-main">Basés en Martinique, nous fusionnons la vibe caribéenne avec les standards technologiques internationaux.</p>
+            <Link to="/agence" className="px-8 py-4 bg-bg-card border border-border-subtle rounded-xl font-bold hover:bg-white/10 transition-all text-text-main inline-block text-sm uppercase tracking-widest no-underline">Découvrir l'histoire</Link>
           </motion.div>
-          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-primary-dark border border-white/10 flex items-center justify-center text-white shadow-2xl">
+          <div className="relative aspect-square rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-bg-base border border-border-subtle flex items-center justify-center text-text-main shadow-2xl">
               <img src="/martinique.png" className="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-110" alt="Madadev Martinique" />
           </div>
         </div>
       </section>
 
       {/* Section Contact CTA */}
-      <section className="py-40 px-6 bg-primary-dark text-white">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl mx-auto rounded-[60px] bg-white/5 p-20 text-center relative border border-white/10 overflow-hidden text-white">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-emerald-500/10 z-0 text-white" />
-          <div className="relative z-10 text-white">
-            <h2 className="font-display font-black text-5xl md:text-8xl mb-8 uppercase tracking-tighter text-white">PRÊT À <span className="text-gradient text-white">BRILLER ?</span></h2>
-            <p className="text-xl text-white/60 max-w-2xl mx-auto mb-12 text-white">Votre projet mérite une exécution exceptionnelle. Discutons de vos ambitions dès aujourd'hui.</p>
+      <section className="py-40 px-6 bg-bg-base text-text-main">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} className="max-w-6xl mx-auto rounded-[60px] bg-bg-card p-20 text-center relative border border-border-subtle overflow-hidden text-text-main">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-emerald-500/10 z-0 text-text-main" />
+          <div className="relative z-10 text-text-main">
+            <h2 className="font-display font-black text-5xl md:text-8xl mb-8 uppercase tracking-tighter text-text-main">PRÊT À <span className="text-gradient text-text-main">BRILLER ?</span></h2>
+            <p className="text-xl text-text-main/60 max-w-2xl mx-auto mb-12 text-text-main">Votre projet mérite une exécution exceptionnelle. Discutons de vos ambitions dès aujourd'hui.</p>
             <Link to="/contact" className="px-16 py-8 bg-white text-black font-black text-2xl rounded-full hover:bg-blue-accent transition-all hover:scale-105 shadow-2xl cursor-pointer no-underline inline-block">CONTACTER L'AGENCE</Link>
           </div>
         </motion.div>
@@ -522,17 +544,17 @@ const Home = () => {
 const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
-      <div className="max-w-7xl mx-auto text-white">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24 text-white">
-          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-white">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-bold uppercase tracking-widest mb-8 text-white" style={{ color }}><Icon size={18} /> {subtitle}</div>
-            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">{title}</h1>
-            <div className="h-1 w-24 mb-8 text-white" style={{ backgroundColor: color }} />
+    <div className="pt-32 pb-20 px-6 min-h-screen text-text-main bg-bg-base">
+      <div className="max-w-7xl mx-auto text-text-main">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24 text-text-main">
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-text-main">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-bg-card border border-border-subtle text-sm font-bold uppercase tracking-widest mb-8 text-text-main" style={{ color }}><Icon size={18} /> {subtitle}</div>
+            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-text-main">{title}</h1>
+            <div className="h-1 w-24 mb-8 text-text-main" style={{ backgroundColor: color }} />
           </motion.div>
-          <div className="bg-white/5 rounded-[60px] aspect-video border border-white/10 flex items-center justify-center relative overflow-hidden text-white">
-             <div className="absolute inset-0 opacity-20 blur-[100px] text-white" style={{ backgroundColor: color }} />
-             <Icon size={120} className="relative z-10 opacity-50 text-white" style={{ color }} />
+          <div className="bg-bg-card rounded-[60px] aspect-video border border-border-subtle flex items-center justify-center relative overflow-hidden text-text-main">
+             <div className="absolute inset-0 opacity-20 blur-[100px] text-text-main" style={{ backgroundColor: color }} />
+             <Icon size={120} className="relative z-10 opacity-50 text-text-main" style={{ color }} />
           </div>
         </div>
         {children}
@@ -542,14 +564,14 @@ const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) 
 };
 
 const WebExpertise = () => (
-  <ExpertiseLayout title={<>Web <br/><span className="text-gradient text-white">Architectures</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
-      <div className="space-y-8 text-white">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent text-white">Architecture Cluster-Label</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light text-white">Bâtir des architectures robustes, basées sur des clusters scalables pour une disponibilité de 99.9%.</p>
-        <ul className="space-y-4 text-white">
+  <ExpertiseLayout title={<>Web <br/><span className="text-gradient text-text-main">Architectures</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
+      <div className="space-y-8 text-text-main">
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent text-text-main">Architecture Cluster-Label</h2>
+        <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Bâtir des architectures robustes, basées sur des clusters scalables pour une disponibilité de 99.9%.</p>
+        <ul className="space-y-4 text-text-main">
           {["Next.js & React Frontend", "Microservices Node.js", "Déploiement Docker & Kubernetes", "SEO Technique Pro"].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-300 text-white"><CheckCircle2 size={20} className="text-blue-accent text-white"/> {item}</li>
+            <li key={i} className="flex items-center gap-3 text-slate-300 text-text-main"><CheckCircle2 size={20} className="text-blue-accent text-text-main"/> {item}</li>
           ))}
         </ul>
       </div>
@@ -558,22 +580,22 @@ const WebExpertise = () => (
 );
 
 const DesignExpertise = () => (
-  <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-white">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
-      <div className="space-y-8 text-white">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent text-white">L'Émotion par le Design</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light text-white">Une interface fluide est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle.</p>
+  <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-text-main">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
+      <div className="space-y-8 text-text-main">
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent text-text-main">L'Émotion par le Design</h2>
+        <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Une interface fluide est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle.</p>
       </div>
     </div>
   </ExpertiseLayout>
 );
 
 const MobileExpertise = () => (
-  <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-white">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white">
-      <div className="space-y-8 text-white">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent text-white">Expertise Native Flutter</h2>
-        <p className="text-xl text-slate-400 leading-relaxed font-light text-white">En tant que développeur Flutter, je conçois des applications avec une fluidité de 120Hz et un temps de développement optimisé.</p>
+  <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-text-main">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
+      <div className="space-y-8 text-text-main">
+        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent text-text-main">Expertise Native Flutter</h2>
+        <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">En tant que développeur Flutter, je conçois des applications avec une fluidité de 120Hz et un temps de développement optimisé.</p>
       </div>
     </div>
   </ExpertiseLayout>
@@ -673,23 +695,23 @@ const PROJECTS = [
 const PortfolioPage = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
-      <div className="max-w-7xl mx-auto text-white">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-white">
-          <div className="text-white"><motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-white">Nos Réalisations</motion.span>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-white">NOS PROJETS <br/><span className="text-gradient text-white">SIGNATURE</span></motion.h1></div>
+    <div className="pt-32 pb-20 px-6 min-h-screen text-text-main bg-bg-base">
+      <div className="max-w-7xl mx-auto text-text-main">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-text-main">
+          <div className="text-text-main"><motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-blue-accent font-display font-bold tracking-widest uppercase mb-4 block text-text-main">Nos Réalisations</motion.span>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-5xl md:text-7xl font-display font-black leading-none uppercase text-text-main">NOS PROJETS <br/><span className="text-gradient text-text-main">SIGNATURE</span></motion.h1></div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-text-main">
           {PROJECTS.map((project, idx) => (
-            <Link key={project.id} to={`/portfolio/${project.id}`} className="no-underline text-white block h-full">
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 cursor-pointer text-white h-full">
-                <img src={project.image} className="w-full h-full object-cover grayscale-0 group-hover:grayscale group-hover:scale-110 transition-all duration-700 text-white" alt={project.title} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all text-white" />
-                <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-white">
-                  <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-white" style={{ color: project.color }}>{project.category}</span>
-                  <h3 className="text-3xl font-display font-black text-white mb-6 leading-none uppercase">{project.title}</h3>
-                  <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-white">
-                    <span className="text-sm text-white/50 font-medium text-white">Découvrir l'étude de cas</span>
+            <Link key={project.id} to={`/portfolio/${project.id}`} className="no-underline text-text-main block h-full">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} viewport={{ once: true }} className="group relative aspect-[4/5] rounded-[40px] overflow-hidden bg-bg-card border border-border-subtle cursor-pointer text-text-main h-full">
+                <img src={project.image} className="w-full h-full object-cover grayscale-0 group-hover:grayscale group-hover:scale-110 transition-all duration-700 text-text-main" alt={project.title} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-all text-text-main" />
+                <div className="absolute inset-0 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0 transition-all duration-500 text-text-main">
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-text-main" style={{ color: project.color }}>{project.category}</span>
+                  <h3 className="text-3xl font-display font-black text-text-main mb-6 leading-none uppercase">{project.title}</h3>
+                  <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-text-main">
+                    <span className="text-sm text-text-main/50 font-medium text-text-main">Découvrir l'étude de cas</span>
                     <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-lg">
                       <Eye size={20} className="text-black" />
                     </div>
@@ -707,16 +729,16 @@ const PortfolioPage = () => {
 const AgencyPage = () => {
   useEffect(() => window.scrollTo(0, 0), []);
   return (
-    <div className="pt-32 pb-20 px-6 min-h-screen text-white bg-primary-dark">
-      <div className="max-w-7xl mx-auto text-white">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 text-white">
-          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-white">
-            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-white">L'Histoire Madadev</span>
-            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-white">L'ALLIANCE DU <br/><span className="text-gradient text-white">CODE & DE L'ÎLE</span></h1>
-            <p className="text-xl text-slate-400 leading-relaxed mb-10 max-w-xl font-light text-white font-sans">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
+    <div className="pt-32 pb-20 px-6 min-h-screen text-text-main bg-bg-base">
+      <div className="max-w-7xl mx-auto text-text-main">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 text-text-main">
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-text-main">
+            <span className="text-blue-accent font-display font-bold tracking-widest uppercase mb-6 block text-text-main">L'Histoire Madadev</span>
+            <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase text-text-main">L'ALLIANCE DU <br/><span className="text-gradient text-text-main">CODE & DE L'ÎLE</span></h1>
+            <p className="text-xl text-text-muted leading-relaxed mb-10 max-w-xl font-light text-text-main font-sans">Fusionner la rigueur d'ingénierie et la créativité caribéenne pour propulser la Martinique au sommet du digital.</p>
           </motion.div>
-          <div className="relative text-white">
-             <div className="aspect-[4/5] rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-white/10 shadow-2xl text-white">
+          <div className="relative text-text-main">
+             <div className="aspect-[4/5] rounded-[60px] overflow-hidden rotate-3 hover:rotate-0 transition-all duration-700 bg-black border border-border-subtle shadow-2xl text-text-main">
                 <img src="/martinique.png" className="w-full h-full object-cover opacity-90" alt="Vision" />
              </div>
           </div>
@@ -749,7 +771,7 @@ const NodeCard = ({
       dragConstraints={constraints}
       style={{ x, y }}
       whileDrag={{ scale: 1.05, zIndex: 50, cursor: 'grabbing' }}
-      className={`absolute ${width} bg-white/5 p-2 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl`}
+      className={`absolute ${width} bg-bg-card p-2 rounded-3xl border border-border-subtle shadow-2xl backdrop-blur-xl`}
     >
       <div className={`relative ${aspect} rounded-2xl overflow-hidden bg-black`}>
         {type === 'video' ? (
@@ -759,7 +781,7 @@ const NodeCard = ({
         ) : (
           <img src={content} className="w-full h-full object-cover pointer-events-none" alt="" />
         )}
-        <div className={`absolute top-3 left-3 px-2 py-1 bg-${color}-500/80 backdrop-blur-md rounded-lg text-[8px] font-bold uppercase tracking-widest text-white`}>
+        <div className={`absolute top-3 left-3 px-2 py-1 bg-${color}-500/80 backdrop-blur-md rounded-lg text-[8px] font-bold uppercase tracking-widest text-text-main`}>
           {label}
         </div>
       </div>
@@ -851,24 +873,24 @@ const DraggableCanvas = ({ images }: { images: string[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[800px] md:h-[700px] bg-black/40 rounded-[40px] md:rounded-[80px] overflow-hidden border border-white/5 cursor-grab active:cursor-grabbing group/canvas shadow-inner">
+    <div ref={containerRef} className="relative w-full h-[900px] md:h-[850px] bg-pg-bg rounded-[40px] md:rounded-[80px] overflow-hidden border border-border-subtle cursor-grab active:cursor-grabbing group/canvas">
 
       
       {/* Background Grid */}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, var(--color-pg-dot) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       
       {/* Dynamic Bezier Connections */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         <motion.path
           d={path1D}
           fill="transparent"
-          stroke="rgba(255, 255, 255, 0.2)"
+          stroke="var(--color-pg-line)"
           strokeWidth="2"
         />
         <motion.path
           d={path2D}
           fill="transparent"
-          stroke="rgba(255, 255, 255, 0.2)"
+          stroke="var(--color-pg-line)"
           strokeWidth="2"
         />
       </svg>
@@ -908,7 +930,7 @@ const DraggableCanvas = ({ images }: { images: string[] }) => {
         />
       )}
       
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-black/40 border border-white/10 rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400 pointer-events-none">
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-bg-card border border-border-subtle rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-accent pointer-events-none">
         <Zap size={14} className="animate-pulse" /> Playground Interactif
       </div>
     </div>
@@ -920,13 +942,13 @@ const ProjectDetailPage = () => {
   const project = PROJECTS.find(p => p.id === Number(id));
   useEffect(() => window.scrollTo(0, 0), []);
 
-  if (!project) return <div className="pt-40 text-center text-white">Projet non trouvé.</div>;
+  if (!project) return <div className="pt-40 text-center text-text-main">Projet non trouvé.</div>;
 
   return (
-    <div className="pt-40 pb-20 px-6 min-h-screen text-white bg-primary-dark">
+    <div className="pt-40 pb-20 px-6 min-h-screen text-text-main bg-bg-base">
       <div className="max-w-7xl mx-auto">
-        <Link to="/portfolio" className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors mb-12 group no-underline uppercase text-xs font-bold tracking-widest">
-          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white transition-colors">
+        <Link to="/portfolio" className="inline-flex items-center gap-2 text-text-muted hover:text-text-main transition-colors mb-12 group no-underline uppercase text-xs font-bold tracking-widest">
+          <div className="w-8 h-8 rounded-full border border-border-subtle flex items-center justify-center group-hover:border-white transition-colors">
             <X size={14} className="rotate-45" />
           </div>
           Retour au Portfolio
@@ -939,18 +961,18 @@ const ProjectDetailPage = () => {
             
             <div className="space-y-12 mt-16">
               <section>
-                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Le Challenge</h2>
-                <p className="text-2xl text-white/80 leading-relaxed font-light">{project.challenge}</p>
+                <h2 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">Le Challenge</h2>
+                <p className="text-2xl text-text-main/80 leading-relaxed font-light">{project.challenge}</p>
               </section>
               <section>
-                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">La Solution</h2>
-                <p className="text-xl text-slate-400 leading-relaxed font-light">{project.solution}</p>
+                <h2 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">La Solution</h2>
+                <p className="text-xl text-text-muted leading-relaxed font-light">{project.solution}</p>
               </section>
               <section>
-                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Technologies</h2>
+                <h2 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">Technologies</h2>
                 <div className="flex flex-wrap gap-3">
                   {project.techs.map((tech, i) => (
-                    <span key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm font-medium">{tech}</span>
+                    <span key={i} className="px-4 py-2 bg-bg-card border border-border-subtle rounded-full text-sm font-medium">{tech}</span>
                   ))}
                 </div>
               </section>
@@ -958,17 +980,17 @@ const ProjectDetailPage = () => {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="sticky top-40">
-            <div className="relative aspect-[4/5] rounded-[60px] overflow-hidden border border-white/10 group shadow-2xl">
+            <div className="relative aspect-[4/5] rounded-[60px] overflow-hidden border border-border-subtle group shadow-2xl">
               <img src={project.image} className="w-full h-full object-cover" alt={project.title} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
             </div>
           </motion.div>
         </div>
-
-        <section className="py-24 border-t border-white/5">
-           <DraggableCanvas images={project.detailImages || []} />
-        </section>
       </div>
+
+      <section className="py-24 border-t border-border-subtle px-4 md:px-12 max-w-[1800px] mx-auto">
+         <DraggableCanvas images={project.detailImages || []} />
+      </section>
     </div>
   );
 };
@@ -983,7 +1005,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="pt-40 pb-20 px-6 min-h-screen text-white bg-primary-dark overflow-hidden relative">
+    <div className="pt-40 pb-20 px-6 min-h-screen text-text-main bg-bg-base overflow-hidden relative">
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-600/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -994,17 +1016,17 @@ const ContactPage = () => {
             <h1 className="text-5xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter mb-8 uppercase">
               PARLONS DE VOTRE <br/><span className="text-gradient">PROCHAIN PROJET</span>
             </h1>
-            <p className="text-xl text-slate-400 leading-relaxed mb-12 max-w-lg font-light">
+            <p className="text-xl text-text-muted leading-relaxed mb-12 max-w-lg font-light">
               Que vous ayez une idée précise ou simplement une vision, nous sommes là pour transformer vos ambitions en réalité digitale.
             </p>
 
             <div className="space-y-8 mb-12">
               <div className="flex items-center gap-6 group">
-                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-blue-accent transition-colors">
+                <div className="w-14 h-14 rounded-2xl bg-bg-card border border-border-subtle flex items-center justify-center group-hover:border-blue-accent transition-colors">
                   <Mail className="text-blue-accent" size={24} />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Email Professionnel</div>
+                  <div className="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Email Professionnel</div>
                   <div className="text-xl font-medium">contact@madadev.com</div>
                 </div>
               </div>
@@ -1012,13 +1034,13 @@ const ContactPage = () => {
                 href="https://www.google.com/maps/place/Martinique/@14.6415,-61.0242,11z" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center gap-6 group no-underline text-white cursor-pointer"
+                className="flex items-center gap-6 group no-underline text-text-main cursor-pointer"
               >
-                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-emerald-accent transition-colors">
+                <div className="w-14 h-14 rounded-2xl bg-bg-card border border-border-subtle flex items-center justify-center group-hover:border-emerald-accent transition-colors">
                   <Globe className="text-emerald-accent" size={24} />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Localisation</div>
+                  <div className="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Localisation</div>
                   <div className="text-xl font-medium group-hover:text-emerald-accent transition-colors">Martinique, Antilles Françaises</div>
                 </div>
               </a>
@@ -1029,9 +1051,9 @@ const ContactPage = () => {
                 { icon: Linkedin, href: "#", color: "hover:text-blue-400" },
                 { icon: Instagram, href: "#", color: "hover:text-pink-400" },
                 { icon: Twitter, href: "#", color: "hover:text-sky-400" },
-                { icon: Github, href: "#", color: "hover:text-slate-400" }
+                { icon: Github, href: "#", color: "hover:text-text-muted" }
               ].map((social, i) => (
-                <a key={i} href={social.href} className={`w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-all hover:bg-white/10 ${social.color}`}>
+                <a key={i} href={social.href} className={`w-12 h-12 rounded-xl bg-bg-card border border-border-subtle flex items-center justify-center transition-all hover:bg-white/10 ${social.color}`}>
                   <social.icon size={20} />
                 </a>
               ))}
@@ -1042,38 +1064,38 @@ const ContactPage = () => {
             initial={{ opacity: 0, y: 50 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white/5 border border-white/10 rounded-[40px] p-8 md:p-12 backdrop-blur-xl"
+            className="bg-bg-card border border-border-subtle rounded-[40px] p-8 md:p-12 backdrop-blur-xl"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Nom Complet</label>
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest ml-1">Nom Complet</label>
                   <input 
                     type="text" 
                     required
                     placeholder="John Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-white"
+                    className="w-full bg-bg-card border border-border-subtle rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-text-main"
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Email</label>
+                  <label className="text-xs font-bold text-text-muted uppercase tracking-widest ml-1">Email</label>
                   <input 
                     type="email" 
                     required
                     placeholder="john@example.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-white"
+                    className="w-full bg-bg-card border border-border-subtle rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-text-main"
                     onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Sujet</label>
+                <label className="text-xs font-bold text-text-muted uppercase tracking-widest ml-1">Sujet</label>
                 <input 
                   type="text" 
                   required
                   placeholder="Projet de Développement Web"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-white"
+                  className="w-full bg-bg-card border border-border-subtle rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors text-text-main"
                   onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
                 />
               </div>
@@ -1083,7 +1105,7 @@ const ContactPage = () => {
                   rows={5}
                   required
                   placeholder="Dites-nous en plus sur vos besoins..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors resize-none text-white"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-blue-accent transition-colors resize-none text-text-main"
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                 />
               </div>
@@ -1115,11 +1137,31 @@ declare global {
   }
 }
 
+// Hook pour la gestion du thème
+const useTheme = () => {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('light-theme');
+    } else {
+      root.classList.remove('light-theme');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  return { theme, toggleTheme };
+};
+
 export default function App() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <Router>
-      <div className="relative bg-primary-dark font-sans selection:bg-accent-teal selection:text-black min-h-screen text-white">
-        <Navbar />
+      <div className="relative bg-bg-base font-sans selection:bg-blue-accent/30 selection:text-text-main min-h-screen text-text-main transition-colors duration-500">
+        <Navbar theme={theme} toggleTheme={toggleTheme} />
         <PersistentRobot />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -1131,13 +1173,13 @@ export default function App() {
           <Route path="/expertise/mobile" element={<MobileExpertise />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
-        <footer className="py-20 px-12 bg-primary-dark text-white relative z-10">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12 text-white">
-            <div className="max-w-sm text-white">
-              <div className="flex items-center gap-3 mb-6 text-2xl font-display font-bold uppercase tracking-tighter text-white">
+        <footer className="py-20 px-12 bg-bg-base text-text-main relative z-10 border-t border-border-subtle">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+            <div className="max-w-sm">
+              <div className="flex items-center gap-3 mb-6 text-2xl font-display font-bold uppercase tracking-tighter">
                 <img src="/logo.png" alt="MADADEV Logo" className="h-8 w-auto" />MADADEV
               </div>
-              <p className="text-slate-500 mb-8 leading-relaxed text-sm text-white">L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.</p>
+              <p className="text-text-muted mb-8 leading-relaxed text-sm">L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.</p>
             </div>
           </div>
         </footer>
