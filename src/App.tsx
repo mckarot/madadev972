@@ -397,7 +397,9 @@ const Home = () => {
               </div>
               <div className="mt-8 flex items-end justify-between text-white">
                 <div className="text-white"><div className="text-4xl font-bold font-display tracking-tight text-white">150+</div><div className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold text-white">Projets Livrés</div></div>
-                <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all text-white"><ArrowRight size={20} className="text-white"/></Link>
+                <Link to="/portfolio" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-white transition-all">
+                  <ArrowRight size={20} />
+                </Link>
               </div>
             </div>
           </div>
@@ -688,7 +690,9 @@ const PortfolioPage = () => {
                   <h3 className="text-3xl font-display font-black text-white mb-6 leading-none uppercase">{project.title}</h3>
                   <div className="flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 text-white">
                     <span className="text-sm text-white/50 font-medium text-white">Découvrir l'étude de cas</span>
-                    <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center hover:scale-110 transition-all text-white"><Eye size={20} className="text-black text-white"/></div>
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-all shadow-lg">
+                      <Eye size={20} className="text-black" />
+                    </div>
                   </div>
                 </div>
               </motion.div>
