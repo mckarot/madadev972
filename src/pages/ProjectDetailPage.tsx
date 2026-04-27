@@ -3,6 +3,7 @@ import { motion, useMotionValue, useTransform } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
 import { X, Zap, Eye } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
+import { useSEO } from '../hooks/useSEO';
 
 const NodeCard = memo(({ 
   x, y, 
@@ -142,6 +143,12 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
 export const ProjectDetailPage = () => {
   const { id } = useParams();
   const project = PROJECTS.find(p => p.id === Number(id));
+
+  useSEO(
+    project ? `Projet ${project.title}` : "Détails du Projet",
+    project ? `${project.title} - ${project.challenge}. Une réalisation signée MADADEV.` : "Découvrez les détails de nos réalisations digitales."
+  );
+
   useEffect(() => window.scrollTo(0, 0), []);
 
   if (!project) return <div className="pt-40 text-center text-text-main">Projet non trouvé.</div>;

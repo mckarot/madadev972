@@ -3,8 +3,13 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Eye } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
+import { useSEO } from '../hooks/useSEO';
 
 export const PortfolioPage = () => {
+  useSEO(
+    "Nos Projets Signature",
+    "Découvrez les réalisations de MADADEV : applications mobiles Flutter, sites web haute performance et designs immersifs pour nos clients aux Antilles."
+  );
   useEffect(() => window.scrollTo(0, 0), []);
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen text-text-main bg-bg-base">

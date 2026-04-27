@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Globe, Linkedin, Instagram, Twitter, Github, Send } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 export const ContactPage = () => {
+  useSEO(
+    "Contactez l'Agence",
+    "Prêt à lancer votre prochain projet digital ? Contactez MADADEV pour une expertise en développement Web, Mobile et Design en Martinique."
+  );
   useEffect(() => window.scrollTo(0, 0), []);
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
 

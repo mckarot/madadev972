@@ -6,8 +6,13 @@ import { RobotIntro } from '../components/Robot/RobotIntro';
 import { ServiceCard, SectionHeading } from '../components/Shared';
 import { TechStackScroll } from '../components/TechStackScroll';
 import { PROJECTS } from '../data/projects';
+import { useSEO } from '../hooks/useSEO';
 
 export const Home = () => {
+  useSEO(
+    "Excellence Digitale en Martinique",
+    "MADADEV propulse votre entreprise avec des solutions web et mobiles sur-mesure. Expertise Flutter, Next.js et UX/UI Design aux Antilles."
+  );
   const targetRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [mouseX, setMouseX] = useState(0.5);

@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { TechStackScroll } from '../components/TechStackScroll';
+import { useSEO } from '../hooks/useSEO';
 
 export const AgencyPage = () => {
+  useSEO(
+    "L'Agence Digitale de Martinique",
+    "Découvrez l'histoire de MADADEV. Une fusion entre ingénierie de pointe et créativité caribéenne pour accompagner les entreprises locales."
+  );
   useEffect(() => window.scrollTo(0, 0), []);
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen text-text-main bg-bg-base">

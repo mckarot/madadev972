@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Code2, Palette, Smartphone, CheckCircle2 } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) => {
   useEffect(() => window.scrollTo(0, 0), []);
@@ -24,40 +25,63 @@ const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) 
   );
 };
 
-export const WebExpertise = () => (
-  <ExpertiseLayout title={<>Web <br/><span className="text-gradient text-text-main">Architectures</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
-      <div className="space-y-8 text-text-main">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent text-text-main">Architecture Cluster-Label</h2>
-        <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Bâtir des architectures robustes, basées sur des clusters scalables pour une disponibilité de 99.9%.</p>
-        <ul className="space-y-4 text-text-main">
-          {["Next.js & React Frontend", "Microservices Node.js", "Déploiement Docker & Kubernetes", "SEO Technique Pro"].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-slate-300 text-text-main"><CheckCircle2 size={20} className="text-blue-accent text-text-main"/> {item}</li>
-          ))}
-        </ul>
+export const WebExpertise = () => {
+  useSEO(
+    "Expertise Web Performance",
+    "Solutions web ultra-rapides avec Next.js et React. Optimisation SEO locale pour les PME en Martinique."
+  );
+  return (
+    <ExpertiseLayout title={<>Solutions <br/><span className="text-gradient text-text-main">Web Performance</span></>} subtitle="Développement Web" icon={Code2} color="#60a5fa">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
+        <div className="space-y-8 text-text-main">
+          <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-blue-accent text-text-main">Architectures Modernes</h2>
+          <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Conception de sites ultra-rapides et sécurisés, optimisés pour offrir la meilleure expérience utilisateur à vos clients et booster votre visibilité.</p>
+          <ul className="space-y-4 text-text-main">
+            {[
+              "Next.js & React pour une fluidité totale", 
+              "Optimisation SEO Locale & Technique", 
+              "Hébergement Haute Performance", 
+              "Interface d'administration sur-mesure"
+            ].map((item, i) => (
+              <li key={i} className="flex items-center gap-3 text-slate-300 text-text-main"><CheckCircle2 size={20} className="text-blue-accent text-text-main"/> {item}</li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
-  </ExpertiseLayout>
-);
+    </ExpertiseLayout>
+  );
+};
 
-export const DesignExpertise = () => (
-  <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-text-main">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
-      <div className="space-y-8 text-text-main">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent text-text-main">L'Émotion par le Design</h2>
-        <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Une interface fluide est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle.</p>
+export const DesignExpertise = () => {
+  useSEO(
+    "UX / UI Design Immersif",
+    "Conception d'interfaces fluides et immersives. Nous créons des parcours utilisateurs naturels et engageants pour vos produits digitaux."
+  );
+  return (
+    <ExpertiseLayout title={<>Interfaces <br/><span className="text-gradient text-text-main">Ultra Fluides</span></>} subtitle="UX / UI Design" icon={Palette} color="#34d399">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
+        <div className="space-y-8 text-text-main">
+          <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-emerald-accent text-text-main">L'Émotion par le Design</h2>
+          <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Une interface fluide est invisible. Nous concevons des parcours utilisateurs où chaque interaction semble naturelle.</p>
+        </div>
       </div>
-    </div>
-  </ExpertiseLayout>
-);
+    </ExpertiseLayout>
+  );
+};
 
-export const MobileExpertise = () => (
-  <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-text-main">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
-      <div className="space-y-8 text-text-main">
-        <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent text-text-main">Expertise Native Flutter</h2>
-        <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">En tant que développeur Flutter, je conçois des applications avec une fluidité de 120Hz et un temps de développement optimisé.</p>
+export const MobileExpertise = () => {
+  useSEO(
+    "Développement Mobile Flutter",
+    "Apps iOS et Android performantes avec une seule base de code. Fluidité 120Hz et expérience native haut de gamme."
+  );
+  return (
+    <ExpertiseLayout title={<>Flutter <br/><span className="text-gradient text-text-main">Performance</span></>} subtitle="Apps iOS & Android" icon={Smartphone} color="#818cf8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-text-main">
+        <div className="space-y-8 text-text-main">
+          <h2 className="text-3xl font-bold font-display uppercase tracking-wider text-indigo-accent text-text-main">Multi-Plateforme Natif</h2>
+          <p className="text-xl text-text-muted leading-relaxed font-light text-text-main">Grâce à la puissance de Flutter, je développe votre application simultanément pour <strong>iOS et Android</strong>. Une seule base de code pour une présence totale, avec une fluidité native exceptionnelle et des délais de mise sur le marché réduits.</p>
+        </div>
       </div>
-    </div>
-  </ExpertiseLayout>
-);
+    </ExpertiseLayout>
+  );
+};
