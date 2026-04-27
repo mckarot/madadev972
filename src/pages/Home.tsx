@@ -53,7 +53,7 @@ export const Home = () => {
             <h1 className="font-display font-extrabold text-[64px] md:text-[84px] leading-[1.1] md:leading-[0.95] tracking-tighter mb-8 uppercase text-text-main">L'EXCELLENCE <br /><span className="text-gradient italic pb-2 inline-block text-text-main">DIGITALE</span></h1>
             <p className="text-lg text-text-muted max-w-lg mb-10 leading-relaxed font-light text-text-main">Propulsez votre entreprise avec des solutions web et mobiles sur-mesure. Une ingénierie de haut niveau pour des performances exceptionnelles.</p>
             <div className="flex gap-4 text-text-main">
-              <button className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105 cursor-pointer">Démarrer un projet</button>
+              <Link to="/contact" className="px-8 py-4 bg-white text-black font-bold rounded-xl transition-transform hover:scale-105 cursor-pointer no-underline inline-block">Démarrer un projet</Link>
               <Link to="/portfolio" className="px-8 py-4 bg-bg-card border border-border-subtle rounded-xl font-bold hover:bg-white/10 transition-all hover:scale-105 text-text-main no-underline cursor-pointer">Voir le portfolio</Link>
             </div>
           </motion.div>

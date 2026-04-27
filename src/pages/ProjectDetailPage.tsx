@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
-import { motion, useMotionValue, useTransform } from 'motion/react';
+import { motion, useMotionValue, useTransform, useSpring } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
 import { X, Zap, Eye } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
@@ -149,9 +149,28 @@ export const ProjectDetailPage = () => {
     project ? `${project.title} - ${project.challenge}. Une réalisation signée MADADEV.` : "Découvrez les détails de nos réalisations digitales."
   );
 
-  useEffect(() => window.scrollTo(0, 0), []);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const springConfig = { damping: 40, stiffness: 120, mass: 1 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
 
-  if (!project) return <div className="pt-40 text-center text-text-main">Projet non trouvé.</div>;
+  const tX = useTransform(springX, [-300, 300], [20, -20]);
+  const tY = useTransform(springY, [-300, 300], [20, -20]);
+
+  const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left - rect.width / 2;
+    const mouseY = e.clientY - rect.top - rect.height / 2;
+    x.set(mouseX);
+    y.set(mouseY);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <div className="pt-40 pb-20 px-6 min-h-screen text-text-main bg-bg-base">
@@ -188,11 +207,52 @@ export const ProjectDetailPage = () => {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="sticky top-40">
-            <div className="relative aspect-[4/5] rounded-[60px] overflow-hidden border border-border-subtle group shadow-2xl">
-              <img src={project.image} className="w-full h-full object-cover" alt={project.title} />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
-            </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.5, x: 100 }} 
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ 
+              type: "spring", 
+              damping: 12, 
+              stiffness: 80, 
+              mass: 1.2,
+              delay: 0.2
+            }}
+            className="sticky top-40"
+            onMouseMove={handleMouse}
+            onMouseLeave={handleMouseLeave}
+          >
+            <motion.div 
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ scale: 1.02 }}
+              className="relative aspect-[4/5] rounded-[60px] overflow-hidden border border-white/10 group shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] bg-bg-card transition-colors duration-500 hover:border-white/40"
+            >
+              {/* Effet de brillance au chargement */}
+              <motion.div 
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{ duration: 1.5, delay: 0.8, ease: "easeInOut" }}
+                className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+              />
+
+              <motion.img 
+                src={project.image} 
+                initial={{ scale: 1.4 }}
+                animate={{ scale: 1.1 }}
+                transition={{ duration: 2, ease: "easeOut" }}
+                style={{ x: tX, y: tY, scale: 1.2 }}
+                className="w-full h-full object-cover" 
+                alt={project.title} 
+              />
+              
+              {/* Overlay de couleur subtil */}
+              <div 
+                className="absolute inset-0 opacity-20 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none"
+                style={{ backgroundColor: project.color }}
+              />
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-all duration-700" />
+            </motion.div>
           </motion.div>
         </div>
       </div>
