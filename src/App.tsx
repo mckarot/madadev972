@@ -64,7 +64,7 @@ export default function App() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
             <div className="max-w-sm">
               <div className="flex items-center gap-3 mb-6 text-2xl font-display font-bold uppercase tracking-tighter">
-                <img src="/logo.png" alt="MADADEV Logo" className="h-8 w-auto" />MADADEV
+                <img src="/logo_sans_lettres.png" alt="MADADEV Logo" className="h-8 w-auto" />MADADEV
               </div>
               <p className="text-text-muted mb-8 leading-relaxed text-sm">
                 L'agence digitale premium en Martinique. Expertise Flutter & Architectures Cloud.

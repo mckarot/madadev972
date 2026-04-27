@@ -76,7 +76,7 @@ export const ContactPage = () => {
             initial={{ opacity: 0, y: 50 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-bg-card border border-border-subtle rounded-[40px] p-8 md:p-12 backdrop-blur-xl"
+            className="bg-bg-card border border-border-subtle rounded-[40px] p-8 md:p-12 backdrop-blur-xl relative overflow-hidden"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -129,6 +129,15 @@ export const ContactPage = () => {
                 <Send size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </form>
+
+            <div className="flex flex-col items-center mt-12 pt-12 border-t border-white/5">
+              <motion.img 
+                src="/logo.png" 
+                alt="MADADEV Logo" 
+                whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0], transition: { duration: 0.5 } }}
+                className="h-24 w-auto drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]" 
+              />
+            </div>
           </motion.div>
         </div>
       </div>
