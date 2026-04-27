@@ -349,6 +349,8 @@ const Home = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [mouseX, setMouseX] = useState(0.5);
   const [width, setWidth] = useState(0);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -368,6 +370,7 @@ const Home = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     const percent = e.clientX / window.innerWidth;
     setMouseX(percent);
+    setCursorPos({ x: e.clientX, y: e.clientY });
   };
   return (
     <>
@@ -425,8 +428,32 @@ const Home = () => {
 
         <div 
           onMouseMove={handleMouseMove}
-          className="mx-4 md:mx-10 rounded-[40px] md:rounded-[80px] overflow-hidden relative bg-white/5 border border-white/5"
+          onMouseEnter={() => setIsHoveringCarousel(true)}
+          onMouseLeave={() => setIsHoveringCarousel(false)}
+          className="mx-4 md:mx-10 rounded-[40px] md:rounded-[80px] overflow-hidden relative bg-white/5 border border-white/5 cursor-none [&_*]:cursor-none group/carousel"
         >
+          <AnimatePresence>
+            {isHoveringCarousel && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  pointerEvents: 'none',
+                  zIndex: 100,
+                  x: cursorPos.x - 24,
+                  y: cursorPos.y - 24,
+                }}
+                transition={{ type: 'spring', damping: 25, stiffness: 250, mass: 0.1 }}
+                className="hidden md:block"
+              >
+                <img src="/le-curseur-lateral.png" className="w-12 h-12 object-contain drop-shadow-2xl" alt="Scroll Cursor" />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <motion.div 
             ref={carouselRef}
             animate={{ x: -mouseX * width }}
