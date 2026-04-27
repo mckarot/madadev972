@@ -247,7 +247,7 @@ export const ProjectDetailPage = () => {
               
               {/* Overlay de couleur subtil */}
               <div 
-                className="absolute inset-0 opacity-20 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none"
+                className="absolute inset-0 opacity-5 group-hover:opacity-0 transition-opacity duration-700 pointer-events-none"
                 style={{ backgroundColor: project.color }}
               />
               

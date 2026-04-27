@@ -134,7 +134,7 @@ export const Home = () => {
               >
                 <Link to={`/portfolio/${project.id}`} className="block h-full no-underline">
                   <img src={project.image} className="w-full h-full object-cover transition-all duration-700" alt={project.title} />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all" />
                   <div className="absolute bottom-0 p-10">
                     <span className="text-xs font-bold uppercase tracking-widest mb-2 block" style={{ color: project.color }}>{project.category}</span>
                     <h3 className="text-3xl md:text-4xl font-display font-black uppercase text-text-main leading-none">{project.title}</h3>
