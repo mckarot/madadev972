@@ -7,24 +7,25 @@ import { PersistentRobot } from './components/Robot/PersistentRobot';
 import { PageLoader } from './components/PageLoader';
 import { useTheme } from './hooks/useTheme';
 
+// Fonctions de chargement pour le prefetching
+export const prefetchHome = () => import('./pages/Home');
+export const prefetchPortfolio = () => import('./pages/PortfolioPage');
+export const prefetchProjectDetail = () => import('./pages/ProjectDetailPage');
+export const prefetchAgency = () => import('./pages/AgencyPage');
+export const prefetchContact = () => import('./pages/ContactPage');
+export const prefetchExpertise = () => import('./pages/ExpertisePages');
+
 // Chargement Lazy des pages
-const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
-const PortfolioPage = lazy(() => import('./pages/PortfolioPage').then(m => ({ default: m.PortfolioPage })));
-const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage').then(m => ({ default: m.ProjectDetailPage })));
-const AgencyPage = lazy(() => import('./pages/AgencyPage').then(m => ({ default: m.AgencyPage })));
-const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const Home = lazy(() => prefetchHome().then(m => ({ default: m.Home })));
+const PortfolioPage = lazy(() => prefetchPortfolio().then(m => ({ default: m.PortfolioPage })));
+const ProjectDetailPage = lazy(() => prefetchProjectDetail().then(m => ({ default: m.ProjectDetailPage })));
+const AgencyPage = lazy(() => prefetchAgency().then(m => ({ default: m.AgencyPage })));
+const ContactPage = lazy(() => prefetchContact().then(m => ({ default: m.ContactPage })));
 
 // Expertise pages
-const Expertise = lazy(() => import('./pages/ExpertisePages').then(m => ({ 
-  WebExpertise: m.WebExpertise, 
-  DesignExpertise: m.DesignExpertise, 
-  MobileExpertise: m.MobileExpertise 
-})));
-
-// Helper pour le lazy loading des experts car ils sont groupés
-const WebExpertise = lazy(() => import('./pages/ExpertisePages').then(m => ({ default: m.WebExpertise })));
-const DesignExpertise = lazy(() => import('./pages/ExpertisePages').then(m => ({ default: m.DesignExpertise })));
-const MobileExpertise = lazy(() => import('./pages/ExpertisePages').then(m => ({ default: m.MobileExpertise })));
+const WebExpertise = lazy(() => prefetchExpertise().then(m => ({ default: m.WebExpertise })));
+const DesignExpertise = lazy(() => prefetchExpertise().then(m => ({ default: m.DesignExpertise })));
+const MobileExpertise = lazy(() => prefetchExpertise().then(m => ({ default: m.MobileExpertise })));
 
 // Déclarations globales pour TypeScript (Spline Viewer)
 declare global {

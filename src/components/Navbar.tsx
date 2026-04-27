@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
+import { prefetchPortfolio, prefetchAgency, prefetchContact, prefetchExpertise } from '../App';
 
 interface NavbarProps {
   theme: string;
@@ -19,10 +20,11 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
   }, []);
 
   const navLinks = [
-    { name: 'Expertise', href: '/#services' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'L\'Agence', href: '/agence' },
+    { name: 'Expertise', href: '/#services', prefetch: prefetchExpertise },
+    { name: 'Portfolio', href: '/portfolio', prefetch: prefetchPortfolio },
+    { name: 'L\'Agence', href: '/agence', prefetch: prefetchAgency },
   ];
+
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'py-4 bg-bg-base/80 backdrop-blur-xl border-border-subtle' : 'py-8 bg-transparent border-transparent'}`}>
@@ -35,7 +37,13 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link, idx) => (
             <motion.div key={link.name} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-              <Link to={link.href} className="text-text-muted hover:text-text-main font-medium transition-colors relative group text-sm no-underline">{link.name}</Link>
+              <Link 
+                to={link.href} 
+                onMouseEnter={() => link.prefetch && link.prefetch()}
+                className="text-text-muted hover:text-text-main font-medium transition-colors relative group text-sm no-underline"
+              >
+                {link.name}
+              </Link>
             </motion.div>
           ))}
           
@@ -48,7 +56,13 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </motion.button>
 
-          <Link to="/contact" className="px-5 py-2.5 bg-bg-card border border-border-subtle rounded-full text-text-main text-sm font-medium cursor-pointer hover:bg-white/10 transition-all no-underline">Contactez-nous</Link>
+          <Link 
+            to="/contact" 
+            onMouseEnter={() => prefetchContact()}
+            className="px-5 py-2.5 bg-bg-card border border-border-subtle rounded-full text-text-main text-sm font-medium cursor-pointer hover:bg-white/10 transition-all no-underline"
+          >
+            Contactez-nous
+          </Link>
         </div>
 
         <div className="flex items-center gap-4 md:hidden">

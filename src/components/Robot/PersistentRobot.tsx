@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { motion } from 'motion/react';
 
-export const PersistentRobot = () => {
+export const PersistentRobot = memo(() => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isFloating, setIsFloating] = useState(true);
   const [heroRect, setHeroRect] = useState<DOMRect | null>(null);
@@ -136,4 +136,4 @@ export const PersistentRobot = () => {
       {isFloating && <div className="absolute inset-0 bg-blue-500/0 group-hover:bg-blue-500/5 transition-colors pointer-events-none" />}
     </motion.div>
   );
-};
+});

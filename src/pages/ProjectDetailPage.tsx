@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
 import { X, Zap, Eye } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 
-const NodeCard = ({ 
+const NodeCard = memo(({ 
   x, y, 
   orientation = 'landscape', 
   label, 
@@ -48,9 +48,9 @@ const NodeCard = ({
       )}
     </motion.div>
   );
-}
+});
 
-const DraggableCanvas = ({ images }: { images: string[] }) => {
+const DraggableCanvas = memo(({ images }: { images: string[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
   const x1 = useMotionValue(50);
@@ -67,16 +67,17 @@ const DraggableCanvas = ({ images }: { images: string[] }) => {
   };
 
   const isMobile = window.innerWidth < 768;
-  const getDims = (orientation: 'portrait' | 'landscape') => {
+  const getDims = useCallback((orientation: 'portrait' | 'landscape') => {
     const isPortrait = orientation === 'portrait';
     const w = isMobile ? (isPortrait ? 220 : 280) : (isPortrait ? 300 : 400);
     const h = isPortrait ? w * (4/3) : w / 1.77;
     return { w, h };
-  };
+  }, [isMobile]);
 
   const d1 = getDims(nodeConfig.n1.orientation);
   const d2 = getDims(nodeConfig.n2.orientation);
   const d3 = getDims(nodeConfig.n3.orientation);
+
 
   const p1_out_x = useTransform(x1, v => v + d1.w);
   const p1_out_y = useTransform(y1, v => v + d1.h / 2 + 8);
@@ -136,7 +137,7 @@ const DraggableCanvas = ({ images }: { images: string[] }) => {
       </div>
     </div>
   );
-};
+});
 
 export const ProjectDetailPage = () => {
   const { id } = useParams();
