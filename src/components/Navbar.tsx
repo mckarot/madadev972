@@ -20,7 +20,7 @@ export const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
   }, []);
 
   const navLinks = [
-    { name: 'Expertise', href: '/#services', prefetch: prefetchExpertise },
+    { name: 'Expertise', href: '/', prefetch: prefetchExpertise },
     { name: 'Portfolio', href: '/portfolio', prefetch: prefetchPortfolio },
     { name: 'L\'Agence', href: '/agence', prefetch: prefetchAgency },
   ];

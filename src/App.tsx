@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { PersistentRobot } from './components/Robot/PersistentRobot';
 import { PageLoader } from './components/PageLoader';
+import { ScrollToHash } from './components/ScrollToHash';
 import { useTheme } from './hooks/useTheme';
 
 // Fonctions de chargement pour le prefetching
@@ -41,6 +42,7 @@ export default function App() {
 
   return (
     <Router>
+      <ScrollToHash />
       <div className="relative bg-bg-base font-sans selection:bg-blue-accent/30 selection:text-text-main min-h-screen text-text-main transition-colors duration-500">
         <Navbar theme={theme} toggleTheme={toggleTheme} />
         <PersistentRobot />

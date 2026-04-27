@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Code2, Palette, Smartphone, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Code2, Palette, Smartphone, CheckCircle2, X } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
 
 const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) => {
@@ -8,6 +9,12 @@ const ExpertiseLayout = ({ title, subtitle, icon: Icon, color, children }: any) 
   return (
     <div className="pt-32 pb-20 px-6 min-h-screen text-text-main bg-bg-base">
       <div className="max-w-7xl mx-auto text-text-main">
+        <Link to="/#hero" className="inline-flex items-center gap-2 text-text-muted hover:text-text-main transition-colors mb-12 group no-underline uppercase text-xs font-bold tracking-widest">
+          <div className="w-10 h-10 rounded-full border border-border-subtle flex items-center justify-center group-hover:border-white transition-colors bg-bg-card/50 backdrop-blur-md">
+            <X size={18} className="rotate-45" />
+          </div>
+          Retour aux services
+        </Link>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24 text-text-main">
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} className="text-text-main">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-bg-card border border-border-subtle text-sm font-bold uppercase tracking-widest mb-8 text-text-main" style={{ color }}><Icon size={18} /> {subtitle}</div>
