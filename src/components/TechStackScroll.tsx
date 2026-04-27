@@ -5,11 +5,11 @@ export const TechStackScroll = () => {
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: targetRef, offset: ["start start", "end end"] });
   const techs = [
-    { name: "Apps iOS & Android", desc: "Une seule application native pour tous les téléphones, fluide et performante.", img: "https://images.unsplash.com/photo-1628277613967-6abca504d0ac?q=80&w=2000" },
-    { name: "Web Performance", desc: "Des sites ultra-rapides optimisés pour Google (SEO) et la conversion.", img: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2000" },
-    { name: "Systèmes Sécurisés", desc: "Une infrastructure robuste et évolutive pour gérer vos données en toute confiance.", img: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2000" },
-    { name: "Hébergement Cloud", desc: "Une mise en ligne stable sur des serveurs haute disponibilité (VPS).", img: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=2000" },
-    { name: "Design Immersif", desc: "Des expériences interactives en 3D pour marquer les esprits de vos clients.", img: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=2000" },
+    { name: "Apps iOS & Android", desc: "Une seule application native pour tous les téléphones, fluide et performante.", img: "/tech-stack/apps.png" },
+    { name: "Web Performance", desc: "Des sites ultra-rapides optimisés pour Google (SEO) et la conversion.", img: "/tech-stack/web.png" },
+    { name: "Systèmes Sécurisés", desc: "Une infrastructure robuste et évolutive pour gérer vos données en toute confiance.", img: "/tech-stack/security.png" },
+    { name: "Hébergement Cloud", desc: "Une mise en ligne stable sur des serveurs haute disponibilité (VPS).", img: "/tech-stack/cloud.png" },
+    { name: "Design Immersif", desc: "Des expériences interactives en 3D pour marquer les esprits de vos clients.", img: "/tech-stack/design.png" },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   
@@ -43,7 +43,7 @@ export const TechStackScroll = () => {
             <motion.div 
               key={activeIndex} 
               initial={{ opacity: 0, scale: 1.1 }} 
-              animate={{ opacity: 0.8, scale: 1 }} 
+              animate={{ opacity: 0.6, scale: 1 }} 
               exit={{ opacity: 0, scale: 0.95 }} 
               transition={{ duration: 0.8 }} 
               className="absolute inset-0 w-full h-full bg-cover bg-center" 
@@ -54,7 +54,7 @@ export const TechStackScroll = () => {
               }} 
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/20 to-transparent text-text-main" />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/40 to-transparent text-text-main" />
         </div>
         <div className="max-w-7xl mx-auto w-full px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-32 relative z-10 text-text-main">
           <div className="lg:col-span-5 text-text-main">
