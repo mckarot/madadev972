@@ -111,13 +111,13 @@ export const Home = () => {
                   left: 0,
                   pointerEvents: 'none',
                   zIndex: 100,
-                  x: cursorPos.x - 24,
-                  y: cursorPos.y - 24,
+                  x: cursorPos.x - 20,
+                  y: cursorPos.y - 20,
                 }}
                 transition={{ type: 'spring', damping: 25, stiffness: 250, mass: 0.1 }}
                 className="hidden md:block"
               >
-                <img src="/le-curseur-lateral.png" className="w-12 h-12 object-contain drop-shadow-2xl" alt="Scroll Cursor" />
+                <img src="/le-curseur-lateral.png" className="w-10 h-10 object-contain drop-shadow-2xl" alt="Scroll Cursor" />
               </motion.div>
             )}
           </AnimatePresence>

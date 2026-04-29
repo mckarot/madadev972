@@ -129,15 +129,15 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[900px] md:h-[850px] bg-black rounded-[40px] md:rounded-[80px] overflow-hidden border border-border-subtle cursor-grab active:cursor-grabbing group/canvas shadow-inner">
-      {/* Vidéo de fond ralentie et assombrie */}
+    <div ref={containerRef} className="relative w-full h-[900px] md:h-[850px] bg-bg-base rounded-[40px] md:rounded-[80px] overflow-hidden border border-border-subtle cursor-grab active:cursor-grabbing group/canvas shadow-inner">
+      {/* Vidéo de fond plus transparente pour s'adapter aux thèmes */}
       <video 
         ref={videoRef}
         autoPlay 
         loop 
         muted 
         playsInline 
-        className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none filter brightness-75"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.20] pointer-events-none"
       >
         <source src="/playground_fond.mp4" type="video/mp4" />
       </video>
