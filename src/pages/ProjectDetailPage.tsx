@@ -53,7 +53,14 @@ const NodeCard = memo(({
 
 const DraggableCanvas = memo(({ images }: { images: string[] }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.75; // Ralentit la vidéo à 75%
+    }
+  }, []);
+
   const x1 = useMotionValue(50);
   const y1 = useMotionValue(100);
   const x2 = useMotionValue(window.innerWidth < 768 ? 50 : 500);
@@ -122,8 +129,20 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[900px] md:h-[850px] bg-pg-bg rounded-[40px] md:rounded-[80px] overflow-hidden border border-border-subtle cursor-grab active:cursor-grabbing group/canvas">
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, var(--color-pg-dot) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+    <div ref={containerRef} className="relative w-full h-[900px] md:h-[850px] bg-black rounded-[40px] md:rounded-[80px] overflow-hidden border border-border-subtle cursor-grab active:cursor-grabbing group/canvas shadow-inner">
+      {/* Vidéo de fond ralentie et assombrie */}
+      <video 
+        ref={videoRef}
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+        className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none filter brightness-75"
+      >
+        <source src="/playground_fond.mp4" type="video/mp4" />
+      </video>
+
+      <div className="absolute inset-0 opacity-[0.1] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, var(--color-pg-dot) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         <motion.path d={path1D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />
         <motion.path d={path2D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />
