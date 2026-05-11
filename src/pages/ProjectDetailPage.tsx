@@ -14,11 +14,12 @@ const NodeCard = memo(({
   color = 'blue',
   hasInput = true,
   hasOutput = true,
-  constraints
+  constraints,
+  onFullscreen
 }: any) => {
   const isPortrait = orientation === 'portrait';
-  const width = isPortrait ? 'w-[220px] md:w-[300px]' : 'w-[280px] md:w-[400px]';
-  const aspect = isPortrait ? 'aspect-[3/4]' : 'aspect-video';
+  const width = isPortrait ? 'w-[200px] md:w-[280px]' : 'w-[280px] md:w-[400px]';
+  const aspect = isPortrait ? 'aspect-[9/20]' : 'aspect-video';
   
   return (
     <motion.div
@@ -31,15 +32,22 @@ const NodeCard = memo(({
     >
       <div className={`relative ${aspect} rounded-2xl overflow-hidden bg-black`}>
         {type === 'video' ? (
-          <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80">
+          <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90">
             <source src={content} type="video/mp4" />
           </video>
         ) : (
           <img src={content} className="w-full h-full object-cover pointer-events-none" alt="" />
         )}
-        <div className={`absolute top-3 left-3 px-2 py-1 bg-${color}-500/80 backdrop-blur-md rounded-lg text-[8px] font-bold uppercase tracking-widest text-text-main`}>
-          {label}
+        <div className={`absolute top-3 left-3 px-2 py-1 bg-${color}-500/80 backdrop-blur-md rounded-lg text-[8px] font-bold uppercase tracking-widest text-text-main flex items-center gap-2`}>
+           <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+           {label}
         </div>
+        <button 
+          onClick={() => onFullscreen(content)}
+          className="absolute bottom-3 right-3 p-2 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full transition-all text-white/50 hover:text-white cursor-pointer z-20"
+        >
+          <Eye size={12} />
+        </button>
       </div>
       {hasInput && (
         <div className={`absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-${color}-500 rounded-full z-10`} />
@@ -51,7 +59,7 @@ const NodeCard = memo(({
   );
 });
 
-const DraggableCanvas = memo(({ images }: { images: string[] }) => {
+const DraggableCanvas = memo(({ images, videos, backgroundVideo, onFullscreenVideo }: { images: string[], videos?: string[], backgroundVideo?: string, onFullscreenVideo: (url: string) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   
@@ -67,6 +75,8 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
   const y2 = useMotionValue(window.innerWidth < 768 ? 350 : 350);
   const x3 = useMotionValue(window.innerWidth < 768 ? 50 : 950);
   const y3 = useMotionValue(window.innerWidth < 768 ? 650 : 150);
+  const x5 = useMotionValue(window.innerWidth < 768 ? 50 : 1300);
+  const y5 = useMotionValue(window.innerWidth < 768 ? 950 : 500);
 
   const nodeConfig = {
     n1: { orientation: 'landscape' as const },
@@ -107,6 +117,28 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
     return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
   });
 
+  const x4 = useMotionValue(window.innerWidth < 768 ? 50 : 1300);
+  const y4 = useMotionValue(window.innerWidth < 768 ? 950 : 400);
+  const p3_out_x = useTransform(x3, v => v + d3.w);
+  const p3_out_y = useTransform(y3, v => v + d3.h / 2 + 8);
+  const p4_in_x = useTransform(x4, v => v);
+  const p4_in_y = useTransform(y4, v => v + d3.h / 2 + 8);
+
+  const path3D = useTransform([p3_out_x, p3_out_y, p4_in_x, p4_in_y], ([x1, y1, x2, y2]) => {
+    const cx = ((x1 as number) + (x2 as number)) / 2;
+    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+  });
+
+  const p4_out_x = useTransform(x4, v => v + d3.w);
+  const p4_out_y = useTransform(y4, v => v + d3.h / 2 + 8);
+  const p5_in_x = useTransform(x5, v => v);
+  const p5_in_y = useTransform(y5, v => v + d3.h / 2 + 8);
+
+  const path4D = useTransform([p4_out_x, p4_out_y, p5_in_x, p5_in_y], ([x1, y1, x2, y2]) => {
+    const cx = ((x1 as number) + (x2 as number)) / 2;
+    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+  });
+
   const [constraints, setConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
 
   useEffect(() => {
@@ -139,18 +171,38 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
         playsInline 
         className="absolute inset-0 w-full h-full object-cover opacity-[0.20] pointer-events-none"
       >
-        <source src="/playground_fond.mp4" type="video/mp4" />
+        <source src={backgroundVideo || "/playground_fond.mp4"} type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 opacity-[0.1] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, var(--color-pg-dot) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         <motion.path d={path1D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />
         <motion.path d={path2D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />
+        {videos && videos.length > 2 && <motion.path d={path3D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />}
+        {videos && videos.length > 3 && <motion.path d={path4D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />}
       </svg>
 
-      {images[0] && <NodeCard x={x1} y={y1} orientation={nodeConfig.n1.orientation} label="Input Image" content={images[0]} color="blue" hasInput={false} constraints={constraints} />}
-      <NodeCard x={x2} y={y2} orientation={nodeConfig.n2.orientation} label="Video Engine" type="video" content="/background.mp4" color="purple" constraints={constraints} />
-      {images[1] && <NodeCard x={x3} y={y3} orientation={nodeConfig.n3.orientation} label="Output Result" content={images[1]} color="emerald" hasOutput={false} constraints={constraints} />}
+      {images[0] && <NodeCard x={x1} y={y1} orientation={nodeConfig.n1.orientation} label="Input Image" content={images[0]} color="blue" hasInput={false} constraints={constraints} onFullscreen={onFullscreenVideo} />}
+      
+      {videos && videos.length > 0 ? (
+        <NodeCard x={x2} y={y2} orientation={nodeConfig.n2.orientation} label="Video Preview" type="video" content={videos[0]} color="purple" constraints={constraints} onFullscreen={onFullscreenVideo} />
+      ) : (
+        <NodeCard x={x2} y={y2} orientation={nodeConfig.n2.orientation} label="Video Engine" type="video" content="/background.mp4" color="purple" constraints={constraints} onFullscreen={onFullscreenVideo} />
+      )}
+
+      {videos && videos.length > 1 ? (
+        <NodeCard x={x3} y={y3} orientation={nodeConfig.n2.orientation} label="Processing..." type="video" content={videos[1]} color="emerald" constraints={constraints} onFullscreen={onFullscreenVideo} />
+      ) : images[1] ? (
+        <NodeCard x={x3} y={y3} orientation={nodeConfig.n3.orientation} label="Output Result" content={images[1]} color="emerald" hasOutput={false} constraints={constraints} onFullscreen={onFullscreenVideo} />
+      ) : null}
+
+      {videos && videos.length > 2 && (
+        <NodeCard x={x4} y={y4} orientation={nodeConfig.n2.orientation} label="Video Result" type="video" content={videos[2]} color="orange" constraints={constraints} onFullscreen={onFullscreenVideo} />
+      )}
+
+      {videos && videos.length > 3 && (
+        <NodeCard x={x5} y={y5} orientation={nodeConfig.n2.orientation} label="Final Output" type="video" content={videos[3]} color="rose" hasOutput={false} constraints={constraints} onFullscreen={onFullscreenVideo} />
+      )}
       
       <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-bg-card border border-border-subtle rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-accent pointer-events-none">
         <Zap size={14} className="animate-pulse" /> Playground Interactif
@@ -161,7 +213,17 @@ const DraggableCanvas = memo(({ images }: { images: string[] }) => {
 
 export const ProjectDetailPage = () => {
   const { id } = useParams();
+  const [fullscreenVideo, setFullscreenVideo] = useState<string | null>(null);
   const project = PROJECTS.find(p => p.id === Number(id));
+  
+  if (!project) {
+    return (
+      <div className="pt-40 pb-20 px-6 min-h-screen text-text-main bg-bg-base flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-display font-black mb-8">PROJET INTROUVABLE</h1>
+        <Link to="/portfolio" className="text-blue-accent hover:underline">Retour au Portfolio</Link>
+      </div>
+    );
+  }
 
   useSEO(
     project ? `Projet ${project.title}` : "Détails du Projet",
@@ -277,8 +339,43 @@ export const ProjectDetailPage = () => {
       </div>
 
       <section className="py-24 border-t border-border-subtle px-4 md:px-12 max-w-[1800px] mx-auto">
-         <DraggableCanvas images={project.detailImages || []} />
+         <DraggableCanvas 
+           images={project.detailImages || []} 
+           videos={project.detailVideos} 
+           backgroundVideo={project.backgroundVideo}
+           onFullscreenVideo={setFullscreenVideo}
+         />
       </section>
+
+      {/* Modal Plein Écran */}
+      {fullscreenVideo && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 md:p-12"
+          onClick={() => setFullscreenVideo(null)}
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative max-w-5xl w-full aspect-video md:aspect-auto md:h-[80vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+            onClick={e => e.stopPropagation()}
+          >
+            <video 
+              autoPlay 
+              loop 
+              controls
+              className="w-full h-full object-contain"
+            >
+              <source src={fullscreenVideo} type="video/mp4" />
+            </video>
+            <button 
+              onClick={() => setFullscreenVideo(null)}
+              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all border border-white/10"
+            >
+              <X size={20} />
+            </button>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
