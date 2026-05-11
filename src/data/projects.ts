@@ -11,6 +11,10 @@ export const PROJECTS = [
     detailImages: [
       "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1000",
       "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1000"
+    ],
+    detailVideos: [
+      "/portfolio/portfolio_1.mp4",
+      "/portfolio/portfolio_2.mp4"
     ]
   },
   { 
@@ -27,10 +31,7 @@ export const PROJECTS = [
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000"
     ],
     detailVideos: [
-      "/portfolio/portfolio_1.mp4",
-      "/portfolio/portfolio_2.mp4",
-      "/portfolio/portfolio_3.mp4",
-      "/portfolio/portfolio_4.mp4"
+      "/portfolio/portfolio_1.mp4"
     ]
   },
   { 

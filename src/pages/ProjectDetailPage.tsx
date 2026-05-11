@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'motion/react';
+import { motion, useMotionValue, useTransform, useSpring, motionValue } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
 import { X, Zap, Eye } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 import { useSEO } from '../hooks/useSEO';
 
 const NodeCard = memo(({ 
-  x, y, 
   orientation = 'landscape', 
   label, 
   type = 'image', 
@@ -15,7 +14,9 @@ const NodeCard = memo(({
   hasInput = true,
   hasOutput = true,
   constraints,
-  onFullscreen
+  onFullscreen,
+  x,
+  y
 }: any) => {
   const isPortrait = orientation === 'portrait';
   const width = isPortrait ? 'w-[200px] md:w-[280px]' : 'w-[280px] md:w-[400px]';
@@ -59,102 +60,99 @@ const NodeCard = memo(({
   );
 });
 
-const DraggableCanvas = memo(({ images, videos, backgroundVideo, onFullscreenVideo }: { images: string[], videos?: string[], backgroundVideo?: string, onFullscreenVideo: (url: string) => void }) => {
+const DynamicPath = memo(({ x1, y1, x2, y2, w1, h1, h2 }: any) => {
+  const path = useTransform([x1, y1, x2, y2], ([vx1, vy1, vx2, vy2]) => {
+    const startX = (vx1 as number) + w1 - 2; 
+    const startY = (vy1 as number) + h1 / 2;
+    const endX = (vx2 as number) + 2;
+    const endY = (vy2 as number) + h2 / 2;
+    
+    const cx = (startX + endX) / 2;
+    return `M ${startX} ${startY} C ${cx} ${startY}, ${cx} ${endY}, ${endX} ${endY}`;
+  });
+
+  return <motion.path d={path} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" strokeLinecap="round" />;
+});
+
+const DraggableCanvas = memo(({ images, videos, onFullscreenVideo }: { images: string[], videos?: string[], onFullscreenVideo: (url: string) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.playbackRate = 0.75; // Ralentit la vidéo à 75%
+      videoRef.current.playbackRate = 0.75;
     }
   }, []);
 
-  const x1 = useMotionValue(50);
-  const y1 = useMotionValue(100);
-  const x2 = useMotionValue(window.innerWidth < 768 ? 50 : 500);
-  const y2 = useMotionValue(window.innerWidth < 768 ? 350 : 350);
-  const x3 = useMotionValue(window.innerWidth < 768 ? 50 : 950);
-  const y3 = useMotionValue(window.innerWidth < 768 ? 650 : 150);
-  const x5 = useMotionValue(window.innerWidth < 768 ? 50 : 1300);
-  const y5 = useMotionValue(window.innerWidth < 768 ? 950 : 500);
-
-  const nodeConfig = {
-    n1: { orientation: 'landscape' as const },
-    n2: { orientation: 'portrait' as const },
-    n3: { orientation: 'landscape' as const }
-  };
-
-  const isMobile = window.innerWidth < 768;
-  const getDims = useCallback((orientation: 'portrait' | 'landscape') => {
-    const isPortrait = orientation === 'portrait';
-    const w = isMobile ? (isPortrait ? 220 : 280) : (isPortrait ? 300 : 400);
-    const h = isPortrait ? w * (4/3) : w / 1.77;
-    return { w, h };
-  }, [isMobile]);
-
-  const d1 = getDims(nodeConfig.n1.orientation);
-  const d2 = getDims(nodeConfig.n2.orientation);
-  const d3 = getDims(nodeConfig.n3.orientation);
-
-
-  const p1_out_x = useTransform(x1, v => v + d1.w);
-  const p1_out_y = useTransform(y1, v => v + d1.h / 2 + 8);
-  const p2_in_x = useTransform(x2, v => v);
-  const p2_in_y = useTransform(y2, v => v + d2.h / 2 + 8);
-
-  const p2_out_x = useTransform(x2, v => v + d2.w);
-  const p2_out_y = useTransform(y2, v => v + d2.h / 2 + 8);
-  const p3_in_x = useTransform(x3, v => v);
-  const p3_in_y = useTransform(y3, v => v + d3.h / 2 + 8);
-
-  const path1D = useTransform([p1_out_x, p1_out_y, p2_in_x, p2_in_y], ([x1, y1, x2, y2]) => {
-    const cx = ((x1 as number) + (x2 as number)) / 2;
-    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
-  });
-
-  const path2D = useTransform([p2_out_x, p2_out_y, p3_in_x, p3_in_y], ([x1, y1, x2, y2]) => {
-    const cx = ((x1 as number) + (x2 as number)) / 2;
-    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
-  });
-
-  const x4 = useMotionValue(window.innerWidth < 768 ? 50 : 1300);
-  const y4 = useMotionValue(window.innerWidth < 768 ? 950 : 400);
-  const p3_out_x = useTransform(x3, v => v + d3.w);
-  const p3_out_y = useTransform(y3, v => v + d3.h / 2 + 8);
-  const p4_in_x = useTransform(x4, v => v);
-  const p4_in_y = useTransform(y4, v => v + d3.h / 2 + 8);
-
-  const path3D = useTransform([p3_out_x, p3_out_y, p4_in_x, p4_in_y], ([x1, y1, x2, y2]) => {
-    const cx = ((x1 as number) + (x2 as number)) / 2;
-    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
-  });
-
-  const p4_out_x = useTransform(x4, v => v + d3.w);
-  const p4_out_y = useTransform(y4, v => v + d3.h / 2 + 8);
-  const p5_in_x = useTransform(x5, v => v);
-  const p5_in_y = useTransform(y5, v => v + d3.h / 2 + 8);
-
-  const path4D = useTransform([p4_out_x, p4_out_y, p5_in_x, p5_in_y], ([x1, y1, x2, y2]) => {
-    const cx = ((x1 as number) + (x2 as number)) / 2;
-    return `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
-  });
-
   const [constraints, setConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+  const isMobile = window.innerWidth < 768;
+
+  // Construction d'une liste alternée : Image 1, Vidéo 1, Image 2, Vidéo 2...
+  const nodes: any[] = [];
+  const maxLen = Math.max(images.length, (videos || []).length);
+  
+  for (let i = 0; i < maxLen; i++) {
+    if (images[i]) {
+      nodes.push({ 
+        id: `img-${i}`, 
+        type: 'image' as const, 
+        content: images[i], 
+        label: `Image ${i + 1}`, 
+        color: 'blue' as const, 
+        orientation: 'landscape' as const 
+      });
+    }
+    if (videos && videos[i]) {
+      nodes.push({ 
+        id: `vid-${i}`, 
+        type: 'video' as const, 
+        content: videos[i], 
+        label: `Video ${i + 1}`, 
+        color: i % 2 === 0 ? 'purple' as const : 'orange' as const, 
+        orientation: 'portrait' as const 
+      });
+    }
+  }
+
+  const defaultPositions = [
+    { x: 100, y: 150 },
+    { x: 550, y: 350 },
+    { x: 1000, y: 100 },
+    { x: 1400, y: 450 },
+    { x: 300, y: 600 },
+    { x: 800, y: 650 }
+  ];
+
+  // Création des MotionValues de manière stable sans utiliser useMotionValue dans une boucle
+  const motionPositions = useRef(nodes.map((_, i) => ({
+    x: motionValue(isMobile ? 50 : (defaultPositions[i]?.x || 100 + i * 100)),
+    y: motionValue(isMobile ? 100 + i * 250 : (defaultPositions[i]?.y || 100 + i * 50))
+  }))).current;
+
+  // Calcul des dimensions exactes pour les lignes
+  const getDims = (orientation: 'portrait' | 'landscape') => {
+    const isPortrait = orientation === 'portrait';
+    const totalW = isMobile ? (isPortrait ? 200 : 280) : (isPortrait ? 280 : 400);
+    // L'aspect ratio s'applique sur le contenu interne (p-2 = 16px de padding total)
+    const innerW = totalW - 16;
+    const innerH = isPortrait ? (innerW * 20/9) : (innerW * 9/16);
+    // Hauteur totale = hauteur interne + padding (16) + bordures (2)
+    const totalH = innerH + 18;
+    return { w: totalW, h: totalH };
+  };
 
   useEffect(() => {
     const updateConstraints = () => {
       if (containerRef.current) {
         const { offsetWidth, offsetHeight } = containerRef.current;
-        const d = getDims(nodeConfig.n1.orientation);
         setConstraints({
-          left: -(d.w / 2),
-          right: offsetWidth - (d.w / 2),
-          top: -(d.h / 2),
-          bottom: offsetHeight - (d.h / 2)
+          left: -150,
+          right: offsetWidth - 150,
+          top: -150,
+          bottom: offsetHeight - 150
         });
       }
     };
-
     updateConstraints();
     window.addEventListener('resize', updateConstraints);
     return () => window.removeEventListener('resize', updateConstraints);
@@ -162,7 +160,6 @@ const DraggableCanvas = memo(({ images, videos, backgroundVideo, onFullscreenVid
 
   return (
     <div ref={containerRef} className="relative w-full h-[900px] md:h-[850px] bg-bg-base rounded-[40px] md:rounded-[80px] overflow-hidden border border-border-subtle cursor-grab active:cursor-grabbing group/canvas shadow-inner">
-      {/* Vidéo de fond plus transparente pour s'adapter aux thèmes */}
       <video 
         ref={videoRef}
         autoPlay 
@@ -171,38 +168,51 @@ const DraggableCanvas = memo(({ images, videos, backgroundVideo, onFullscreenVid
         playsInline 
         className="absolute inset-0 w-full h-full object-cover opacity-[0.20] pointer-events-none"
       >
-        <source src={backgroundVideo || "/playground_fond.mp4"} type="video/mp4" />
+        <source src="/playground_fond.mp4" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 opacity-[0.1] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, var(--color-pg-dot) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        <motion.path d={path1D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />
-        <motion.path d={path2D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />
-        {videos && videos.length > 2 && <motion.path d={path3D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />}
-        {videos && videos.length > 3 && <motion.path d={path4D} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" />}
-      </svg>
-
-      {images[0] && <NodeCard x={x1} y={y1} orientation={nodeConfig.n1.orientation} label="Input Image" content={images[0]} color="blue" hasInput={false} constraints={constraints} onFullscreen={onFullscreenVideo} />}
       
-      {videos && videos.length > 0 ? (
-        <NodeCard x={x2} y={y2} orientation={nodeConfig.n2.orientation} label="Video Preview" type="video" content={videos[0]} color="purple" constraints={constraints} onFullscreen={onFullscreenVideo} />
-      ) : (
-        <NodeCard x={x2} y={y2} orientation={nodeConfig.n2.orientation} label="Video Engine" type="video" content="/background.mp4" color="purple" constraints={constraints} onFullscreen={onFullscreenVideo} />
-      )}
-
-      {videos && videos.length > 1 ? (
-        <NodeCard x={x3} y={y3} orientation={nodeConfig.n2.orientation} label="Processing..." type="video" content={videos[1]} color="emerald" constraints={constraints} onFullscreen={onFullscreenVideo} />
-      ) : images[1] ? (
-        <NodeCard x={x3} y={y3} orientation={nodeConfig.n3.orientation} label="Output Result" content={images[1]} color="emerald" hasOutput={false} constraints={constraints} onFullscreen={onFullscreenVideo} />
-      ) : null}
-
-      {videos && videos.length > 2 && (
-        <NodeCard x={x4} y={y4} orientation={nodeConfig.n2.orientation} label="Video Result" type="video" content={videos[2]} color="orange" constraints={constraints} onFullscreen={onFullscreenVideo} />
-      )}
-
-      {videos && videos.length > 3 && (
-        <NodeCard x={x5} y={y5} orientation={nodeConfig.n2.orientation} label="Final Output" type="video" content={videos[3]} color="rose" hasOutput={false} constraints={constraints} onFullscreen={onFullscreenVideo} />
-      )}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+        {nodes.map((node, i) => {
+          if (i === nodes.length - 1) return null;
+          
+          const d1 = getDims(node.orientation);
+          const d2 = getDims(nodes[i+1].orientation);
+          
+          // On utilise useTransform ici car on est dans le rendu, mais sur des MotionValues stables
+          return (
+             <DynamicPath 
+               key={`path-${i}`}
+               x1={motionPositions[i].x} 
+               y1={motionPositions[i].y} 
+               x2={motionPositions[i+1].x} 
+               y2={motionPositions[i+1].y}
+               w1={d1.w}
+               h1={d1.h}
+               h2={d2.h}
+             />
+          );
+        })}
+      </svg>
+      
+      {/* Rendu dynamique des noeuds */}
+      {nodes.map((node, i) => (
+        <NodeCard 
+          key={`${node.id}-${images.length}-${videos?.length}`}
+          x={motionPositions[i].x}
+          y={motionPositions[i].y}
+          orientation={node.orientation} 
+          label={node.label} 
+          type={node.type}
+          content={node.content} 
+          color={node.color}
+          hasInput={i > 0}
+          hasOutput={i < nodes.length - 1}
+          constraints={constraints}
+          onFullscreen={onFullscreenVideo}
+        />
+      ))}
       
       <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-bg-card border border-border-subtle rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-accent pointer-events-none">
         <Zap size={14} className="animate-pulse" /> Playground Interactif
@@ -342,7 +352,6 @@ export const ProjectDetailPage = () => {
          <DraggableCanvas 
            images={project.detailImages || []} 
            videos={project.detailVideos} 
-           backgroundVideo={project.backgroundVideo}
            onFullscreenVideo={setFullscreenVideo}
          />
       </section>
