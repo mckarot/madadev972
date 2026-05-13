@@ -1,20 +1,19 @@
 export const PROJECTS = [
   { 
     id: 1, 
-    title: "Eco-Tropical Resort", 
-    category: "Web Design", 
-    image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2000", 
-    color: "#34d399",
-    challenge: "Créer une expérience de réservation immersive pour un complexe éco-responsable de luxe en Martinique.",
-    solution: "Une interface fluide utilisant le WebGL pour des transitions fluides et un système de réservation temps réel optimisé.",
-    techs: ["React", "Three.js", "Node.js", "Stripe API"],
+    title: "COACH GIGEO", 
+    category: "Fitness & Personal Coaching", 
+    image: "/portfolio/coachscreen2.jpg",
+    color: "#06b6d4",
+    challenge: "Démocratiser le coaching de haut niveau via une plateforme mobile offrant un suivi personnalisé et des séances en direct, tout en garantissant une fluidité parfaite.",
+    solution: "Développement d'une architecture agile pour la mise à jour dynamique des programmes et une UI épurée favorisant l'engagement quotidien des Spartiates.",
+    techs: ["Flutter", "Firebase", "Framer Motion", "Video SDK"],
     detailImages: [
-      "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1000",
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1000"
+      "/portfolio/coachscreen.jpg",
+      "/portfolio/a-propos-002.webp"
     ],
     detailVideos: [
-      "/portfolio/portfolio_1.mp4",
-      "/portfolio/portfolio_2.mp4"
+      "/portfolio/portfolio_1.mp4"
     ]
   },
   { 
