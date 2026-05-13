@@ -10,8 +10,8 @@ export const PROJECTS = [
     solution: "Développement d'une architecture agile pour la mise à jour dynamique des programmes et une UI épurée favorisant l'engagement quotidien des Spartiates.",
     techs: ["Flutter", "Firebase", "Framer Motion", "Video SDK"],
     detailImages: [
-      "/portfolio/coachscreen.jpg",
-      "/portfolio/a-propos-002.webp"
+      "/portfolio/coach_pg_1.png",
+      "/portfolio/coach_pg_2.png"
     ],
     detailVideos: [
       "/portfolio/portfolio_1.mp4"

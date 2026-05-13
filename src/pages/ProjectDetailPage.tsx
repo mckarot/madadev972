@@ -37,7 +37,7 @@ const NodeCard = memo(({
             <source src={content} type="video/mp4" />
           </video>
         ) : (
-          <img src={content} className="w-full h-full object-cover pointer-events-none" alt="" />
+          <img src={content} className="w-full h-full object-contain pointer-events-none" alt="" />
         )}
         <div className={`absolute top-3 left-3 px-2 py-1 bg-${color}-500/80 backdrop-blur-md rounded-lg text-[8px] font-bold uppercase tracking-widest text-text-main flex items-center gap-2`}>
            <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
