@@ -74,7 +74,7 @@ const DynamicPath = memo(({ x1, y1, x2, y2, w1, h1, h2 }: any) => {
   return <motion.path d={path} fill="transparent" stroke="var(--color-pg-line)" strokeWidth="2" strokeLinecap="round" />;
 });
 
-const DraggableCanvas = memo(({ images, videos, onFullscreenVideo }: { images: string[], videos?: string[], onFullscreenVideo: (url: string) => void }) => {
+const DraggableCanvas = memo(({ project, images, videos, onFullscreenVideo }: { project: any, images: string[], videos?: string[], onFullscreenVideo: (url: string) => void }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   
@@ -90,6 +90,7 @@ const DraggableCanvas = memo(({ images, videos, onFullscreenVideo }: { images: s
   // Construction d'une liste alternée : Image 1, Vidéo 1, Image 2, Vidéo 2...
   const nodes: any[] = [];
   const maxLen = Math.max(images.length, (videos || []).length);
+  const forcedOrientation = project.playgroundOrientation || 'landscape';
   
   for (let i = 0; i < maxLen; i++) {
     if (images[i]) {
@@ -99,7 +100,7 @@ const DraggableCanvas = memo(({ images, videos, onFullscreenVideo }: { images: s
         content: images[i], 
         label: `Image ${i + 1}`, 
         color: 'blue' as const, 
-        orientation: 'landscape' as const 
+        orientation: forcedOrientation
       });
     }
     if (videos && videos[i]) {
@@ -109,7 +110,7 @@ const DraggableCanvas = memo(({ images, videos, onFullscreenVideo }: { images: s
         content: videos[i], 
         label: `Video ${i + 1}`, 
         color: i % 2 === 0 ? 'purple' as const : 'orange' as const, 
-        orientation: 'portrait' as const 
+        orientation: forcedOrientation
       });
     }
   }
@@ -350,6 +351,7 @@ export const ProjectDetailPage = () => {
 
       <section className="py-24 border-t border-border-subtle px-4 md:px-12 max-w-[1800px] mx-auto">
          <DraggableCanvas 
+           project={project}
            images={project.detailImages || []} 
            videos={project.detailVideos} 
            onFullscreenVideo={setFullscreenVideo}

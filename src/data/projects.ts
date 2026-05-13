@@ -5,6 +5,7 @@ export const PROJECTS = [
     category: "Fitness & Personal Coaching", 
     image: "/portfolio/coachscreen2.jpg",
     color: "#06b6d4",
+    playgroundOrientation: "portrait",
     challenge: "Démocratiser le coaching de haut niveau via une plateforme mobile offrant un suivi personnalisé et des séances en direct, tout en garantissant une fluidité parfaite.",
     solution: "Développement d'une architecture agile pour la mise à jour dynamique des programmes et une UI épurée favorisant l'engagement quotidien des Spartiates.",
     techs: ["Flutter", "Firebase", "Framer Motion", "Video SDK"],
@@ -18,33 +19,39 @@ export const PROJECTS = [
   },
   { 
     id: 2, 
-    title: "Fintech Antilles", 
-    category: "App Mobile", 
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000", 
-    color: "#60a5fa",
-    challenge: "Démocratiser l'accès aux services bancaires numériques pour les entrepreneurs de la zone caraïbe.",
-    solution: "Une application mobile sécurisée avec authentification biométrique et gestion de multi-devises simplifiée.",
-    techs: ["Flutter", "Firebase", "Google Cloud", "Rust"],
+    title: "TENNIS CLUB FRANÇOIS", 
+    category: "Gestion & Réservation SaaS", 
+    image: "/portfolio/tennis_main.png",
+    color: "#15803d",
+    playgroundOrientation: "landscape",
+    challenge: "Digitaliser la gestion d'un club de tennis en remplaçant les processus manuels par une plateforme centralisée permettant de gérer les courts, les réservations et les membres en temps réel.",
+    solution: "Conception d'une SPA ultra-performante avec Next.js, utilisant une base de données temps réel (PocketBase) pour offrir une UX fluide et sans conflit de réservation.",
+    techs: ["Next.js", "PocketBase", "Tailwind 4", "Framer Motion"],
     detailImages: [
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1000",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000"
+      "/portfolio/tennis_1.png",
+      "/portfolio/tennis_2.png",
+      "/portfolio/tennis_3.jpg"
     ],
     detailVideos: [
-      "/portfolio/portfolio_1.mp4"
+      "/portfolio/tennis_demo_v2.mp4"
     ]
   },
   { 
     id: 3, 
-    title: "Madinina Market", 
-    category: "E-Commerce", 
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000", 
-    color: "#818cf8",
-    challenge: "Connecter les artisans locaux directement aux consommateurs via une plateforme logistique intégrée.",
-    solution: "Un marketplace robuste supportant des milliers de SKUs avec un tableau de bord vendeur intuitif.",
-    techs: ["Next.js", "Shopify Engine", "PostgreSQL", "Tailwind"],
+    title: "COCONUT AGENCEMENT", 
+    category: "Pose & Aménagement Mobile", 
+    image: "/portfolio/coconut_main.png",
+    color: "#78350f",
+    playgroundOrientation: "portrait",
+    challenge: "Optimiser la gestion des chantiers et de la pose d'aménagements sur mesure via une interface mobile robuste, capable d'accompagner les artisans sur le terrain.",
+    solution: "Développement d'un utilitaire performant privilégiant l'efficacité opérationnelle, avec une interface épurée et une gestion de données locale pour une réactivité maximale.",
+    techs: ["Flutter", "SQLite", "Material Design", "Performance Tuning"],
     detailImages: [
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000",
-      "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=1000"
+      "/portfolio/coconut_1.png",
+      "/portfolio/coconut_2.png"
+    ],
+    detailVideos: [
+      "/portfolio/portfolio_4.mp4"
     ]
   },
   { 
