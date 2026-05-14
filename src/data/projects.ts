@@ -2,13 +2,13 @@ export const PROJECTS = [
   { 
     id: 1, 
     title: "COACH GIGEO", 
-    category: "Fitness & Personal Coaching", 
+    category: "Fitness & Coaching Personnel", 
     image: "/portfolio/coachscreen2.jpg",
     color: "#06b6d4",
     playgroundOrientation: "portrait",
-    challenge: "Démocratiser le coaching de haut niveau via une plateforme mobile offrant un suivi personnalisé et des séances en direct, tout en garantissant une fluidité parfaite.",
-    solution: "Développement d'une architecture agile pour la mise à jour dynamique des programmes et une UI épurée favorisant l'engagement quotidien des Spartiates.",
-    techs: ["Flutter", "Firebase", "Framer Motion", "Video SDK"],
+    challenge: "Rendre le coaching sportif de haut niveau accessible à tous, partout et à tout moment.",
+    solution: "Une application intuitive pour suivre des programmes personnalisés et des séances en direct, conçue pour garder les sportifs motivés chaque jour.",
+    techs: ["Flutter", "Firebase", "Design Mobile", "Vidéo Live"],
     detailImages: [
       "/portfolio/coach_pg_1.png",
       "/portfolio/coach_pg_2.png"
@@ -20,13 +20,13 @@ export const PROJECTS = [
   { 
     id: 2, 
     title: "TENNIS CLUB FRANÇOIS", 
-    category: "Gestion & Réservation SaaS", 
+    category: "Gestion de Club & Réservations", 
     image: "/portfolio/tennis_main.png",
     color: "#15803d",
     playgroundOrientation: "landscape",
-    challenge: "Digitaliser la gestion d'un club de tennis en remplaçant les processus manuels par une plateforme centralisée permettant de gérer les courts, les réservations et les membres en temps réel.",
-    solution: "Conception d'une SPA ultra-performante avec Next.js, utilisant une base de données temps réel (PocketBase) pour offrir une UX fluide et sans conflit de réservation.",
-    techs: ["Next.js", "PocketBase", "Tailwind 4", "Framer Motion"],
+    challenge: "Simplifier la gestion complexe d'un club de tennis et supprimer les conflits de réservation manuelle.",
+    solution: "Une plateforme moderne qui permet aux membres de réserver leurs terrains en quelques secondes et au club de piloter son activité sans effort.",
+    techs: ["Web App", "Base de données", "Interface Admin", "Temps Réel"],
     detailImages: [
       "/portfolio/tennis_1.png",
       "/portfolio/tennis_2.png",
@@ -39,13 +39,13 @@ export const PROJECTS = [
   { 
     id: 3, 
     title: "COCONUT AGENCEMENT", 
-    category: "Pose & Aménagement Mobile", 
+    category: "Outil Terrain & Aménagement", 
     image: "/portfolio/coconut_main.png",
     color: "#78350f",
     playgroundOrientation: "portrait",
-    challenge: "Optimiser la gestion des chantiers et de la pose d'aménagements sur mesure via une interface mobile robuste, capable d'accompagner les artisans sur le terrain.",
-    solution: "Développement d'un utilitaire performant privilégiant l'efficacité opérationnelle, avec une interface épurée et une gestion de données locale pour une réactivité maximale.",
-    techs: ["Flutter", "SQLite", "Material Design", "Performance Tuning"],
+    challenge: "Aider les artisans à gérer leurs chantiers et leurs projets d'aménagement directement sur le terrain.",
+    solution: "Un outil mobile pratique et rapide pour organiser les dossiers clients et les suivis de pose, même dans les zones sans connexion internet.",
+    techs: ["Flutter", "Mode Hors-ligne", "Gestion de Projet", "Utilitaire"],
     detailImages: [
       "/portfolio/coconut_1.png",
       "/portfolio/coconut_2.png"
@@ -56,44 +56,56 @@ export const PROJECTS = [
   },
   { 
     id: 4, 
-    title: "Luxury Travel App", 
-    category: "UX Research", 
-    image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000", 
-    color: "#f472b6",
-    challenge: "Redéfinir le parcours voyageur pour une clientèle haut de gamme exigeante.",
-    solution: "Une phase de recherche intensive aboutissant à un design minimaliste et prédictif.",
-    techs: ["Figma", "User Testing", "Prototyping", "Design System"],
+    title: "COIFFEUR APP", 
+    category: "Réservation Salon de Coiffure", 
+    image: "/portfolio/coiffeur_main.jpg",
+    color: "#1e40af",
+    playgroundOrientation: "portrait",
+    challenge: "Éliminer l'attente au téléphone et les erreurs de planning pour les salons de coiffure.",
+    solution: "Une application simple pour prendre rendez-vous en 2 clics, avec un planning synchronisé en temps réel pour le coiffeur.",
+    techs: ["Flutter", "Réservation", "Notifications", "Multi-utilisateurs"],
     detailImages: [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
-      "https://images.unsplash.com/photo-1436491865332-7a61a109c0f2?q=80&w=1000"
+      "/portfolio/soif_1.png",
+      "/portfolio/soif_2.png"
+    ],
+    detailVideos: [
+      "/portfolio/portfolio_3.mp4"
     ]
   },
   { 
     id: 5, 
-    title: "Smart City FDF", 
-    category: "Big Data", 
-    image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=1000", 
-    color: "#fbbf24",
-    challenge: "Analyser les flux de transport urbain pour optimiser le trafic à Fort-de-France.",
-    solution: "Visualisation de données massives en temps réel issue de capteurs IoT disséminés dans la ville.",
-    techs: ["Python", "TensorFlow", "React Dashboards", "AWS"],
+    title: "FOCCA RESTO", 
+    category: "Commande en Ligne & Restaurant", 
+    image: "/portfolio/focca_main_capture.png",
+    color: "#ea580c",
+    playgroundOrientation: "portrait",
+    challenge: "Coordonner efficacement toutes les équipes d'un restaurant, de la salle à la cuisine, pour un service fluide et sans erreurs.",
+    solution: "Une solution tout-en-un qui connecte les clients, les serveurs et les cuisiniers en temps réel, garantissant que chaque commande est préparée et servie sans accroc.",
+    techs: ["Système Multi-Rôles", "Gestion de Commandes", "Interface Cuisine", "Temps Réel"],
     detailImages: [
-      "https://images.unsplash.com/photo-1558441719-ff34b0ad4b98?q=80&w=1000",
-      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1000"
+      "/portfolio/focca_pg_1.jpg",
+      "/portfolio/focca_pg_2.jpg"
+    ],
+    detailVideos: [
+      "/portfolio/portfolio_2.mp4"
     ]
   },
   { 
     id: 6, 
-    title: "Crypto Ocean", 
-    category: "Blockchain", 
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000", 
-    color: "#60a5fa",
-    challenge: "Permettre l'investissement fractionné dans des projets de préservation des récifs coralliens.",
-    solution: "Une plateforme d'échange de tokens d'impact basée sur la transparence de la blockchain.",
-    techs: ["Solidity", "Web3.js", "Ethereum", "Ethers.js"],
+    title: "KITE SCHOOL MANAGER", 
+    category: "Gestion & Réservation Web", 
+    image: "/portfolio/kite_main.png",
+    color: "#0ea5e9",
+    playgroundOrientation: "landscape",
+    challenge: "Créer un outil de gestion robuste pour une école de kitesurf, incluant la planification complexe des cours et le respect strict des données élèves.",
+    solution: "Une application web réactive avec base de données locale, permettant de gérer les réservations, les crédits et la conformité RGPD en toute simplicité.",
+    techs: ["React", "TypeScript", "Dexie.js", "RGPD Compliant"],
     detailImages: [
-      "https://images.unsplash.com/photo-1518544801976-3e159e50e5bb?q=80&w=1000",
-      "https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?q=80&w=1000"
+      "/portfolio/kite_pg_1.png",
+      "/portfolio/kite_pg_2.png"
+    ],
+    detailVideos: [
+      "/portfolio/kite_demo_v1.mp4"
     ]
   }
 ];

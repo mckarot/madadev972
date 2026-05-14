@@ -13,7 +13,7 @@ export const ContactPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = `mailto:contact@madadev.com?subject=${formState.subject}&body=De: ${formState.name} (${formState.email})%0D%0A%0D%0A${formState.message}`;
+    window.location.href = `mailto:madadev972@gmail.com?subject=${formState.subject}&body=De: ${formState.name} (${formState.email})%0D%0A%0D%0A${formState.message}`;
   };
 
   return (
@@ -39,7 +39,7 @@ export const ContactPage = () => {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-text-muted uppercase tracking-widest mb-1">Email Professionnel</div>
-                  <div className="text-xl font-medium">contact@madadev.com</div>
+                  <div className="text-xl font-medium">madadev972@gmail.com</div>
                 </div>
               </div>
               <a 

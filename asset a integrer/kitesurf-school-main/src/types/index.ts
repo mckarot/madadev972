@@ -1,0 +1,721 @@
+// src/types/index.ts
+// Types principaux de l'application KiteSurf School
+// Toutes les interfaces doivent être exportées depuis ce fichier
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+export interface User {
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role: 'admin' | 'instructor' | 'student';
+  isActive: 0 | 1;
+  createdAt: number;
+  photo?: string; // Base64 encoded image (RGPD Article 16)
+}
+
+// ============================================
+// COURSES & SESSIONS
+// ============================================
+
+export interface Course {
+  id: number;
+  instructorId: number;
+  title: string;
+  description?: string;
+  level: 'beginner' | 'intermediate' | 'advanced';
+  maxStudents: number;
+  price: number;
+  isActive: 0 | 1;
+  createdAt: number;
+}
+
+export interface CourseSession {
+  id: number;
+  courseId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  location: string;
+  maxStudents: number;
+  isActive: 0 | 1;
+  createdAt: number;
+}
+
+export interface TimeSlot {
+  id: number;
+  instructorId: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  isAvailable: 0 | 1;
+  createdAt: number;
+}
+
+// ============================================
+// SCHOOL SCHEDULE (Admin-managed)
+// ============================================
+
+/**
+ * SchoolSchedule - Emploi du temps de base de l'école
+ * Géré par l'admin, s'applique du Lundi au Samedi toute l'année
+ * dayOfWeek: 1=Lundi, 2=Mardi, ..., 6=Samedi
+ */
+export interface SchoolSchedule {
+  id: number;
+  dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6;
+  startTime: string; // "08:30"
+  endTime: string; // "11:00"
+  isActive: 0 | 1;
+  createdAt: number;
+}
+
+/**
+ * InstructorAvailability - Indisponibilités des moniteurs
+ * Géré par les moniteurs pour bloquer des créneaux spécifiques
+ * (maladie, congés, etc.)
+ */
+export interface InstructorAvailability {
+  id: number;
+  instructorId: number;
+  date: string; // "YYYY-MM-DD"
+  scheduleId: number; // Reference to SchoolSchedule
+  isAvailable: 0 | 1; // 0 = bloqué, 1 = disponible
+  reason?: string; // "Maladie", "Congés", "Autre"
+  createdAt: number;
+}
+
+// ============================================
+// RESERVATIONS
+// ============================================
+
+export interface Reservation {
+  id: number;
+  studentId: number;
+  courseId: number;
+  sessionId?: number;
+  instructorId?: number | null; // Moniteur assigné (null si pas encore assigné)
+  courseType?: 'collectif' | 'particulier' | 'duo' | 'pack_3' | 'pack_6' | 'pack_10'; // Type de cours/pack réservé
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  sessionsConsumed?: number; // Nombre de séances consommées pour cette réservation
+  pricePaid?: number; // Prix payé en euros (pour le remboursement)
+  createdAt: number;
+}
+
+// ============================================
+// USER PROFILE DATA (RGPD Article 16)
+// ============================================
+
+export interface UserPhysicalData {
+  id: number;
+  userId: number;
+  height?: number;
+  weight?: number;
+  shoeSize?: number;
+  wetsuitSize?: string;
+  harnessSize?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface UserHealthData {
+  id: number;
+  userId: number;
+  medicalConditions?: string;
+  allergies?: string;
+  medications?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  bloodType?: string;
+  swimmingLevel?: string;
+  medicalCertificateValidUntil?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface UserProgression {
+  id: number;
+  userId: number;
+  level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+  skills: string[];
+  totalHours: number;
+  lastSessionDate?: number;
+  notes?: string;
+  currentIkoLevel?: string;
+  validatedSkills: string[];
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface UserProgressionExport {
+  currentIkoLevel?: string;
+  validatedSkills: string[];
+  sessionHistory: Array<{
+    id: number;
+    date: string;
+    location: string;
+    instructorName: string;
+    courseTitle: string;
+    level: string;
+  }>;
+}
+
+// ============================================
+// TRANSACTIONS & CREDITS
+// ============================================
+
+export interface UserTransaction {
+  id: number;
+  userId: number;
+  reservationId?: number;
+  amount: number;
+  type: 'payment' | 'refund' | 'credit_purchase';
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  paymentMethod?: string;
+  currency?: string;
+  createdAt: number;
+}
+
+/**
+ * CourseCredit - Crédits de cours pour les étudiants
+ *
+ * Utilise 'sessions' et 'usedSessions' pour le système de crédits
+ * 1 séance = 2h30 de cours
+ * 
+ * DEPRÉCIÉ (v13) : Remplacé par le système de wallet en euros.
+ * Les crédits existants sont marqués comme 'legacy' pour historique.
+ */
+export interface CourseCredit {
+  id: number;
+  studentId: number;
+  sessions: number;
+  usedSessions: number;
+  status: 'active' | 'expired' | 'refunded' | 'legacy'; // AJOUT: 'legacy' en v13
+  expiresAt?: number;
+  createdAt: number;
+  updatedAt: number;
+  isLegacy?: 0 | 1; // AJOUT v13: marque les anciens crédits
+}
+
+export interface StudentBalance {
+  totalSessions: number;
+  usedSessions: number;
+  remainingSessions: number;
+}
+
+// ============================================
+// EUROS SYSTEM (V13)
+// ============================================
+
+/**
+ * UserWallet - Portefeuille électronique en euros pour chaque utilisateur
+ * 
+ * Remplace le système de crédits (v13).
+ * Permet de stocker un solde en euros et de réserver des cours directement.
+ */
+export interface UserWallet {
+  id: number;
+  userId: number;
+  balance: number; // Solde en euros (ex: 150.50)
+  createdAt: number;
+  updatedAt?: number;
+}
+
+/**
+ * CoursePricing - Tarif des cours géré dynamiquement par l'admin
+ * 
+ * Permet de modifier les prix affichés sur /courses sans modifier le code.
+ * L'admin peut activer/désactiver des tarifs et modifier les prix.
+ */
+export interface CoursePricing {
+  id: number;
+  courseType: 'collectif' | 'particulier' | 'duo' | 'pack_3' | 'pack_6' | 'pack_10';
+  price: number; // Prix en euros
+  duration: string; // "2h30"
+  maxStudents: number;
+  sessions?: number; // Nombre de séances pour les packs (3, 6, 10)
+  description?: string;
+  isActive: 0 | 1;
+  createdAt: number;
+  updatedAt?: number;
+}
+
+/**
+ * WalletTransaction - Historique des transactions sur le wallet
+ * 
+ * Trace tous les mouvements d'argent (ajouts, réservations, remboursements).
+ * Requis pour l'audit et la conformité RGPD.
+ */
+export interface WalletTransaction {
+  id: number;
+  userId: number;
+  amount: number; // Positif = crédit, Négatif = débit
+  type: 'deposit' | 'reservation' | 'refund' | 'admin_adjustment';
+  description: string;
+  reservationId?: number;
+  createdAt: number;
+}
+
+export interface AddFundsInput {
+  userId: number;
+  amount: number;
+  description: string;
+}
+
+export interface DeductFundsInput {
+  userId: number;
+  amount: number;
+  description: string;
+  reservationId?: number;
+}
+
+export interface WalletBalance {
+  userId: number;
+  balance: number;
+  currency: 'EUR';
+}
+
+export interface CoursePricingInput {
+  courseType: 'collectif' | 'particulier' | 'duo' | 'pack_3' | 'pack_6' | 'pack_10';
+  price: number;
+  duration: string;
+  maxStudents: number;
+  sessions?: number;
+  description?: string;
+  isActive?: 0 | 1;
+}
+
+export type UpdateCoursePricingInput = Partial<CoursePricingInput> & { id: number };
+
+// ============================================
+// COURSE CARDS & PACK CARDS (DISPLAY ON /courses)
+// ============================================
+
+/**
+ * CourseCard - Carte de cours affichée sur la page /courses
+ *
+ * Affiche les informations complètes d'un cours :
+ * - Titre, description, prix, durée, max élèves, niveau
+ * - Liste des avantages (features)
+ * - Badge optionnel ("Plus populaire", etc.)
+ * - Surbrillance optionnelle
+ */
+export interface CourseCard {
+  id: number;
+  courseType: 'collectif' | 'particulier' | 'duo';
+  title: string;
+  description: string;
+  price: number; // Prix par séance
+  duration: string; // "2h30"
+  maxStudents: number;
+  level: string; // "Tous niveaux", "Débutant", etc.
+  features: string[]; // Liste des avantages
+  badge?: string; // Texte du badge (ex: "Plus populaire")
+  isHighlighted: 0 | 1; // Surbrillance activée
+  color: string; // Dégradé de couleur (ex: "from-blue-500 to-cyan-400")
+  icon: string; // Nom de l'icône (ex: "Users", "User", "UsersRound")
+  isActive: 0 | 1;
+  createdAt: number;
+  updatedAt?: number;
+}
+
+/**
+ * PackCard - Carte de pack affichée sur la page /courses
+ *
+ * Affiche les informations complètes d'un pack :
+ * - Titre, description, nombre de séances
+ * - Prix actuel, prix original barré, économie réalisée
+ * - Liste des avantages (features)
+ * - Badge optionnel ("Meilleure offre", etc.)
+ * - Surbrillance optionnelle
+ * - Couleur et icône pour l'affichage
+ */
+export interface PackCard {
+  id: number;
+  packType: 'pack_3' | 'pack_6' | 'pack_10';
+  title: string;
+  description: string;
+  sessions: number; // Nombre de séances (3, 6, 10)
+  price: number; // Prix actuel du pack
+  originalPrice?: number; // Prix barré (calculé ou manuel)
+  discount?: number; // Économie réalisée (calculée ou manuelle)
+  features: string[]; // Liste des avantages
+  badge?: string; // Texte du badge (ex: "Meilleure offre")
+  isHighlighted: 0 | 1; // Surbrillance activée
+  color: string; // Dégradé de couleur (ex: "from-purple-500 to-pink-500")
+  icon: string; // Nom de l'icône (ex: "Star", "Award", "Trophy")
+  isActive: 0 | 1;
+  createdAt: number;
+  updatedAt?: number;
+}
+
+/**
+ * Input pour créer/mettre à jour une CourseCard
+ */
+export type CourseCardInput = Omit<CourseCard, 'id' | 'createdAt' | 'updatedAt'>;
+
+/**
+ * Input pour créer/mettre à jour une PackCard
+ */
+export type PackCardInput = Omit<PackCard, 'id' | 'createdAt' | 'updatedAt'>;
+
+/**
+ * Input partiel pour mise à jour
+ */
+export type UpdateCourseCardInput = Partial<CourseCardInput> & { id: number };
+export type UpdatePackCardInput = Partial<PackCardInput> & { id: number };
+
+export type AddCourseCreditInput = Pick<CourseCredit, 'studentId' | 'sessions' | 'expiresAt'> & {
+  instructorId?: number;
+};
+export type AddCreditsFormInput = AddCourseCreditInput;
+
+export interface AdminCreditsLoaderData {
+  students: User[];
+  credits: CourseCredit[];
+  instructors: User[];
+}
+
+// ============================================
+// RGPD - CONSENT MANAGEMENT (Article 7 + 21)
+// ============================================
+
+export type ConsentType = 'marketing_emails' | 'photos_marketing' | 'analytics_cookies';
+
+export type ConsentStatus = 'accepted' | 'refused';
+
+export interface UserConsent {
+  id: number;
+  userId: number;
+  consentType: ConsentType;
+  status: ConsentStatus;
+  version: string;
+  acceptedAt: number;
+  updatedAt: number;
+  ipAddress?: string;
+  userAgent?: string;
+}
+
+export interface ConsentSummary {
+  marketing_emails: { hasConsent: boolean; isAccepted: boolean; lastUpdatedAt: number | null };
+  photos_marketing: { hasConsent: boolean; isAccepted: boolean; lastUpdatedAt: number | null };
+  analytics_cookies: { hasConsent: boolean; isAccepted: boolean; lastUpdatedAt: number | null };
+}
+
+// ============================================
+// RGPD - DELETION REQUESTS (Article 17)
+// ============================================
+
+export interface DeletionRequest {
+  id: number;
+  userId: number;
+  requestedAt: number;
+  confirmedAt?: number;
+  scheduledFor?: number;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  confirmationToken: string;
+  reason?: string;
+  emailSentAt?: number;
+}
+
+export interface DeletionEligibilityResult {
+  canDelete: boolean;
+  blockers: string[];
+}
+
+export interface DeletionExecutionResult {
+  success: boolean;
+  error?: string;
+}
+
+export interface DeletionConfirmationResult {
+  success: boolean;
+  error?: string;
+  message?: string;
+}
+
+// ============================================
+// PROFILE EDIT TYPES (RGPD Article 16)
+// ============================================
+
+export interface UpdateProfileInput {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  photo?: string;
+}
+
+export interface UpdatePasswordInput {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string; // Required for password change validation
+}
+
+export interface ProfileUpdateResult {
+  success: boolean;
+  error?: string;
+  field?: keyof UpdateProfileInput | 'currentPassword' | 'newPassword' | 'general';
+}
+
+export interface ValidationResult {
+  isValid: boolean;
+  errors: Record<string, string>;
+}
+
+export interface PasswordStrengthCriteria {
+  hasMinLength: boolean;
+  hasUpperCase: boolean;
+  hasLowerCase: boolean;
+  hasNumber: boolean;
+  hasSpecialChar: boolean;
+}
+
+export interface PasswordValidationResult {
+  isValid: boolean;
+  errors: string[];
+  strength: 'weak' | 'medium' | 'strong';
+  criteria?: PasswordStrengthCriteria;
+}
+
+export interface PhotoUploadResult {
+  success: boolean;
+  photoBase64?: string;
+  error?: string;
+}
+
+export interface ProfileModificationHistory {
+  id: number;
+  userId: number;
+  modifiedAt: number;
+  modifiedFields: string[];
+  previousValues: Partial<User>;
+  ipAddress?: string;
+}
+
+export interface UseProfileEditReturn {
+  user: User | null;
+  isLoading: boolean;
+  error: Error | null;
+  updateProfile: (data: UpdateProfileInput) => Promise<ProfileUpdateResult>;
+  updatePassword: (input: UpdatePasswordInput) => Promise<ProfileUpdateResult>;
+  uploadPhoto: (file: File) => Promise<PhotoUploadResult>;
+  refreshUser: () => Promise<void>;
+  clearError: () => void;
+}
+
+export interface EditProfileFormState {
+  firstName: string;
+  lastName: string;
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+  photo: string | null;
+}
+
+export interface EditProfileFormErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+  photo?: string;
+  general?: string;
+}
+
+// ============================================
+// USER DATA EXPORT (RGPD Article 15)
+// ============================================
+
+export interface UserReservationExport {
+  id: number;
+  courseId: number;
+  courseTitle: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  location: string;
+  status: Reservation['status'];
+  createdAt: number;
+}
+
+export interface UserTransactionExport {
+  id: number;
+  reservationId?: number;
+  amount: number;
+  currency: string;
+  type: 'payment' | 'refund' | 'credit_purchase';
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  createdAt: number;
+}
+
+export interface UserProfileExport {
+  exportedAt: string;
+  user: {
+    id: number;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: 'admin' | 'instructor' | 'student';
+    createdAt: number;
+  };
+  physicalData?: {
+    weight?: number;
+    height?: number;
+  };
+  healthData?: {
+    medicalConditions?: string;
+    allergies?: string;
+    swimmingLevel?: string;
+    medicalCertificateValidUntil?: string;
+  };
+  progression?: UserProgressionExport;
+  reservations: UserReservationExport[];
+  transactions: UserTransactionExport[];
+}
+
+// ============================================
+// STATS & ANALYTICS
+// ============================================
+
+export interface StatsData {
+  totalReservations: number;
+  totalRevenue: number;
+  activeStudents: number;
+  activeCourses: number;
+  reservationsByLevel: { level: string; count: number }[];
+  reservationsByStatus: { status: string; count: number }[];
+  revenueByMonth: { month: string; revenue: number }[];
+}
+
+export interface StatsFilter {
+  startDate?: string;
+  endDate?: string;
+}
+
+// ============================================
+// RESERVATION HISTORY
+// ============================================
+
+export interface ReservationHistoryItem {
+  id: number;
+  reservationId: number;
+  studentId: number;
+  studentName: string;
+  courseId: number;
+  courseTitle: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  location: string;
+  status: Reservation['status'];
+  createdAt: number;
+  instructorId?: number;
+}
+
+// ============================================
+// ADMIN CREDIT VIEW
+// ============================================
+
+export interface AdminCreditView {
+  studentId: number;
+  studentName: string;
+  studentEmail: string;
+  totalSessions: number;
+  usedSessions: number;
+  remainingSessions: number;
+  creditsCount: number;
+  lastCreditDate?: number;
+}
+
+// ============================================
+// INPUT TYPES FOR CREATION
+// ============================================
+
+export type CreateCourseInput = Omit<Course, 'id' | 'isActive' | 'createdAt'>;
+
+export type CreateReservationInput = Omit<Reservation, 'id' | 'createdAt'>;
+
+export type CreateCourseSessionInput = Omit<CourseSession, 'id' | 'isActive' | 'createdAt'>;
+
+export type CreateTimeSlotInput = Omit<TimeSlot, 'id' | 'isAvailable' | 'createdAt'>;
+
+export type CreateUserInput = Omit<User, 'id' | 'isActive' | 'createdAt'>;
+
+// ============================================
+// SCHOOL SCHEDULE INPUT TYPES
+// ============================================
+
+export type CreateSchoolScheduleInput = Omit<SchoolSchedule, 'id' | 'createdAt'>;
+
+export type CreateInstructorAvailabilityInput = Omit<InstructorAvailability, 'id' | 'createdAt'>;
+
+// ============================================
+// RESERVATION WITH CREDIT
+// ============================================
+
+export interface CreateReservationWithCreditResult {
+  success: boolean;
+  error?: string;
+  reservationId?: number;
+  remainingBalance?: StudentBalance;
+}
+
+// ============================================
+// NOTIFICATIONS
+// ============================================
+
+export interface Notification {
+  id?: number; // Optionnel car auto-généré par Dexie
+  userId: number;
+  type: 'reservation_pending' | 'reservation_confirmed' | 'reservation_cancelled' | 'reservation_completed' | 'credit_added' | 'general';
+  title: string;
+  message: string;
+  read: 0 | 1;
+  reservationId?: number;
+  createdAt: number;
+}
+
+// ============================================
+// SESSION EXCEPTIONS (V14)
+// ============================================
+
+/**
+ * SessionException - Exceptions aux sessions de cours (annulations, modifications)
+ *
+ * Permet d'annuler ou modifier des sessions spécifiques sans affecter le SchoolSchedule.
+ * Les exceptions sont permanentes et traçées pour l'historique.
+ *
+ * Cas d'usage :
+ * - Congés d'été (période étendue)
+ * - Jours fériés
+ * - Météo défavorable
+ * - Moniteur malade
+ * - Événements spéciaux
+ */
+export interface SessionException {
+  id: number;
+  sessionId: number;        // CourseSession concernée
+  type: 'cancelled' | 'modified';
+  reason: string;           // "Congés d'été", "Férié", "Météo", "Moniteur malade"...
+  date: string;             // Date spécifique (YYYY-MM-DD)
+  createdAt: number;
+}
+
+/**
+ * Input pour créer une exception
+ */
+export type CreateSessionExceptionInput = Omit<SessionException, 'id' | 'createdAt'>;
+
+/**
+ * SessionException avec détails de la session
+ */
+export interface SessionExceptionWithDetails extends SessionException {
+  session?: CourseSession;
+  studentNames?: string[];  // Noms des élèves affectés (pour notification)
+}
