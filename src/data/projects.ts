@@ -98,7 +98,7 @@ export const PROJECTS = [
     color: "#0ea5e9",
     playgroundOrientation: "landscape",
     challenge: "Créer un outil de gestion robuste pour une école de kitesurf, incluant la planification complexe des cours et le respect strict des données élèves.",
-    solution: "Une application web réactive avec base de données locale, permettant de gérer les réservations, les crédits et la conformité RGPD en toute simplicité.",
+    solution: "Une application web réactive permettant de gérer les réservations, les crédits et la conformité RGPD en toute simplicité.",
     techs: ["React", "TypeScript", "Dexie.js", "RGPD Compliant"],
     detailImages: [
       "/portfolio/kite_pg_1.png",
