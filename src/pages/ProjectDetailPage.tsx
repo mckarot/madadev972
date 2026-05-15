@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { motion, useMotionValue, useTransform, useSpring, motionValue } from 'motion/react';
 import { Link, useParams } from 'react-router-dom';
-import { X, Zap, Eye } from 'lucide-react';
+import { X, Zap, Eye, Move } from 'lucide-react';
 import { PROJECTS } from '../data/projects';
 import { useSEO } from '../hooks/useSEO';
 
@@ -29,7 +29,8 @@ const NodeCard = memo(({
       dragConstraints={constraints}
       style={{ x, y }}
       whileDrag={{ scale: 1.05, zIndex: 50, cursor: 'grabbing' }}
-      className={`absolute ${width} bg-bg-card p-2 rounded-3xl border border-border-subtle shadow-2xl backdrop-blur-xl`}
+      whileHover={{ scale: 1.02, borderColor: 'var(--color-blue-accent)', transition: { duration: 0.2 } }}
+      className={`absolute ${width} bg-bg-card p-2 rounded-3xl border border-border-subtle shadow-2xl backdrop-blur-xl cursor-grab active:cursor-grabbing group/card`}
     >
       <div className={`relative ${aspect} rounded-2xl overflow-hidden bg-black`}>
         {type === 'video' ? (
@@ -215,8 +216,13 @@ const DraggableCanvas = memo(({ project, images, videos, onFullscreenVideo }: { 
         />
       ))}
       
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-bg-card border border-border-subtle rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-accent pointer-events-none">
-        <Zap size={14} className="animate-pulse" /> Playground Interactif
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-4 px-6 py-3 bg-bg-card border border-border-subtle rounded-full backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em] text-blue-accent pointer-events-none shadow-xl">
+        <Zap size={14} className="animate-pulse" /> 
+        <span className="flex items-center gap-2">
+          Playground Interactif
+          <span className="w-1 h-1 rounded-full bg-blue-accent/30" />
+          <span className="text-text-muted">Attrapez les cartes pour interagir</span>
+        </span>
       </div>
     </div>
   );
