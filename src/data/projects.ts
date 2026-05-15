@@ -29,8 +29,7 @@ export const PROJECTS = [
     techs: ["Web App", "Base de données", "Interface Admin", "Temps Réel"],
     detailImages: [
       "/portfolio/tennis_1.png",
-      "/portfolio/tennis_2.png",
-      "/portfolio/tennis_3.jpg"
+      "/portfolio/tennis_2.png"
     ],
     detailVideos: [
       "/portfolio/tennis_demo_v2.mp4"
